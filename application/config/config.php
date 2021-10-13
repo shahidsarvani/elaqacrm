@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://dp8staging.com/dev/ilaqacrm/';
-$config['base_url'] = 'http://localhost/codeigniter/elaqacrm/';
-// $config['base_url'] = 'https://elaqacrm.digitalpoin8.com/';
+// $config['base_url'] = 'http://localhost/codeigniter/elaqacrm/';
+$config['base_url'] = 'https://elaqacrm.digitalpoin8.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File
