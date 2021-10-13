@@ -1,1 +1,0 @@
-<input name="ref_no" id="ref_no" type="text" class="form-control" value="<?php echo (isset($res) && $res->ref_no!='') ? $res->ref_no :''; ?>" readonly >

@@ -1,1 +1,0 @@
-<input name="deal_price" id="deal_price" type="text" class="form-control" value="<?php echo (isset($res)) ? stripslashes($res->price): set_value('deal_price'); ?>" onKeyUp="price_commission_calculate();" onBlur="price_commission_calculate();">

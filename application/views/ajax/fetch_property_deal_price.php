@@ -1,1 +1,0 @@
-<?php echo (isset($res)) ? stripslashes($res->price): set_value('deal_price'); ?>
