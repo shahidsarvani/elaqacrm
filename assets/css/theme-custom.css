@@ -1,0 +1,59 @@
+/* CSS Document */
+
+
+/* Pagination */
+div.pagination {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", LucidaGrande, "Lucida Sans", Geneva, Verdana, sans-serif;
+	padding:2px;
+	margin: 4px 10px 20px 10px;
+	float: right;
+}
+
+div.pagination a {
+	margin: 2px;
+	padding: 5px 10px 5px 10px;
+	background-color: #0088CC;
+	text-decoration: none; /* no underline */
+	color: #fff;
+	-webkit-border-radius: 4px; 
+  	-moz-border-radius: 4px; 
+  	border-radius: 4px; 
+}
+div.pagination a:hover, div.pagination a:active {
+	 
+	margin: 2px;
+	background-color: #0088CC;
+	color: #fff; 
+}
+div.pagination span.current { 
+		margin: 2px;
+		background-color: #f6efcc;
+		color: #6d643c;
+	}
+div.pagination span.disabled {
+		display:none;
+	}
+.pagination ul li{display: inline-block;}
+.pagination ul li a.active{opacity: .5;}
+
+/* loading */
+.loading{position: absolute;left: 0; top: 0; right: 0; bottom: 0;z-index: 2;background: rgba(255,255,255,0.7);}
+.loading .content {
+	position: absolute;
+	transform: translateY(-50%);
+	 -webkit-transform: translateY(-50%);
+	 -ms-transform: translateY(-50%);
+	top: 50%;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: #555;
+}
+
+.mrglft5{
+ 	margin-left:7px;	
+}
+
+label.error{
+	color:#F30;	
+}
