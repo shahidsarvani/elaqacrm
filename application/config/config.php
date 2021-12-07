@@ -23,9 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://dp8staging.com/dev/ilaqacrm/';
-// $config['base_url'] = 'http://localhost/codeigniter/elaqacrm/';
-$config['base_url'] = 'https://elaqacrm.digitalpoin8.com/';
+
+$sitehost = $_SERVER['HTTP_HOST'];  
+$config['base_url'] = ($sitehost == 'localhost') ? 'http://localhost/custom4/elaqacrm/' : 'https://elaqacrm.digitalpoin8.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File

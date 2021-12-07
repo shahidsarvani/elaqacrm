@@ -651,6 +651,24 @@ class General_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->result();
 		}  
-		 
+		
+		function chk_entry_of_yesterday_meetings_and_views(){ 
+			$vs_id = $this->session->userdata('us_id');  
+			$curr_date = date("Y-m-d");
+			$prev_date = strtotime(date("Y-m-d", strtotime($curr_date))." -1 day");
+			$prev_date = date("Y-m-d",$prev_date);   
+			
+			$this->db->where(" user_id=$vs_id AND dated='$prev_date' "); 
+			$num_rows = $this->db->count_all_results('meetings_views_tbl');
+			return $num_rows;
+		} 
+		
+		
+		public function get_gen_all_contacts_list(){  
+			$query = $this->db->get('siteusers_tbl');
+			return $query->result();
+		} 
+		
+		 		 
 						
 	}  ?>

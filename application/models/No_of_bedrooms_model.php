@@ -18,8 +18,14 @@ class No_of_bedrooms_model extends CI_Model {
 		$this->db->order_by("sort_order", "asc");
 	    $query = $this->db->get('no_of_bedrooms_tbl');
 	    return $query->result();
-	} 
+	}
 	
+	function get_all_no_of_beds(){
+		$this->db->order_by("sort_order", "asc");
+	    $query = $this->db->get('no_of_bedrooms_tbl');
+	    return $query->result();
+	}
+	 
 	function get_no_of_bedroom_by_id($args1){ 
 		$query = $this->db->get_where('no_of_bedrooms_tbl',array('id'=> $args1));
 		return $query->row();

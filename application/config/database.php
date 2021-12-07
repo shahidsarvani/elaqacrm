@@ -73,14 +73,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$sitehost = $_SERVER['HTTP_HOST'];  
+$st_username = ($sitehost == 'localhost') ? 'root' : 'elaqacrm';
+$st_password = ($sitehost == 'localhost') ? '' : 'y3a2Ul4_';
+$st_dbname = ($sitehost == 'localhost') ? 'ci_ilaqa_crm_db' : 'elaqacrm';
+
 $db['default'] = array(
 	'dsn'	=> '', 
 	'hostname' => 'localhost',
-	// 'username' => 'root',
-	'username' => 'elaqacrm',
-	// 'password' => '',
-	'password' => 'y3a2Ul4_',
-	'database' => 'elaqacrm',
+	'username' => $st_username,
+	'password' => $st_password,
+	'database' => $st_dbname,
 	'dbdriver' => 'mysqli', 
 	'dbprefix' => '',
 	'pconnect' => FALSE,

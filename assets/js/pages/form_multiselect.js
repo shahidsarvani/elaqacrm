@@ -203,10 +203,17 @@ $(function() {
     // Width sizing
     // ------------------------------
 
+	$('.multiselect-cstm').multiselect({
+        buttonWidth: '100%',
+		enableFiltering: true,
+		//nonSelectedText: 'Select',
+    });
+	
+	
     // Full width
     $('.multiselect-full').multiselect({
-        buttonWidth: '100%'
-    });
+        buttonWidth: '100%',
+	});
 
     // Percentage width
     $('.multiselect-custom-percents').multiselect({

@@ -16,7 +16,9 @@
     </ul>
   </div>
   <div class="navbar-collapse collapse" id="navbar-mobile">
-     
+     <ul class="navbar-nav" style="margin-top:10px;">
+      <li class="nav-item" style="list-style:none"> <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block"> <i class="icon-paragraph-justify3"></i> </a> </li>
+	  </ul>
      
     <ul class="nav navbar-nav navbar-right"> 
       <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-bubbles4"></i> <span class="visible-xs-inline-block position-right">Messages</span> <span class="badge bg-warning-400">2</span> </a>
