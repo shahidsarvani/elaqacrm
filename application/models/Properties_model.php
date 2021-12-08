@@ -181,7 +181,12 @@ class Properties_model extends CI_Model {
 	}
 	 
      /* properties documents ends  */ 
-    
+	
+	function get_all_properties_list(){
+		$query = $this->db->query("SELECT * FROM properties_tbl ORDER BY id DESC "); 
+		return $query->result();
+	} 
+		
 	function get_property_by_id($args1){ 
 		$query = $this->db->get_where('properties_tbl',array('id'=> $args1));
 		return $query->row();

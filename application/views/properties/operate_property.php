@@ -75,7 +75,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="property_type">Property Type <span class="reds">*</span></label>
                 <div class="col-md-9">
-                  <select name="property_type" id="property_type" class="form-control select">
+                  <select name="property_type" id="property_type" class="form-control select2">
                     <option value="">Select </option>
                     <option value="1" <?php echo ((isset($_POST['property_type']) && $_POST['property_type']==1) || (isset($record) && $record->property_type==1)) ? 'selected="selected"':'' ?>> Sale </option>
                     <option value="2"  <?php echo ((isset($_POST['property_type']) && $_POST['property_type']==2) || (isset($record) && $record->property_type==2)) ? 'selected="selected"':'' ?>> Rent </option>
@@ -85,7 +85,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="category_id"> Category <span class="reds">*</span></label>
                 <div class="col-md-9"> <span id="fetch_cates_list">
-                  <select name="category_id" id="category_id" class="form-control select">
+                  <select name="category_id" id="category_id" class="form-control select2">
                     <option value="">Category Name</option>
                     <?php   
                 if($tmps_sel_prop_type>0){    
@@ -122,7 +122,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="assigned_to_id">Assigned To <span class="reds">*</span></label>
                 <div class="col-md-9">
-                  <select name="assigned_to_id" id="assigned_to_id" class="form-control select">
+                  <select name="assigned_to_id" id="assigned_to_id" class="form-control select2">
                     <option value="">Select Assigned To Name</option>
                     <?php  
                 if(isset($user_arrs) && count($user_arrs)>0){
@@ -147,7 +147,7 @@
                 <label class="col-md-3 control-label" for="owner_id">Owner <span class="reds">*</span> </label>
                 <div class="col-md-9">
                   <div id="fetch_new_owners">
-                    <select name="owner_id" id="owner_id" class="form-control select">
+                    <select name="owner_id" id="owner_id" class="form-control select2">
                       <option value="">Select Owner Name </option>
                       <?php 
                        /* $tmps_location_id='';
@@ -179,7 +179,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="no_of_beds_id">No. of Bedrooms <span class="reds">*</span> </label>
                 <div class="col-md-9">
-                  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select">
+                  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select2">
                     <option value="">Select No. of Bedrooms</option>
                     <?php   
                     for($b=1; $b<=9; $b++){ 
@@ -199,7 +199,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="no_of_baths">No. of Baths <span class="reds">*</span></label>
                 <div class="col-md-9">
-                  <select name="no_of_baths" id="no_of_baths" class="form-control select">
+                  <select name="no_of_baths" id="no_of_baths" class="form-control select2">
                     <option value="">Select No. of Baths</option>
                     <?php   
                         for($b=1; $b<=9; $b++){ 
@@ -227,7 +227,7 @@
                         }else{
                             $sel_emirate_ids = 3;
                         }  ?>
-                  <select name="emirate_id" id="emirate_id" data-plugin-selectTwo class="form-control select" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');">
+                  <select name="emirate_id" id="emirate_id" data-plugin-selectTwo class="form-control select2" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');">
                     <option value="">Select Emirate </option>
                     <?php  
                         if(isset($emirate_arrs) && count($emirate_arrs)>0){
@@ -248,7 +248,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="location_id">Locations <span class="reds">*</span></label>
                 <div class="col-md-9"> <span id="fetch_emirate_locations">
-                  <select name="location_id" id="location_id" data-plugin-selectTwo class="form-control select" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');">
+                  <select name="location_id" id="location_id" data-plugin-selectTwo class="form-control select2" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');">
                     <option value="">Select Emirate Location </option>
                     <?php  
                         /*$emirate_location_arrs = $this->admin_model->fetch_emirate_locations($sel_emirate_ids);
@@ -270,7 +270,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="sub_location_id">Sub Locations <span class="reds">*</span></label>
                 <div class="col-md-9"> <span id="fetch_emirate_sub_locations">
-                  <select name="sub_location_id" id="sub_location_id" data-plugin-selectTwo class="form-control select" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" >
+                  <select name="sub_location_id" id="sub_location_id" data-plugin-selectTwo class="form-control select2" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" >
                     <option value="">Select Emirate Sub Location </option>
                     <?php 
                    /* $tmps_location_id='';
@@ -318,7 +318,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label" for="property_ms_unit">Measuring Unit <span class="reds"> *</span></label>
             <div class="col-md-9">
-              <select name="property_ms_unit" id="property_ms_unit" class="form-control select">
+              <select name="property_ms_unit" id="property_ms_unit" class="form-control select2">
                 <option value="">Select </option>
                 <option value="1" <?php echo ((isset($_POST['property_ms_unit']) && $_POST['property_ms_unit']==1) || (isset($record) && $record->property_ms_unit==1)) ? 'selected="selected"':'' ?>> 1 </option>
                 <option value="2"  <?php echo ((isset($_POST['property_ms_unit']) && $_POST['property_ms_unit']==2) || (isset($record) && $record->property_ms_unit==2)) ? 'selected="selected"':'' ?>> 2 </option>
@@ -336,7 +336,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="is_published">Is Published ? </label>
                 <div class="col-md-9">
-                  <select name="is_published" id="is_published" class="form-control select">
+                  <select name="is_published" id="is_published" class="form-control select2">
                     <option value="">Select </option>
                     <option value="1" <?php echo ((isset($_POST['is_published']) && $_POST['is_published']==1) || (isset($record) && $record->is_published==1)) ? 'selected="selected"':'' ?>> Yes </option>
                     <option value="0" <?php echo ((isset($_POST['is_published']) && $_POST['is_published']==0) || (isset($record) && $record->is_published==0)) ? 'selected="selected"':'' ?>> No </option>
@@ -346,7 +346,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="property_status"> Property Status </label>
                 <div class="col-md-9">
-                  <select name="property_status" id="property_status" class="form-control select">
+                  <select name="property_status" id="property_status" class="form-control select2">
                     <option value="">Select </option>
                     <option value="1" <?php echo ((isset($_POST['property_status']) && $_POST['property_status']==1) || (isset($record) && $record->property_status==1)) ? 'selected="selected"':'' ?>> 1 </option>
                     <option value="0" <?php echo ((isset($_POST['property_status']) && $_POST['property_status']==0) || (isset($record) && $record->property_status==0)) ? 'selected="selected"':'' ?>> 2 </option>
@@ -368,7 +368,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="is_furnished">Is Furnished ?</label>
                 <div class="col-md-9">
-                  <select name="is_furnished" id="is_furnished" class="form-control select">
+                  <select name="is_furnished" id="is_furnished" class="form-control select2">
                     <option value="">Select </option>
                     <option value="1" <?php echo ((isset($_POST['is_furnished']) && $_POST['is_furnished']==1) || (isset($record) && $record->is_furnished==1)) ? 'selected="selected"':'' ?>> Furnished </option>
                     <option value="2"  <?php echo ((isset($_POST['is_furnished']) && $_POST['is_furnished']==2) || (isset($record) && $record->is_furnished==2)) ? 'selected="selected"':'' ?>> Semi Furnished </option>
@@ -392,7 +392,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="source_of_listing">Source of Listing </label>
                 <div class="col-md-9">
-                  <select name="source_of_listing" id="source_of_listing" class="form-control select">
+                  <select name="source_of_listing" id="source_of_listing" class="form-control select2">
                     <option value="">Select Source of Listing </option>
                     <?php  
             if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){

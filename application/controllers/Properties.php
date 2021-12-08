@@ -31,6 +31,7 @@ class Properties extends CI_Controller{
 		$this->load->model('property_features_model'); 
 		$this->load->model('admin_model');  
 		$this->load->library('Ajax_pagination'); 
+		$this->load->library('email');
 		$this->perPage = 25;
     }   
 	  
@@ -1505,7 +1506,7 @@ class Properties extends CI_Controller{
 	 
 	  
 	 
-	 function add(){ 
+	 function add(){  
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 

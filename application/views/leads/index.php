@@ -541,19 +541,17 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 									} ?></td> 
 									<td><?php echo ($record->updated_on!='0000-00-00 00:00:00') ? date('d.M.y', strtotime($record->updated_on)):''; /* cnt_updated_on */ ?> </td>  
 									<td class="center"> 
-									<!-- <a href="<?php //echo $trash_url; ?>" title="Delete" onClick="return confirm('Do you want to delete this?');"><i class="fa fa-times"></i> Delete </a> -->
-									
-									<div class="list-icons">
-										<div class="dropdown">  
+										<div class="list-icons">
+											<div class="dropdown">  
 											<a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-menu7"></i></a>
-											<div class="dropdown-menu dropdown-menu-right">  
-												<a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a>  
-												<a href="<?php echo $details_url; ?>" target="_blank" class="dropdown-item"><i class="icon-search4"></i> Detail </a> 
-												<a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a>   
+											<div class="dropdown-menu dropdown-menu-right"> 
+												<a href="<?php echo $details_url; ?>" class="dropdown-item"><i class="icon-search4"></i> Detail </a> 
+												<a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a>   
+												<a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a>
+												 
 											</div> 										
 										</div>
-								 	 </div>
-									   
+									  </div> 
 									</td>  
 								   </tr> 
 							<?php 

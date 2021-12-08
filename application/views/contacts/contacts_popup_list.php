@@ -1,6 +1,5 @@
- 
-<?php $this->ajax_base_paging =1; ?>
-  
+<?php 
+	$this->ajax_base_paging = 1; ?>
   <style>
 	  label.control-label{
 		font-weight:bold;
@@ -20,34 +19,30 @@
 
 <div class="panel-body"> 
 <form name="datasformchk" id="datasformchk" method="post" action="">
- 
-<div class="containersss">
-    <div class="row">
-    
-    <div class="form-group"> 
-      <div class="col-md-3">   
-      <input name="c_name" id="c_name" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->name): set_value('name'); ?>" placeholder="Enter Name" title="Enter Owner Name" onblur="check_custom_validation();">
-         <span class="text-danger"><?php echo form_error('name'); ?></span>  
-      </div> 
-      <div class="col-md-3">   
-       <input name="c_email" id="c_email" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->email): set_value('email'); ?>" placeholder="Enter Email address" title="Enter Owner Email address" onblur="check_custom_validation();">
-        <span class="text-danger"><?php echo form_error('email'); ?></span> 
-      </div>  
-      <div class="col-md-3" id="contact_phone_item_0">
-        <input name="mobile_no" id="mobile_no" type="text" class="form-control phones" value="<?php echo set_value('mobile_no'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" placeholder="Enter Mobile No."  title="Enter Mobile No." onblur="check_custom_validation();">
-        <span class="text-danger"><?php echo form_error('mobile_no'); ?></span> 
-      </div>
-      
-      <div class="col-md-2">  
-		 <?php  
-            $operate_url = 'contacts/contacts_popup_add_list/';
-            $operate_url = site_url($operate_url); ?>
-        
-         <button class="btn border-slate text-slate-800 btn-flat" type="button" name="adds_contacts" id="adds_contacts" onclick="operate_adds_contacts('<?php echo $operate_url; ?>','fetch_contacts_popup_add_list');"> Save Contact </button>  
-      </div>
-    </div>  
-   </div>
-     
+	<div class="containersss">
+		<div class="row">
+		<div class="form-group"> 
+		  <div class="col-md-3">   
+		  <input name="c_name" id="c_name" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->name): set_value('name'); ?>" placeholder="Enter Name" title="Enter Name" onblur="check_custom_validation();">
+			 <span class="text-danger"><?php echo form_error('name'); ?></span>  
+		  </div> 
+		  <div class="col-md-3">   
+		   <input name="c_email" id="c_email" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->email): set_value('email'); ?>" placeholder="Enter Email address" title="Enter Email address" onblur="check_custom_validation();">
+			<span class="text-danger"><?php echo form_error('email'); ?></span> 
+		  </div>  
+		  <div class="col-md-3" id="contact_phone_item_0">
+			<input name="mobile_no" id="mobile_no" type="text" class="form-control phones" value="<?php echo set_value('mobile_no'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" placeholder="Enter Mobile No."  title="Enter Mobile No." onblur="check_custom_validation();">
+			<span class="text-danger"><?php echo form_error('mobile_no'); ?></span> 
+		  </div> 
+		  <div class="col-md-2">  
+			 <?php  
+				$operate_url = 'contacts/contacts_popup_add_list/';
+				$operate_url = site_url($operate_url); ?>
+			
+			 <button class="btn border-slate text-slate-800 btn-flat" type="button" name="adds_contacts" id="adds_contacts" onclick="operate_adds_contacts('<?php echo $operate_url; ?>','fetch_contacts_popup_add_list');"> Save Contact </button>  
+		  </div>
+		</div>  
+	   </div>
 </div> 
  <br> <br>
     <script>
@@ -224,7 +219,7 @@ function operate_contacts_list(){
     <div class="row">
         <div class="form-group">
             <div class="col-md-2"> 
-            <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control select" onChange="operate_contacts_list();">
+            <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control select2" onChange="operate_contacts_list();">
               <option value="25">Per Page</option>
               <option value="25"> 25 </option>
               <option value="50"> 50 </option>
@@ -251,26 +246,18 @@ function operate_contacts_list(){
           </tr> 
         </thead>
         <tbody id="fetch_contacts_popup_add_list">
-        <?php 
-            $sr=1; 
-            if(isset($records) && count($records)>0){
-                 foreach($records as $record){ 
-                    $operate_url = 'contacts/operate_contact/'.$record->id;
-                    $operate_url = site_url($operate_url);
-                    
-                    $trash_url = 'contacts/trash_contact/'.$record->id;
-                    $trash_url = site_url($trash_url);
-                    
+<?php 
+$sr=1; 
+if(isset($records) && count($records)>0){
+	 foreach($records as $record){ 
+		$operate_url = 'contacts/operate_contact/'.$record->id;
+		$operate_url = site_url($operate_url);
+		
+		$trash_url = 'contacts/trash_contact/'.$record->id;
+		$trash_url = site_url($trash_url);
+		
         $temp_usr_arr = $this->general_model->get_user_info_by_id($record->created_by);
-        $created_by_nm = stripslashes($temp_usr_arr->name); 
-        
-        $assigned_to_nm ='';
-        if($record->assigned_to >0){
-            $temp_usr_arr = $this->general_model->get_user_info_by_id($record->assigned_to);
-            if(isset($temp_usr_arr)){
-                $assigned_to_nm = stripslashes($temp_usr_arr->name); 
-            }
-        }   ?>  
+        $created_by_nm = stripslashes($temp_usr_arr->name);  ?>  
         <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
             <td><input type="radio" name="sel_contact_id_val" id="sel_contact_id_val_<?= $sr; ?>" value="<?= $record->id; ?>" onclick="sels_chk_box_vals(this.value);"> </td>
             <td><label for="sel_contact_id_val_<?= $sr; ?>"><?= stripslashes($record->name); ?></label></td>
@@ -279,22 +266,26 @@ function operate_contacts_list(){
             <td class="text-center"><?= $created_by_nm; ?></td>
             <td class="text-center"><?= date('d-M-Y',strtotime($record->created_on)); ?></td>
         </tr>
-            <?php 
-                $sr++;
-                }	 
-            }else{ ?>	
-                <tr class="gradeX"> 
-                    <td colspan="6" class="center"> <strong> No Record Found! </strong> </td>
-                </tr>
-            <?php } ?>  
-        </tbody>
-      </table>
-      <br />
-      <?php echo $this->ajax_pagination->create_links(); ?> 
-     </div>
-     <div class="loading" style="display: none;"><div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div></div>
-      
+	<?php 
+		$sr++;
+		}	 ?>
+		<tr class="gradeX"> 
+			<td colspan="6" style="text-align:right">  <?php echo $this->ajax_pagination->create_links(); ?>  </td>
+		</tr>
+		<?php  
+	}else{ ?>	
+	<tr class="gradeX"> 
+		<td colspan="6" class="center"> <strong> No Record Found! </strong> </td>
+	</tr>
+<?php } ?>  
+</tbody>
+</table>
+ <br />
+</div>
+	<div class="loading" style="display: none;">
+		<div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/> </div> 
+	</div>
   </form>
-    </div>  
+</div>  
    
    

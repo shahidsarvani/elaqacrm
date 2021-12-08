@@ -464,11 +464,95 @@
 		}
 	}  
 		
-	function fetch_contacts_list($sel_owrid=''){
-		$data['sel_owrid'] = $sel_owrid;
-		$this->load->view('ajax/fetch_contacts',$data); 
-	}
-		 
+		function fetch_contacts_list($sel_owrid=''){
+			$data['sel_owrid'] = $sel_owrid;
+			$this->load->view('ajax/fetch_contacts',$data); 
+		}
+		
+		function operate_contact_info($args1=''){  
+			$data['contact_arr'] = $this->contacts_model->get_contact_by_id($args1); 
+			$this->load->view('contacts/fetch_contact_info',$data);
+		}
+			
+		
+		function get_jsoned_contacts_list(){  
+			$docs_result  = array();   
+			$paras_arrs = array(); 
+			  
+			if($this->input->post_get('q[term]')){
+				
+				$q = $this->input->post_get('q[term]', TRUE); 
+				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q));
+				
+			}else if($this->input->post_get('q')){
+				$q = $this->input->post_get('q', TRUE); 
+				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q));
+			} 
+			
+			if($this->input->post_get('page[term]')){
+			
+				$offset = $page = $this->input->post_get('page[term]', TRUE); 
+				$paras_arrs = array_merge($paras_arrs, array("page" => $page));
+			
+			}else if($this->input->post_get('page')){
+			
+				$offset = $page = $this->input->post_get('page', TRUE); 
+				$paras_arrs = array_merge($paras_arrs, array("page" => $page));
+			
+			}else{
+				$offset = 0;	
+			}  
+			
+			$show_pers_pg = $this->perPage;  
+			
+			$paras_arrs = array_merge($paras_arrs, array('start' => $offset, 'limit' => $show_pers_pg));
+		
+			$db_docs_arrs = $this->general_model->get_gen_all_cstm_contacts_list($paras_arrs); 
+			if(isset($db_docs_arrs)){ //&& count($db_docs_arrs)>0 
+				foreach($db_docs_arrs as $db_docs_arr){
+					$tempobj['id'] = $db_docs_arr->id;
+					$tempobj['name'] = $db_docs_arr->name;
+					$tempobj['email'] = $db_docs_arr->email;
+					$tempobj['phone_no'] = $db_docs_arr->phone_no;
+					$docs_result[] = $tempobj;
+				} 
+			}
+			header('Content-type: text/json');
+			header('Content-type: application/json');
+			echo json_encode($docs_result);
+		}
+		
+		function get_jsoned_contact_by_id($sel_args){  
+			$docs_result  = array();   
+			if(isset($sel_args) && $sel_args>0){
+				$db_docs_arr1 = $this->general_model->get_gen_contact_info_by_id($sel_args); 
+				 
+				if(isset($db_docs_arr1)){ //count($db_docs_arr1)>0 
+					$tempobj['id'] = $db_docs_arr1->id;
+					$tempobj['name'] = $db_docs_arr1->name;
+					$tempobj['email'] = $db_docs_arr1->email;
+					$tempobj['phone_no'] = $db_docs_arr1->phone_no;
+					$docs_result[] = $tempobj; 
+				}else{
+					$tempobj['id'] = 0;
+					$tempobj['name'] = 'Select Contact';	
+					$tempobj['email'] = '';
+					$tempobj['phone_no'] = '';
+					$docs_result[] = $tempobj;
+				}
+			}else{
+				$tempobj['id'] = 0;
+				$tempobj['name'] = 'Select Contact';	
+				$tempobj['email'] = '';
+				$tempobj['phone_no'] = '';
+				$docs_result[] = $tempobj; 
+			} 
+			
+			header('Content-type: text/json');
+			header('Content-type: application/json');
+			echo json_encode($docs_result);
+		}
+			 
 		 
 		/* Contacts module ends */
 	 		

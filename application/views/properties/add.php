@@ -47,7 +47,7 @@
               <?php echo $this->session->flashdata('error_msg'); ?> </div>
             <?php } ?> 
             <!-- Horizontal form --> 
-            <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url('properties/add'); ?>" class="form-horizontal">
+            <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url('properties/add'); ?>" class="form-horizontal" onSubmit="return operate_custom_validation();">
               <div class="panel panel-flat">
                 <div class="panel-heading">
                   <h5 class="panel-title"> 
@@ -81,7 +81,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="category_id"> Category <span class="reds">*</span></label>
                 <div class="col-md-9"> 
-                  <select name="category_id" id="category_id" class="form-control select" data-error="#category_id1">
+                  <select name="category_id" id="category_id" class="form-control select2" data-error="#category_id1">
                     <option value="">Select Category Name</option>
                     <?php  
                     $category_arrs = $this->categories_model->get_all_categories();       
@@ -407,7 +407,7 @@
                 <label class="col-md-3 control-label" for="assigned_to_id">Assigned To <span class="reds">*</span></label>
                 <div class="col-md-9"> 
                     <span id="fetch_users">
-                      <select name="assigned_to_id" id="assigned_to_id" class="form-control select" data-error="#assigned_to_id1">
+                      <select name="assigned_to_id" id="assigned_to_id" class="form-control select2" data-error="#assigned_to_id1">
                         <option value="">Select Assigned To Name</option>
                         <?php  
                             if(isset($user_arrs) && count($user_arrs)>0){
@@ -435,7 +435,7 @@
                 <label class="col-md-3 control-label" for="owner_id">Owners <span class="reds">*</span></label>
                 <div class="col-md-9">
                     <span id="fetch_owners">
-                     <select name="owner_id" id="owner_id" class="form-control select" data-error="#owner_id1">
+                     <select name="owner_id" id="owner_id" class="form-control select2" data-error="#owner_id1">
                      <option value="">Select Owner Name </option>
                     <?php  
                         if(isset($owner_arrs) && count($owner_arrs)>0){
@@ -461,7 +461,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="no_of_beds_id">Bedrooms <span class="reds">*</span> </label>
                 <div class="col-md-9">
-                  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select" data-error="#no_of_beds_id1" >
+                  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select2" data-error="#no_of_beds_id1" >
                     <option value="">Select No. of Bedrooms</option>
                     <?php   
                     for($b=1; $b<=10; $b++){ 
@@ -481,7 +481,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="no_of_baths">Bathrooms <span class="reds">*</span></label>
                 <div class="col-md-9">
-                  <select name="no_of_baths" id="no_of_baths" class="form-control select" data-error="#no_of_baths1">
+                  <select name="no_of_baths" id="no_of_baths" class="form-control select2" data-error="#no_of_baths1">
                     <option value="">Select No. of Bathrooms</option>
                     <?php   
                         for($b=1; $b<=10; $b++){ 
@@ -509,7 +509,7 @@
                         }else{
                             $sel_emirate_ids = 3;
                         }  ?>
-                  <select name="emirate_id" id="emirate_id" class="form-control select" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');" data-error="#emirate_id1" >
+                  <select name="emirate_id" id="emirate_id" class="form-control select2" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');" data-error="#emirate_id1" >
                     <option value="">Select Emirate </option>
                     <?php  
                         if(isset($emirate_arrs) && count($emirate_arrs)>0){
@@ -531,7 +531,7 @@
                 <label class="col-md-3 control-label" for="location_id">Locations <span class="reds">*</span></label>
                 <div class="col-md-9"> 
                 <span id="fetch_emirate_locations">
-                  <select name="location_id" id="location_id" class="form-control select" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');" data-error="#location_id1">
+                  <select name="location_id" id="location_id" class="form-control select2" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');" data-error="#location_id1">
                     <option value="">Select Emirate Location </option>
                     <?php  
                         $emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations($sel_emirate_ids);
@@ -554,7 +554,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="sub_location_id">Sub Locations <span class="reds">*</span></label>
                 <div class="col-md-9"> <span id="fetch_emirate_sub_locations">
-                  <select name="sub_location_id" id="sub_location_id" class="form-control select" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" data-error="#sub_location_id1">
+                  <select name="sub_location_id" id="sub_location_id" class="form-control select2" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" data-error="#sub_location_id1">
                     <option value="">Select Emirate Sub Location </option>
                     <?php 
                     $tmps_location_id='';
@@ -602,7 +602,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label" for="property_ms_unit">Measuring Unit <span class="reds"> *</span></label>
             <div class="col-md-9">
-            <select name="property_ms_unit" id="property_ms_unit" class="form-control select" data-error="#property_ms_unit1">
+            <select name="property_ms_unit" id="property_ms_unit" class="form-control select2" data-error="#property_ms_unit1">
             	 <option value=""> Select Measuring Unit </option>
                 <option value="1" <?php if((isset($_POST['property_ms_unit']) && $_POST['property_ms_unit']==1) || (isset($record) && $record->property_ms_unit==1)){ echo 'selected="selected"'; } ?>> Square Feet (ft2) </option>
                 <option value="2" <?php if((isset($_POST['property_ms_unit']) && $_POST['property_ms_unit']==2) || (isset($record) && $record->property_ms_unit==2)){ echo 'selected="selected"'; } ?>> Square Centimetres (cm2) </option>
@@ -625,7 +625,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label" for="property_status"> Property Status </label>
             <div class="col-md-9">
-              <select name="property_status" id="property_status" class="form-control select" data-error="#property_status1">
+              <select name="property_status" id="property_status" class="form-control select2" data-error="#property_status1">
                 <option value="">Select Property Status</option>
                 <option value="1" <?php if((isset($_POST['property_status']) && $_POST['property_status']==1) || (isset($record) && $record->property_status==1)){ echo 'selected="selected"'; } ?>> Sold </option> 
                  <option value="2" <?php if((isset($_POST['property_status']) && $_POST['property_status']==2) || (isset($record) && $record->property_status==2)){ echo 'selected="selected"'; } ?>> Rented </option> 
@@ -651,7 +651,7 @@
                 <label class="col-md-3 control-label" for="is_furnished1">Is Furnished ?</label>
                 
                 <div class="col-md-9">     
-                 <select name="is_furnished" id="is_furnished" class="form-control select" data-error="#is_furnished1">
+                 <select name="is_furnished" id="is_furnished" class="form-control select2" data-error="#is_furnished1">
                     <option value="">Select Is Furnished </option>
                     <option value="1" <?php if(isset($_POST['is_furnished']) && $_POST['is_furnished']==1){ echo 'selected="selected"'; } ?>> Furnished </option> 
                      <option value="2" <?php if(isset($_POST['is_furnished']) && $_POST['is_furnished']==2){ echo 'selected="selected"'; } ?>> SemiFurnished </option> 
@@ -663,7 +663,7 @@
               <div class="form-group">
                 <label class="col-md-3 control-label" for="source_of_listing">Source of Listing </label>
                 <div class="col-md-9">
-                  <select name="source_of_listing" id="source_of_listing" class="form-control select" data-error="#source_of_listing1">
+                  <select name="source_of_listing" id="source_of_listing" class="form-control select2" data-error="#source_of_listing1">
                     <option value="">Select Source of Listing </option>
                     <?php  
             if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){
@@ -771,18 +771,16 @@
           
             </div>
         </div>
-    
-     </div>    
-       
+     </div>
     </form> 
 
-    <script>
-		var data='';
-		var key='';
-		var value='';
-		var i =0;
-		var fileList = new Array; 
-		$(document).ready(function(){  
+<script>
+	var data='';
+	var key='';
+	var value='';
+	var i =0;
+	var fileList = new Array; 
+	$(document).ready(function(){  
 		Dropzone.options.mediaimages = { 
 			url: "<?php echo site_url('/properties/temp_property_media_photos_upload'); ?>",
 			autoProcessQueue: true, 
@@ -864,56 +862,55 @@
 				 });   
 			}
 		});*/
-	} 
-	
+		}  
 	}   
+
+	var data='';
+	var key='';
+	var value='';
 	
-		var data='';
-		var key='';
-		var value='';
-		
-		Dropzone.options.documentsfiles = { 
-		url: "<?php echo site_url('/properties/temp_property_documents_files_upload'); ?>",  
-		autoProcessQueue: true,
-		autoDiscover:false, 
-		uploadMultiple: true,
-		addRemoveLinks: true,   
-		parallelUploads: 100,
-		maxFiles: 15,
-		paramName: "documents",
-		dictDefaultMessage: 'Drop files or click here to upload',
-		acceptedFiles: ".jpeg, .jpg, .png, .gif, .doc, .docx, .pdf",
-		init: function() {
-			addRemoveLinks: true,  
-			thisDropzoness = this;   
-			<?php if(isset($_SESSION['Temp_Documents_IP_Address']) && isset($_SESSION['Temp_Documents_DATE_Times'])){  
-				$tmp_pth1 = '/properties/get_temp_post_property_dropzone_documents';
-				$tmp_loc1 = site_url($tmp_pth1); ?> 
-			$.get('<?php echo $tmp_loc1; ?>', function(data) {
-			$.each(data, function(key,value){
-				var mockFiless = { name: value.name, size: value.size };
-				thisDropzoness.options.addedfile.call(thisDropzoness, mockFiless);
-				thisDropzoness.options.thumbnail.call(thisDropzoness, mockFiless,"<?php echo base_url(); ?>downloads/property_documents/"+value.name);
-				});
-			 });<?php } ?>
-				this.on("removedfile", function(file) { 
-			<?php  
-				$tmp_d_pth = '/properties/delete_temp_property_dropzone_documents_files';
-				$tmp_d_loc = site_url($tmp_d_pth); ?>
-				$.post("<?php echo $tmp_d_loc; ?>", { proprtyid: -1, flename: file.name } ); 
-				console.log(file);
-				// Create the remove button
-				var removeButton=Dropzone.createElement("<button>Remove file</button>");
-				// Capture the Dropzone instance as closure.
-				var _this = this;
-				// Listen to the click event
-				removeButton.addEventListener();
-				// Add the button to the file preview element.
-				file.previewElement.appendChild(removeButton);
+	Dropzone.options.documentsfiles = { 
+	url: "<?php echo site_url('/properties/temp_property_documents_files_upload'); ?>",  
+	autoProcessQueue: true,
+	autoDiscover:false, 
+	uploadMultiple: true,
+	addRemoveLinks: true,   
+	parallelUploads: 100,
+	maxFiles: 15,
+	paramName: "documents",
+	dictDefaultMessage: 'Drop files or click here to upload',
+	acceptedFiles: ".jpeg, .jpg, .png, .gif, .doc, .docx, .pdf",
+	init: function() {
+		addRemoveLinks: true,  
+		thisDropzoness = this;   
+		<?php if(isset($_SESSION['Temp_Documents_IP_Address']) && isset($_SESSION['Temp_Documents_DATE_Times'])){  
+			$tmp_pth1 = '/properties/get_temp_post_property_dropzone_documents';
+			$tmp_loc1 = site_url($tmp_pth1); ?> 
+		$.get('<?php echo $tmp_loc1; ?>', function(data) {
+		$.each(data, function(key,value){
+			var mockFiless = { name: value.name, size: value.size };
+			thisDropzoness.options.addedfile.call(thisDropzoness, mockFiless);
+			thisDropzoness.options.thumbnail.call(thisDropzoness, mockFiless,"<?php echo base_url(); ?>downloads/property_documents/"+value.name);
 			});
-		}}  
-	});  
- 
+		 });<?php } ?>
+			this.on("removedfile", function(file) { 
+		<?php  
+			$tmp_d_pth = '/properties/delete_temp_property_dropzone_documents_files';
+			$tmp_d_loc = site_url($tmp_d_pth); ?>
+			$.post("<?php echo $tmp_d_loc; ?>", { proprtyid: -1, flename: file.name } ); 
+			console.log(file);
+			// Create the remove button
+			var removeButton=Dropzone.createElement("<button>Remove file</button>");
+			// Capture the Dropzone instance as closure.
+			var _this = this;
+			// Listen to the click event
+			removeButton.addEventListener();
+			// Add the button to the file preview element.
+			file.previewElement.appendChild(removeButton);
+		});
+	}}  
+});  
+
 	function operate_property_notes(){ 
 		$(document).ready(function(){ 
 			var notes_txt = document.getElementById("notes").value;
@@ -935,154 +932,149 @@
 			}  
 		});
 	} 
-	 
-	$(document).ready(function(){ 
-		var validator = $('#datas_form').validate({
-		rules: {
-			/*title description property_type category_id  ref_no assigned_to_id owner_id no_of_beds_id no_of_baths emirate_id location_id sub_location_id property_address plot_area property_ms_unit price property_status is_furnished  source_of_listing  */
-			 
-			title: {
-				required: true 
-			}, 
-			description: {
-				required: true 
-			}, 
-			property_type: {
-				required: true 
-			}, 
-			category_id: {
-				required: true 
-			}, 
-			ref_no: {
-				required: true 
-			}, 
-			assigned_to_id: {
-				required: true 
-			}, 
-			owner_id: {
-				required: true 
-			}, 
-			no_of_beds_id: {
-				required: true 
-			}, 
-			no_of_baths: {
-				required: true 
-			}, 
-			emirate_id: {
-				required: true 
-			}, 
-			location_id: {
-				required: true 
-			}, 
-			sub_location_id: {
-				required: true 
-			}, 
-			property_address: {
-				required: true 
-			}, 
-			plot_area: {
-				required: true 
-			}, 
-			property_ms_unit: {
-				required: true 
-			}, 
-			price: {
-				required: true 
-			}, 
-			property_status: {
-				required: true 
-			}, 
-			is_furnished: {
-				required: true 
-			}, 
-			source_of_listing: {
-				required: true 
+	
+	
+	//operate_custom_validation();
+	
+	function operate_custom_validation(){ 
+		$(document).ready(function(){
+		
+			var validator = $('#datas_form').validate({
+			rules: {
+				title: {
+					required: true 
+				}, 
+				description: {
+					required: true 
+				}, 
+				property_type: {
+					required: true 
+				}, 
+				category_id: {
+					required: true 
+				}, 
+				ref_no: {
+					required: true 
+				}, 
+				assigned_to_id: {
+					required: true 
+				}, 
+				owner_id: {
+					required: true 
+				}, 
+				no_of_beds_id: {
+					required: true 
+				}, 
+				no_of_baths: {
+					required: true 
+				}, 
+				emirate_id: {
+					required: true 
+				}, 
+				location_id: {
+					required: true 
+				}, 
+				sub_location_id: {
+					required: true 
+				}, 
+				property_address: {
+					required: true 
+				}, 
+				plot_area: {
+					required: true 
+				}, 
+				property_ms_unit: {
+					required: true 
+				}, 
+				price: {
+					required: true 
+				}, 
+				property_status: {
+					required: true 
+				}, 
+				is_furnished: {
+					required: true 
+				}, 
+				source_of_listing: {
+					required: true 
+				}
+			},
+			messages: { 
+				title: {
+					required: "This is required field" 
+				}, 
+				description: {
+					required: "This is required field" 
+				}, 
+				property_type: {
+					required: "This is required field" 
+				}, 
+				category_id: {
+					required: "This is required field" 
+				}, 
+				ref_no: {
+					required: "This is required field" 
+				}, 
+				assigned_to_id: {
+					required: "This is required field" 
+				}, 
+				owner_id: {
+					required: "This is required field" 
+				}, 
+				no_of_beds_id: {
+					required: "This is required field" 
+				}, 
+				no_of_baths: {
+					required: "This is required field" 
+				}, 
+				emirate_id: {
+					required: "This is required field" 
+				}, 
+				location_id: {
+					required: "This is required field" 
+				}, 
+				sub_location_id: {
+					required: "This is required field" 
+				}, 
+				property_address: {
+					required: "This is required field" 
+				}, 
+				plot_area: {
+					required: "This is required field" 
+				}, 
+				property_ms_unit: {
+					required: "This is required field" 
+				}, 
+				price: {
+					required: "This is required field" 
+				}, 
+				property_status: {
+					required: "This is required field" 
+				}, 
+				is_furnished: {
+					required: "This is required field" 
+				}, 
+				source_of_listing: {
+					required: "This is required field" 
+				}  
+			},
+			errorPlacement: function(error, element) {
+			  var placement = $(element).data('error');
+			  if (placement) {
+				$(placement).append(error)
+			  } else {
+				error.insertAfter(element);
+			  }
+			},  
+			submitHandler: function(){ 
+				document.forms["datas_form"].submit();
 			}  
-		},
-		messages: { 
-			title: {
-				required: "This is required field" 
-			}, 
-			description: {
-				required: "This is required field" 
-			}, 
-			property_type: {
-				required: "This is required field" 
-			}, 
-			category_id: {
-				required: "This is required field" 
-			}, 
-			ref_no: {
-				required: "This is required field" 
-			}, 
-			assigned_to_id: {
-				required: "This is required field" 
-			}, 
-			owner_id: {
-				required: "This is required field" 
-			}, 
-			no_of_beds_id: {
-				required: "This is required field" 
-			}, 
-			no_of_baths: {
-				required: "This is required field" 
-			}, 
-			emirate_id: {
-				required: "This is required field" 
-			}, 
-			location_id: {
-				required: "This is required field" 
-			}, 
-			sub_location_id: {
-				required: "This is required field" 
-			}, 
-			property_address: {
-				required: "This is required field" 
-			}, 
-			plot_area: {
-				required: "This is required field" 
-			}, 
-			property_ms_unit: {
-				required: "This is required field" 
-			}, 
-			price: {
-				required: "This is required field" 
-			}, 
-			property_status: {
-				required: "This is required field" 
-			}, 
-			is_furnished: {
-				required: "This is required field" 
-			}, 
-			source_of_listing: {
-				required: "This is required field" 
-			}  
-		},
-		errorPlacement: function(error, element) {
-		  var placement = $(element).data('error');
-		  if (placement) {
-			$(placement).append(error)
-		  } else {
-			error.insertAfter(element);
-		  }
-		},  
-		submitHandler: function(){ 
-			document.forms["datas_form"].submit();
-		}  
-	  });
-	});  
+		  });
+		}); 
+	} 
 	</script> 
         <!-- /horizotal form --> 
-             
-<!--
- <script src="<?= asset_url(); ?>js/theme.js"></script>
- Theme Custom -->
- 
-<!-- Theme Initialization Files -->
- 
-        
-        
-            
+          
           </div>
         </div>
         <!-- /dashboard content --> 

@@ -665,8 +665,36 @@ class General_model extends CI_Model {
 		
 		
 		public function get_gen_all_contacts_list(){  
-			$query = $this->db->get('siteusers_tbl');
+			$query = $this->db->get('contacts_tbl'); //siteusers_tbl
 			return $query->result();
+		}
+		
+		public function get_gen_all_cstm_contacts_list($params = array()){			
+			$whrs ='';   
+			if(array_key_exists("q_val",$params)){
+				$q_val = $params['q_val'];  
+				if(strlen($q_val)>0){
+					$whrs .= " AND ( name LIKE '%$q_val%' OR email LIKE '%$q_val%' OR phone_no LIKE '%$q_val%' ) "; 
+				}
+			}   
+			 
+			$limits ='';
+			if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+				$tot_limit =   $params['limit'];
+				$str_limit =   $params['start']; 			 
+				$limits = " LIMIT $str_limit, $tot_limit ";
+			}elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
+				 $tot_limit =   $params['limit'];
+				$limits = " LIMIT $tot_limit ";
+			}   
+			//siteusers_tbl
+			$query = $this->db->query("SELECT * FROM contacts_tbl WHERE id >'0' $whrs ORDER BY id DESC "); 
+			return $query->result(); 
+		} 	  
+		
+		public function get_gen_contact_info_by_id($args1){ 
+			$query = $this->db->get_where('contacts_tbl',array('id'=> $args1)); //siteusers_tbl
+			return $query->row();
 		} 
 		
 		 		 

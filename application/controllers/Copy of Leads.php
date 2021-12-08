@@ -33,7 +33,6 @@ class Leads extends CI_Controller{
 		$this->load->model('no_of_bedrooms_model'); 		 
 		$this->load->model('admin_model');  
 		$this->load->library('Ajax_pagination'); 
-		$this->load->library('email');
 		$this->perPage = 25;
 		$this->agent_chk_ystrdy_meeting = $this->general_model->chk_entry_of_yesterday_meetings_and_views();
     }   
@@ -251,7 +250,7 @@ function index($args_vals=''){ /* $temps_property_type='' */
 						 $temp_arr['Category'] = $cates_name;	 
 						
 						 if(isset($export_data_arr->no_of_beds_id) && $export_data_arr->no_of_beds_id>0){
-							$arr_bd = $this->no_of_bedrooms_model->get_no_of_beds_by_id($export_data_arr->no_of_beds_id); 
+							$arr_bd = $this->admin_model->get_no_of_beds_by_id($export_data_arr->no_of_beds_id); 
 							if(isset($arr_bd)){
 								 $bedrooms_title = stripslashes($arr_bd->title);
 							}
@@ -682,11 +681,9 @@ function operate_lead($args1=''){
 		redirect('agent/operate_meetings_views');
 	}  
 	
-	$this->load->model('contacts_model');
-	$this->load->model('properties_model');  
+	$this->load->model('contacts_model'); 
 	 
 	$data['contact_arrs'] = $this->contacts_model->get_all_contacts(); 
-	$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
 	$max_lead_id_val = $this->leads_model->get_max_lead_id();
 	$max_lead_id_val = $max_lead_id_val+1; 
 	$max_lead_id_val = str_pad($max_lead_id_val, 4, '0', STR_PAD_LEFT); 
@@ -1333,34 +1330,7 @@ Please do not reply to this mail. <br>
 			$datas['page_headings']="Invalid Access!";
 			$this->load->view('no_permission_page',$datas);
 		} 
-	} 
-	
-	
-	function lead_detail($args1=''){ 
-		if($this->login_vs_user_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
-			redirect('agent/operate_meetings_views');
-		}  
-		
-		if(isset($args1) && $args1 >0){ 
-			$this->load->model('properties_model');
-			$data['page_headings'] = 'Lead Detail';
-			$data['record'] = $temp_recs = $this->leads_model->get_lead_by_id($args1);  
-			
-			
-			$vsids = $this->session->userdata('us_id');  
-			if($vsids >0){ 
-				if(isset($temp_recs) && $temp_recs->agent_id==$vsids && $temp_recs->is_new==1){ 
-					$datass = array('is_new' => '0'); 
-					$this->leads_model->update_lead_data($args1,$datass);   	
-				} 
-			}
-		
-			$this->load->view('leads/lead_detail',$data);
-		}else{
-			$datas['page_headings']="Invalid Access!";
-			$this->load->view('no_permission_page',$datas);
-		} 
-	} 	
+	}  	
 	
 }
 ?>

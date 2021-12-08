@@ -25,6 +25,11 @@ class No_of_bedrooms_model extends CI_Model {
 	    $query = $this->db->get('no_of_bedrooms_tbl');
 	    return $query->result();
 	}
+	
+	function get_no_of_beds_by_id($args1){ 
+		$query = $this->db->get_where('no_of_bedrooms_tbl',array('id'=> $args1));
+		return $query->row();
+	}
 	 
 	function get_no_of_bedroom_by_id($args1){ 
 		$query = $this->db->get_where('no_of_bedrooms_tbl',array('id'=> $args1));
