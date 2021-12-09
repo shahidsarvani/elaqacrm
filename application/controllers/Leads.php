@@ -677,298 +677,292 @@ function index2($temps_property_type=''){
 	} 
 }
 
-function operate_lead($args1=''){ 
-	if($this->login_vs_user_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
-		redirect('agent/operate_meetings_views');
-	}  
-	
-	$this->load->model('contacts_model');
-	$this->load->model('properties_model');  
-	 
-	$data['contact_arrs'] = $this->contacts_model->get_all_contacts(); 
-	$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
-	$max_lead_id_val = $this->leads_model->get_max_lead_id();
-	$max_lead_id_val = $max_lead_id_val+1; 
-	$max_lead_id_val = str_pad($max_lead_id_val, 4, '0', STR_PAD_LEFT); 
-	$data['auto_ref_no'] = "L-".$max_lead_id_val; 
-	
-	if(isset($args1) && $args1!=''){
-		$data['args1'] = $args1;
-		$data['page_headings'] = 'Update Lead';
-		$data['record'] = $temp_recs = $this->leads_model->get_lead_by_id($args1);
-	
-	}else{ 
-		$data['page_headings'] = 'Add Lead';
-	}    
-	
-	$vs_user_type_id = $this->session->userdata('us_user_type_id');
-	$vs_id = $this->session->userdata('us_id');
-	  
-	if($vs_id >0 && (isset($args1) && $args1>0)){ 
-		if(isset($temp_recs) && $temp_recs->agent_id==$vs_id && $temp_recs->is_new==1){ 
-			$datass = array('is_new' => '0'); 
-			$this->leads_model->update_lead_data($args1,$datass);   	
-		} 
-	} 
-	
-	if($vs_user_type_id==3){ 
-		$arrs_field = array('id' => $vs_id); 
-	}else if($vs_user_type_id==2){ 
-		$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
-	}else{
-		$arrs_field = array('status'=> '1'); 
-	}
-	$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
-	/*$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();*/  
-	$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();  
-	$data['source_of_listing_arrs'] = $this->admin_model->get_all_leads_source_of_listings(); 
-	
-	if(isset($_POST) && !empty($_POST)){  
-		$contact_id = (isset($_POST['contact_id']) && strlen($_POST['contact_id'])>0) ? $this->input->post("contact_id") :'';	
-		
-		$assigned_to_id = $this->input->post("assigned_to_id");
-		$lead_ref = $this->input->post("lead_ref"); 
-		$lead_type = $this->input->post("lead_type");
-		
-		$enquiry_date = $this->input->post("enquiry_date"); 
-		$enquiry_time = $this->input->post("enquiry_time");
-		
-		$lead_status = $this->input->post("lead_status");  
-		$priority = $this->input->post("priority");  
-		$source_of_listing = $this->input->post("source_of_listing");  
-		 
-		/*$property_id_1 = $this->input->post("property_id_1");
-		$property_id_2 = $this->input->post("property_id_2"); 
-		$property_id_3 = $this->input->post("property_id_3"); 
-		$property_id_4 = $this->input->post("property_id_4"); */
-		
-		$property_id_1 = (isset($_POST['property_id_1']) && strlen($_POST['property_id_1'])>0) ? $this->input->post("property_id_1") :'';	
-		
-		$property_id_2 = (isset($_POST['property_id_2']) && strlen($_POST['property_id_2'])>0) ? $this->input->post("property_id_2") :'';	
-		
-		$property_id_3 = (isset($_POST['property_id_3']) && strlen($_POST['property_id_3'])>0) ? $this->input->post("property_id_3") :'';	
-		
-		$property_id_4 = (isset($_POST['property_id_4']) && strlen($_POST['property_id_4'])>0) ? $this->input->post("property_id_4") :'';
-		
-		$reminds = $this->input->post("reminds"); 
-		$remind_date_1 = (isset($_POST['remind_date_1']) && strlen($_POST['remind_date_1'])>0) ? $this->input->post("remind_date_1") :''; 
-		 
-		$remind_time_1 = (isset($_POST['remind_time_1']) && strlen($_POST['remind_time_1'])>0) ? $this->input->post("remind_time_1") :''; 
-		 
-		$notes = $this->input->post("notes"); 
-		$no_of_views = $this->input->post("no_of_views");  
-		 
-		$updated_on = $created_on = date('Y-m-d H:i:s'); 
-		$ip_address = $_SERVER['QUERY_STRING'];
-		$created_by = $this->session->userdata('us_id');  
-	
-		$this->form_validation->set_rules("contact_id", "Contact", "trim|required|xss_clean"); 
-		$this->form_validation->set_rules("assigned_to_id", "Assigned To", "trim|required|xss_clean");
-		
-		$this->form_validation->set_rules("lead_ref", "Ref No", "trim|required|xss_clean");  
-		$this->form_validation->set_rules("lead_type", "Lead Type", "trim|required|xss_clean");    	
-		$this->form_validation->set_rules("lead_status", "Lead Status", "trim|required|xss_clean");  
-		$this->form_validation->set_rules("priority", "Priority", "trim|required|xss_clean"); 
-		$this->form_validation->set_rules("source_of_listing", "Source", "trim|required|xss_clean");  
-		
-if($this->form_validation->run() == FALSE){
-// validation fail
-	$this->load->view('leads/operate_lead',$data);
-	 
-}else if(isset($args1) && $args1!=''){    
-		
-/*contact_id assigned_to_id lead_ref  lead_type lead_status lead_sub_status priority  is_hot_lead  source_of_listing property_id_1 property_id_2 property_id_3 property_id_4 remind_date_1 remind_time_1 remind_date_2 remind_time_2 notes no_of_views args1 */ 
-  
-$datas = array('contact_id' => $contact_id,'agent_id' => $assigned_to_id,'enquiry_date' => $enquiry_date,'enquiry_time' => $enquiry_time,'lead_type' => $lead_type,'lead_status' => $lead_status,'priority' => $priority,'source_of_listing' => $source_of_listing,'property_id_1' => $property_id_1,'property_id_2' => $property_id_2,'property_id_3' => $property_id_3,'property_id_4' => $property_id_4,'reminds' => $reminds,'remind_date_1' => $remind_date_1,'remind_time_1'=>$remind_time_1,'notes' => $notes,'no_of_views' => $no_of_views,'updated_on' => $updated_on); 
-			
-$res = $this->leads_model->update_lead_data($args1,$datas); 
-if(isset($res)){
-	
-	if($reminds==1){  
-		$cstm_datetimes = $remind_date_1.' '.$remind_time_1; 
-		$cstm_datetimes = date('Y-m-d H:i:s',strtotime($cstm_datetimes)); 
-
-		$rmd_arrs = $this->leads_model->chk_lead_reminds_data($assigned_to_id,$args1); 
-		if(isset($rmd_arrs) && count($rmd_arrs)>0){ 
-			$rmd_datas = array('datetimes' => $cstm_datetimes,'status' => '1');	 
-			$update_rmd = $this->leads_model->update_lead_reminds_data($assigned_to_id,$args1,$rmd_datas);
-			
-		}else{ 
-		
-			$rmd_datas = array('assigned_id' => $assigned_to_id,'lead_id' => $args1,'datetimes' => $cstm_datetimes,'status' => '1');	 
-			$insert_rmd = $this->leads_model->insert_lead_reminds_data($rmd_datas); 
+	function operate_lead($args1=''){ 
+		if($this->login_vs_user_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
+			redirect('agent/operate_meetings_views');
 		}  
-	}else{
-		 $this->leads_model->trash_lead_reminds_data($assigned_to_id,$args1);
-	}
-	 
-	
-if(isset($assigned_to_id) && $assigned_to_id>0){ 
-	$usr_arr0 = $this->general_model->get_user_info_by_id($assigned_to_id);
-	if(isset($usr_arr0)){
-		$mail_to_name = $usr_arr0->name;
-		$mail_to = $usr_arr0->email;
-		if(strlen($mail_to)>0){ 
 		
-			$configs_arr = $this->general_model->get_configuration(); 
-			$config_disclaimer = stripslashes($configs_arr->disclaimer);
-			$config_disclaimer ="<u>Disclaimer:</u> \n{$config_disclaimer}";
-			$from_email = "crm@buysellown.com";
-			  
-			$lead_details_url = 'leads/lead_detail/'.$args1;
-			$lead_details_url = site_url($lead_details_url);
-			 
-			
-			$subject = "A lead has been assigned – Buysellown CRM";
-		
-			$lead_title_urls = "<a href=\"$lead_details_url\" target=\"_blank\" title=\"{$lead_ref}\"><strong><u>{$lead_ref}</u></strong></a>";
-				 
-			$message = "Dear {$mail_to_name}, <br>
-<br>
-A new lead has been assigned to you with the Ref #: $lead_title_urls . <br>
-Please do not reply to this mail. <br>
-"; 
-			
-			$this->email->to($mail_to); 
-			$this->email->from($from_email);
-			$this->email->set_mailtype("html");
-			$this->email->subject($subject);
-			
-			$cstm_email_template = CRM_EMAIL_TEMPLATE;
-			
-			$cstm_email_template = str_replace("[[body_txt]]", "$message", "$cstm_email_template");
-			$cstm_email_msg = str_replace("[[footer_txt]]", "$config_disclaimer", "$cstm_email_template"); 
-			$cstm_email_msg = str_replace("\n", "<br>
-", "$cstm_email_msg"); 
-			 
-			$this->email->message($cstm_email_msg); 
-			
-			$this->email->send();
-				
-		} 
-	}
-} 
-	
-	$this->session->set_flashdata('success_msg','Record updated successfully!');
-}else{
-	$this->session->set_flashdata('error_msg','Error: while updating record!');
-}
-	 
-	redirect("leads/index");
-		
-}else{
-	
-	$datas = array('contact_id' => $contact_id,'agent_id' => $assigned_to_id,'enquiry_date' => $enquiry_date,'enquiry_time' => $enquiry_time,'ref_no' => $lead_ref,'lead_type' => $lead_type,'lead_status' => $lead_status,'priority' => $priority,'source_of_listing' => $source_of_listing,'property_id_1' => $property_id_1,'property_id_2' => $property_id_2,'property_id_3' => $property_id_3,'property_id_4' => $property_id_4,'reminds' => $reminds,'remind_date_1' => $remind_date_1,'remind_time_1'=>$remind_time_1,'notes' => $notes,'no_of_views' => $no_of_views,'created_by' => $created_by,'created_on' => $created_on,'ip_address' => $ip_address); 
-	$res = $this->leads_model->insert_lead_data($datas); 
-	if(isset($res)){
-		$last_lead_id = $this->db->insert_id(); 
-		
-		if($reminds==1){  
-			$cstm_datetimes = $remind_date_1.' '.$remind_time_1; 
-			$cstm_datetimes = date('Y-m-d H:i:s',strtotime($cstm_datetimes)); 
-	 
-			$rmd_datas = array('assigned_id' => $assigned_to_id,'lead_id' => $last_lead_id,'datetimes' => $cstm_datetimes,'status' => '1');	 
-			$insert_rmd = $this->leads_model->insert_lead_reminds_data($rmd_datas);    
-		}
+		$this->load->model('contacts_model');
+		$this->load->model('properties_model');  
 		 
-/*$temp_usrs_arr = $this->general_model->get_user_info_by_id($assigned_to_id);
-if(isset($temp_usrs_arr) && count($temp_usrs_arr)>0){
-	$mail_to = $temp_usrs_arr->email;
-	$mail_to_name = $temp_usrs_arr->name;
-	$tmp_user_type_id = $temp_usrs_arr->user_type_id;
-	
-	$configs_arr = $this->general_model->get_configuration();
-	$from_email = $configs_arr->email; 
-	
-	 
-	$details_url = 'leads/lead_detail/'.$last_lead_id;
-	$details_url = site_url($details_url); 
-	
-	$usrrole_name = '';
-	$usrtyp_arr = $this->admin_model->get_user_type_by_id($tmp_user_type_id);
-	if(isset($usrtyp_arr) && count($usrtyp_arr)>0){
-		$usrrole_name = $usrtyp_arr->name; 
-	}	
-	
-	$config['mailtype'] = 'html';  
-	$this->email->initialize($config); 	
-	$this->email->to($mail_to); 
-	$this->email->from($from_email); 
-	$this->email->subject("A new lead has been assigned – Buysellown CRM");
-	$this->email->message("A new lead has been assigned to you by {$mail_to_name} – {$usrrole_name} <a href=\"{$details_url}\" target=\"_blank\">{$lead_ref}</a>");  
-	$this->email->send();
-}*/  	
+		$data['contact_arrs'] = $this->contacts_model->get_all_contacts(); 
+		$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
+		$max_lead_id_val = $this->leads_model->get_max_lead_id();
+		$max_lead_id_val = $max_lead_id_val+1; 
+		$max_lead_id_val = str_pad($max_lead_id_val, 4, '0', STR_PAD_LEFT); 
+		$data['auto_ref_no'] = "L-".$max_lead_id_val; 
 		
-if(isset($assigned_to_id) && $assigned_to_id>0){ 
-	$usr_arr0 = $this->general_model->get_user_info_by_id($assigned_to_id);
-	if(isset($usr_arr0)){
-		$mail_to_name = $usr_arr0->name;
-		$mail_to = $usr_arr0->email;
-		if(strlen($mail_to)>0){ 
+		if(isset($args1) && $args1!=''){
+			$data['args1'] = $args1;
+			$data['page_headings'] = 'Update Lead';
+			$data['record'] = $temp_recs = $this->leads_model->get_lead_by_id($args1);
 		
-			$configs_arr = $this->general_model->get_configuration(); 
-			$config_disclaimer = stripslashes($configs_arr->disclaimer);
-			$config_disclaimer ="<u>Disclaimer:</u> \n{$config_disclaimer}";
-			$from_email = "crm@buysellown.com";
-			  
-			$lead_details_url = 'leads/lead_detail/'.$last_lead_id;
-			$lead_details_url = site_url($lead_details_url);
-			 
-			
-			$subject = "A lead has been assigned – Buysellown CRM";
+		}else{ 
+			$data['page_headings'] = 'Add Lead';
+		}    
 		
-			$lead_title_urls = "<a href=\"$lead_details_url\" target=\"_blank\" title=\"{$lead_ref}\"><strong><u>{$lead_ref}</u></strong></a>";
-				 
-			$message = "Dear {$mail_to_name}, <br>
-<br>
-A new lead has been assigned to you with the Ref #: $lead_title_urls . <br>
-Please do not reply to this mail. <br>
-";
-			
-			$this->email->to($mail_to); 
-			$this->email->from($from_email);
-			$this->email->set_mailtype("html");
-			$this->email->subject($subject);
-			
-			$cstm_email_template = CRM_EMAIL_TEMPLATE;
-			
-			$cstm_email_template = str_replace("[[body_txt]]", "$message", "$cstm_email_template");
-			$cstm_email_msg = str_replace("[[footer_txt]]", "$config_disclaimer", "$cstm_email_template"); 
-			$cstm_email_msg = str_replace("\n", "<br>
-", "$cstm_email_msg"); 
-			 
-			$this->email->message($cstm_email_msg); 
-			
-			$this->email->send(); 	
-		} 
-	}
-}  
-			
-			$this->session->set_flashdata('success_msg','Record inserted successfully!');
-		}else{
-			$this->session->set_flashdata('error_msg','Error: while inserting record!');
-		} 
+		$vs_user_type_id = $this->session->userdata('us_user_type_id');
+		$vs_id = $this->session->userdata('us_id');
 		  
-		redirect("leads/index");
+		if($vs_id >0 && (isset($args1) && $args1>0)){ 
+			if(isset($temp_recs) && $temp_recs->agent_id==$vs_id && $temp_recs->is_new==1){ 
+				$datass = array('is_new' => '0'); 
+				$this->leads_model->update_lead_data($args1,$datass);   	
+			} 
+		} 
+		
+		if($vs_user_type_id==3){ 
+			$arrs_field = array('id' => $vs_id); 
+		}else if($vs_user_type_id==2){ 
+			$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+		}else{
+			$arrs_field = array('status'=> '1'); 
+		}
+		$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
+		/*$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();*/  
+		$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();  
+		$data['source_of_listing_arrs'] = $this->admin_model->get_all_leads_source_of_listings(); 
+		
+		if(isset($_POST) && !empty($_POST)){  
+			$contact_id = (isset($_POST['contact_id']) && strlen($_POST['contact_id'])>0) ? $this->input->post("contact_id") :'';	
+			
+			$assigned_to_id = $this->input->post("assigned_to_id");
+			$lead_ref = $this->input->post("lead_ref"); 
+			$lead_type = $this->input->post("lead_type");
+			
+			$enquiry_date = $this->input->post("enquiry_date"); 
+			$enquiry_time = $this->input->post("enquiry_time");
+			
+			$lead_status = $this->input->post("lead_status");  
+			$priority = $this->input->post("priority");  
+			$source_of_listing = $this->input->post("source_of_listing");  
+			 
+			/*$property_id_1 = $this->input->post("property_id_1");
+			$property_id_2 = $this->input->post("property_id_2"); 
+			$property_id_3 = $this->input->post("property_id_3"); 
+			$property_id_4 = $this->input->post("property_id_4"); */
+			
+			$property_id_1 = (isset($_POST['property_id_1']) && strlen($_POST['property_id_1'])>0) ? $this->input->post("property_id_1") :'';	
+			
+			$property_id_2 = (isset($_POST['property_id_2']) && strlen($_POST['property_id_2'])>0) ? $this->input->post("property_id_2") :'';	
+			
+			$property_id_3 = (isset($_POST['property_id_3']) && strlen($_POST['property_id_3'])>0) ? $this->input->post("property_id_3") :'';	
+			
+			$property_id_4 = (isset($_POST['property_id_4']) && strlen($_POST['property_id_4'])>0) ? $this->input->post("property_id_4") :'';
+			
+			$reminds = $this->input->post("reminds"); 
+			$remind_date_1 = (isset($_POST['remind_date_1']) && strlen($_POST['remind_date_1'])>0) ? $this->input->post("remind_date_1") :''; 
+			 
+			$remind_time_1 = (isset($_POST['remind_time_1']) && strlen($_POST['remind_time_1'])>0) ? $this->input->post("remind_time_1") :''; 
+			 
+			$notes = $this->input->post("notes"); 
+			$no_of_views = $this->input->post("no_of_views");  
+			 
+			$updated_on = $created_on = date('Y-m-d H:i:s'); 
+			$ip_address = $_SERVER['QUERY_STRING'];
+			$created_by = $this->session->userdata('us_id');  
+		
+			$this->form_validation->set_rules("contact_id", "Contact", "trim|required|xss_clean"); 
+			$this->form_validation->set_rules("assigned_to_id", "Assigned To", "trim|required|xss_clean");
+			
+			$this->form_validation->set_rules("lead_ref", "Ref No", "trim|required|xss_clean");  
+			$this->form_validation->set_rules("lead_type", "Lead Type", "trim|required|xss_clean");    	
+			$this->form_validation->set_rules("lead_status", "Lead Status", "trim|required|xss_clean");  
+			$this->form_validation->set_rules("priority", "Priority", "trim|required|xss_clean"); 
+			$this->form_validation->set_rules("source_of_listing", "Source", "trim|required|xss_clean");  
+			
+			if($this->form_validation->run() == FALSE){
+			// validation fail
+				$this->load->view('leads/operate_lead',$data);
+				 
+			}else if(isset($args1) && $args1!=''){ 
+	  
+				$datas = array('contact_id' => $contact_id,'agent_id' => $assigned_to_id,'enquiry_date' => $enquiry_date,'enquiry_time' => $enquiry_time,'lead_type' => $lead_type,'lead_status' => $lead_status,'priority' => $priority,'source_of_listing' => $source_of_listing,'property_id_1' => $property_id_1,'property_id_2' => $property_id_2,'property_id_3' => $property_id_3,'property_id_4' => $property_id_4,'reminds' => $reminds,'remind_date_1' => $remind_date_1,'remind_time_1'=>$remind_time_1,'notes' => $notes,'no_of_views' => $no_of_views,'updated_on' => $updated_on); 
+						
+			$res = $this->leads_model->update_lead_data($args1,$datas); 
+			if(isset($res)){
+				
+				if($reminds==1){  
+					$cstm_datetimes = $remind_date_1.' '.$remind_time_1; 
+					$cstm_datetimes = date('Y-m-d H:i:s',strtotime($cstm_datetimes)); 
+			
+					$rmd_arrs = $this->leads_model->chk_lead_reminds_data($assigned_to_id,$args1); 
+					if(isset($rmd_arrs) && count($rmd_arrs)>0){ 
+						$rmd_datas = array('datetimes' => $cstm_datetimes,'status' => '1');	 
+						$update_rmd = $this->leads_model->update_lead_reminds_data($assigned_to_id,$args1,$rmd_datas);
+						
+					}else{ 
+					
+						$rmd_datas = array('assigned_id' => $assigned_to_id,'lead_id' => $args1,'datetimes' => $cstm_datetimes,'status' => '1');	 
+						$insert_rmd = $this->leads_model->insert_lead_reminds_data($rmd_datas); 
+					}  
+				}else{
+					 $this->leads_model->trash_lead_reminds_data($assigned_to_id,$args1);
+				}
+				 
+				
+				if(isset($assigned_to_id) && $assigned_to_id>0){ 
+					$usr_arr0 = $this->general_model->get_user_info_by_id($assigned_to_id);
+					if(isset($usr_arr0)){
+						$mail_to_name = $usr_arr0->name;
+						$mail_to = $usr_arr0->email;
+						if(strlen($mail_to)>0){ 
+						
+							$configs_arr = $this->general_model->get_configuration(); 
+							$config_disclaimer = stripslashes($configs_arr->disclaimer);
+							$config_disclaimer ="<u>Disclaimer:</u> \n{$config_disclaimer}";
+							$from_email = "crm@buysellown.com";
+							  
+							$lead_details_url = 'leads/lead_detail/'.$args1;
+							$lead_details_url = site_url($lead_details_url);
+							 
+							
+							$subject = "A lead has been assigned – Buysellown CRM";
+						
+							$lead_title_urls = "<a href=\"$lead_details_url\" target=\"_blank\" title=\"{$lead_ref}\"><strong><u>{$lead_ref}</u></strong></a>";
+								 
+							$message = "Dear {$mail_to_name}, <br> <br> A new lead has been assigned to you with the Ref #: $lead_title_urls . <br> Please do not reply to this mail. <br>"; 
+							
+							$this->email->to($mail_to); 
+							$this->email->from($from_email);
+							$this->email->set_mailtype("html");
+							$this->email->subject($subject);
+							
+							$cstm_email_template = CRM_EMAIL_TEMPLATE;
+							
+							$cstm_email_template = str_replace("[[body_txt]]", "$message", "$cstm_email_template");
+							$cstm_email_msg = str_replace("[[footer_txt]]", "$config_disclaimer", "$cstm_email_template"); 
+							$cstm_email_msg = str_replace("\n", "<br>
+				", "$cstm_email_msg"); 
+							 
+							$this->email->message($cstm_email_msg); 
+							
+							$this->email->send();
+								
+						} 
+					}
+				} 
+				
+				$this->session->set_flashdata('success_msg','Record updated successfully!');
+			}else{
+				$this->session->set_flashdata('error_msg','Error: while updating record!');
+			}
+				 
+			redirect("leads/index");
+			
+		}else{
+		
+			$datas = array('contact_id' => $contact_id,'agent_id' => $assigned_to_id,'enquiry_date' => $enquiry_date,'enquiry_time' => $enquiry_time,'ref_no' => $lead_ref,'lead_type' => $lead_type,'lead_status' => $lead_status,'priority' => $priority,'source_of_listing' => $source_of_listing,'property_id_1' => $property_id_1,'property_id_2' => $property_id_2,'property_id_3' => $property_id_3,'property_id_4' => $property_id_4,'reminds' => $reminds,'remind_date_1' => $remind_date_1,'remind_time_1'=>$remind_time_1,'notes' => $notes,'no_of_views' => $no_of_views,'created_by' => $created_by,'created_on' => $created_on,'ip_address' => $ip_address); 
+			
+			$res = $this->leads_model->insert_lead_data($datas); 
+			
+			if(isset($res)){
+				$last_lead_id = $this->db->insert_id(); 
+				
+				if($reminds==1){  
+					$cstm_datetimes = $remind_date_1.' '.$remind_time_1; 
+					$cstm_datetimes = date('Y-m-d H:i:s',strtotime($cstm_datetimes)); 
+			 
+					$rmd_datas = array('assigned_id' => $assigned_to_id,'lead_id' => $last_lead_id,'datetimes' => $cstm_datetimes,'status' => '1');	 
+					$insert_rmd = $this->leads_model->insert_lead_reminds_data($rmd_datas);    
+				}
+				  
+				if(isset($assigned_to_id) && $assigned_to_id>0){ 
+					$usr_arr0 = $this->general_model->get_user_info_by_id($assigned_to_id);
+					if(isset($usr_arr0)){
+						$mail_to_name = $usr_arr0->name;
+						$mail_to = $usr_arr0->email;
+						if(strlen($mail_to)>0){ 
+						
+							$configs_arr = $this->general_model->get_configuration(); 
+							$config_disclaimer = stripslashes($configs_arr->disclaimer);
+							$config_disclaimer ="<u>Disclaimer:</u> \n{$config_disclaimer}";
+							$from_email = "crm@buysellown.com";
+							  
+							$lead_details_url = 'leads/lead_detail/'.$last_lead_id;
+							$lead_details_url = site_url($lead_details_url);
+							 
+							
+							$subject = "A lead has been assigned – Buysellown CRM";
+						
+							$lead_title_urls = "<a href=\"$lead_details_url\" target=\"_blank\" title=\"{$lead_ref}\"><strong><u>{$lead_ref}</u></strong></a>";
+								 
+							$message = "Dear {$mail_to_name}, <br> <br>	A new lead has been assigned to you with the Ref #: $lead_title_urls . <br> Please do not reply to this mail. <br>";
+							
+							$this->email->to($mail_to); 
+							$this->email->from($from_email);
+							$this->email->set_mailtype("html");
+							$this->email->subject($subject);
+							
+							$cstm_email_template = CRM_EMAIL_TEMPLATE;
+							
+							$cstm_email_template = str_replace("[[body_txt]]", "$message", "$cstm_email_template");
+							$cstm_email_msg = str_replace("[[footer_txt]]", "$config_disclaimer", "$cstm_email_template"); 
+							$cstm_email_msg = str_replace("\n", "<br>
+				", "$cstm_email_msg"); 
+							 
+							$this->email->message($cstm_email_msg); 
+							
+							$this->email->send(); 	
+						} 
+					}
+				}  
+					
+				$this->session->set_flashdata('success_msg','Record inserted successfully!');
+			}else{
+				$this->session->set_flashdata('error_msg','Error: while inserting record!');
+			} 
+			  
+			redirect("leads/index");
+		}
+		
+	}else{
+		$this->load->view('leads/operate_lead',$data);
 	}
-	
-}else{
-	$this->load->view('leads/operate_lead',$data);
-}
 }
 
 	function trash($args2=''){ 
-		if($this->login_vs_user_role_id==1){
-			$data['page_headings']="Leads Listing";
-			if($args2 >1){
-				$this->admin_model->trash_lead($args2);
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Leads','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+			if($this->login_vs_user_role_id==1){
+				$data['page_headings']="Leads Listing";
+				if($args2 >0){
+					$this->leads_model->trash_lead($args2);
+				}
+				//redirect('leads/index'); 
+				$this->index2();
+			}else{
+				$datas['page_headings']="Invalid Access!";
+				$this->load->view('no_permission_page',$datas);
 			}
-			redirect('leads/index'); 
 		}else{
-			$datas['page_headings']="Invalid Access!";
-			$this->load->view('no_permission_page',$datas);
+			$this->load->view('no_permission_access'); 
 		}
 	}
+	
+	
+	 function trash_multiple(){    
+		
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Leads','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+				
+			$data['page_headings'] = "Leads Listings";  
+			
+			if(isset($_POST["multi_action_check"]) && count($_POST["multi_action_check"])>0){
+				$del_checks = $_POST["multi_action_check"]; 
+				foreach($del_checks as $args1){   
+					$this->leads_model->trash_lead($args1);
+				} 
+				 $this->index2();
+			}else{
+				$datas['page_headings']="Invalid Access!";
+				$this->load->view('no_permission_page',$datas);
+			}
+		 
+		}else{
+			$this->load->view('no_permission_access'); 
+		}
+	 } 
 	
 	function leads_property_popup_list_old($paras1=''){ 
 		if($this->login_vs_user_role_id==3 && $this->agent_chk_ystrdy_meeting==0){

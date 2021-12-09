@@ -84,15 +84,15 @@
 						$form_act = "leads/operate_lead/".$args1;
 					}else{
 						$form_act = "leads/operate_lead";
-					} ?>
-                <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url($form_act); ?>" class="form-horizontal form-bordered" enctype="multipart/form-data" onSubmit="return operate_custom_validate();">
+					} ?> <!-- onSubmit="return operate_custom_validate();" -->
+                <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url($form_act); ?>" class="form-horizontal form-bordered" enctype="multipart/form-data" >
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="lead_ref"> Ref No. <span class="reds">*</span> </label>
                         <div class="col-md-8">
-                          <input name="lead_ref" id="lead_ref" type="text" class="form-control" value="<?php if(isset($_POST['lead_ref'])){ echo $_POST['lead_ref']; }else if(isset($record)){ echo stripslashes($record->ref_no); }else{ echo $auto_ref_no; } ?>" readonly>
-                          <span class="text-danger"><?php echo form_error('lead_ref'); ?></span> </div>
+                          <input name="lead_ref" id="lead_ref" type="text" class="form-control" value="<?php if(isset($_POST['lead_ref'])){ echo $_POST['lead_ref']; }else if(isset($record)){ echo stripslashes($record->ref_no); }else{ echo $auto_ref_no; } ?>" data-error="#lead_ref1" readonly>
+                          <span id="lead_ref1" class="text-danger"><?php echo form_error('lead_ref'); ?></span> </div>
                       </div>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="contact_id">Contact <span class="reds">*</span> </label>
@@ -124,7 +124,7 @@
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="assigned_to_id">Agent <span class="reds">*</span></label>
                         <div class="col-md-8">
-                          <select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2">
+                          <select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2" data-error="#assigned_to_id1">
                             <option value="">Select Agent </option>
                             <?php
 								$usrid = $this->session->userdata('us_id');     
@@ -145,7 +145,7 @@
 									}
 								} ?>
                           </select>
-                          <span class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
+                          <span id="assigned_to_id1" class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
                       </div>
                       <?php } ?>
                       <div class="form-group">
@@ -169,8 +169,8 @@
 						}else{
 							$enquiry_time = date("g:i A");
 						} ?>
-                          <input name="enquiry_date" placeholder="Adjust Enquiry Date" id="enquiry_date" type="text" class="form-control" value="<?php echo $enquiry_date; ?>" style="text-align:center;" readonly>
-                          <span class="text-danger"><?php echo form_error('enquiry_date'); ?></span> </div>
+                          <input name="enquiry_date" placeholder="Adjust Enquiry Date" id="enquiry_date" type="text" class="form-control" value="<?php echo $enquiry_date; ?>" data-error="#enquiry_date1" style="text-align:center;" readonly>
+                          <span id="enquiry_date1" class="text-danger"><?php echo form_error('enquiry_date'); ?></span> </div>
                         <div class="col-md-4">
                           <input class="form-control timepicker" placeholder="Adjust Enquiry Time" id="enquiry_time" name="enquiry_time" value="<?php echo $enquiry_time; ?>" style="text-align:center;" readonly>
                           <span class="text-danger"><?php echo form_error('enquiry_time'); ?></span> </div>
@@ -218,8 +218,8 @@
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="lead_type">Lead Type <span class="reds">*</span></label>
                         <div class="col-md-8">
-                          <select name="lead_type" id="lead_type" data-plugin-selectTwo class="form-control select2">
-                            <option value="">Select </option>
+                          <select name="lead_type" id="lead_type" data-plugin-selectTwo class="form-control select2" data-error="#lead_type1">
+                            <option value="">Select Lead Type</option>
                             <option value="Tenant" <?php if((isset($_POST['lead_type']) && $_POST['lead_type']=='Tenant') || (isset($record) && $record->lead_type=='Tenant')){ echo 'selected="selected"'; } ?>> Tenant </option>
                             <option value="Buyer" <?php if((isset($_POST['lead_type']) && $_POST['lead_type']=='Buyer') || (isset($record) && $record->lead_type=='Buyer')){ echo 'selected="selected"'; } ?>> Buyer </option>
                             <option value="Landlord" <?php if((isset($_POST['lead_type']) && $_POST['lead_type']=='Landlord') || (isset($record) && $record->lead_type=='Landlord')){ echo 'selected="selected"'; } ?>> Landlord </option>
@@ -227,13 +227,13 @@
                             <option value="Landlord+Seller" <?php if((isset($_POST['lead_type']) && $_POST['lead_type']=='Landlord+Seller') || (isset($record) && $record->lead_type=='Landlord+Seller')){ echo 'selected="selected"'; } ?>> Landlord+Seller </option>
                             <option value="Not Specified" <?php if((isset($_POST['lead_type']) && $_POST['lead_type']=='Not Specified') || (isset($record) && $record->lead_type=='Not Specified')){ echo 'selected="selected"'; } ?>> Not Specified </option>
                           </select>
-                          <span class="text-danger"><?php echo form_error('lead_type'); ?></span> </div>
+                          <span id="lead_type1" class="text-danger"><?php echo form_error('lead_type'); ?></span> </div>
                       </div>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="lead_status">Status <span class="reds">*</span></label>
                         <div class="col-md-8">
-                          <select name="lead_status" id="lead_status" data-plugin-selectTwo class="form-control select2">
-                            <option value="">Select </option>
+                          <select name="lead_status" id="lead_status" data-plugin-selectTwo class="form-control select2" data-error="#lead_status1">
+                            <option value="">Select Status</option>
                             <option value="Closed" <?php if((isset($_POST['lead_status']) && $_POST['lead_status']=='Closed') || (isset($record) && $record->lead_status=='Closed')){ echo 'selected="selected"'; } ?>> Closed </option>
                             <option value="Not yet contacted" <?php if((isset($_POST['lead_status']) && $_POST['lead_status']=='Not yet contacted') || (isset($record) && $record->lead_status=='Not yet contacted')){ echo 'selected="selected"'; } ?>> Not yet contacted </option>
                             <option value="Called no reply" <?php if((isset($_POST['lead_status']) && $_POST['lead_status']=='Called no reply') || (isset($record) && $record->lead_status=='Called no reply')){ echo 'selected="selected"'; } ?>> Called no reply </option>
@@ -246,25 +246,25 @@
                             <option value="Invalid inquiry" <?php if((isset($_POST['lead_status']) && $_POST['lead_status']=='Invalid inquiry') || (isset($record) && $record->lead_status=='Invalid inquiry')){ echo 'selected="selected"'; } ?>> Invalid inquiry </option>
                             <option value="Unsuccessful" <?php if((isset($_POST['lead_status']) && $_POST['lead_status']=='Unsuccessful') || (isset($record) && $record->lead_status=='Unsuccessful')){ echo 'selected="selected"'; } ?>> Unsuccessful </option>
                           </select>
-                          <span class="text-danger"><?php echo form_error('lead_status'); ?></span> </div>
+                          <span id="lead_status1" class="text-danger"><?php echo form_error('lead_status'); ?></span> </div>
                       </div>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="priority">Priority <span class="reds">*</span></label>
                         <div class="col-md-8">
-                          <select name="priority" id="priority" data-plugin-selectTwo class="form-control select2">
-                            <option value="">Select </option>
+                          <select name="priority" id="priority" data-plugin-selectTwo class="form-control select2" data-error="#priority1">
+                            <option value="">Select Priority </option>
                             <option value="Urgent" <?php if((isset($_POST['priority']) && $_POST['priority']=='Urgent') || (isset($record) && $record->priority=='Urgent')){ echo 'selected="selected"'; } ?>> Urgent </option>
                             <option value="High" <?php if((isset($_POST['priority']) && $_POST['priority']=='High') || (isset($record) && $record->priority=='High')){ echo 'selected="selected"'; } ?>> High </option>
                             <option value="Low" <?php if((isset($_POST['priority']) && $_POST['priority']=='Low') || (isset($record) && $record->priority=='Low')){ echo 'selected="selected"'; } ?>> Low </option>
                             <option value="Normal" <?php if((isset($_POST['priority']) && $_POST['priority']=='Normal') || (isset($record) && $record->priority=='Normal')){ echo 'selected="selected"'; } ?>> Normal </option>
                           </select>
-                          <span class="text-danger"><?php echo form_error('priority'); ?></span> </div>
+                          <span id="priority1" class="text-danger"><?php echo form_error('priority'); ?></span> </div>
                       </div>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="source_of_listing">Source <span class="reds">*</span> </label>
                         <div class="col-md-8">
-                          <select name="source_of_listing" id="source_of_listing" data-plugin-selectTwo class="form-control select2">
-                            <option value="">Select </option>
+                          <select name="source_of_listing" id="source_of_listing" data-plugin-selectTwo class="form-control select2" data-error="#source_of_listing1">
+                            <option value="">Select Source </option>
                             <?php  
 						if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){
 							foreach($source_of_listing_arrs as $source_of_listing_arr){
@@ -281,7 +281,7 @@
 							}
 						} ?>
                           </select>
-                          <span class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
+                          <span id="source_of_listing1" class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
                       </div>
                     </div>
                     <div class="col-lg-6">
@@ -403,11 +403,11 @@
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="reminds">Remind </label>
                         <div class="col-md-8">
-                          <select name="reminds" id="reminds" data-plugin-selectTwo class="form-control select2" onChange="operate_remind_area(this.value);">
+                          <select name="reminds" id="reminds" data-plugin-selectTwo class="form-control select2" onChange="operate_remind_area(this.value);" data-error="#reminds1">
                             <option value="0" <?php if((isset($_POST['reminds']) && $_POST['reminds']==0) || (isset($record) && $record->reminds==0)){ echo 'selected="selected"'; } ?>> Never </option>
                             <option value="1" <?php if((isset($_POST['reminds']) && $_POST['reminds']==1) || (isset($record) && $record->reminds==1)){ echo 'selected="selected"'; } ?>> Yes </option>
                           </select>
-                          <span class="text-danger"><?php echo form_error('reminds'); ?></span> </div>
+                          <span id="reminds1" class="text-danger"><?php echo form_error('reminds'); ?></span> </div>
                       </div>
                       <script>
 					function operate_remind_area(valss){
@@ -447,64 +447,88 @@
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="notes">Notes </label>
                         <div class="col-md-8">
-                          <textarea name="notes" id="notes" class="form-control" rows="6"><?php echo (isset($record)) ? stripslashes($record->notes): set_value('notes'); ?></textarea>
-                          <span class="text-danger"><?php echo form_error('notes'); ?></span> </div>
+                          <textarea name="notes" id="notes" class="form-control" rows="6" data-error="#notes1"><?php echo (isset($record)) ? stripslashes($record->notes): set_value('notes'); ?></textarea>
+                          <span id="notes1" class="text-danger"><?php echo form_error('notes'); ?></span> </div>
                       </div>
                     </div>
-                  </div>
-                  <!--data-error="#email1"  id="email1"	-->
-		 	 <br>
-		  <div class="form-group">
-			<label class="col-md-2 control-label"></label>
-			<div class="col-md-6">
-			  <?php if(isset($record)){	?>
-			  <input type="hidden" name="args1" id="args1" value="<?php echo $record->id; ?>">
-			  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="updates" id="updates"><i class="glyphicon glyphicon-ok position-left"></i>Update</button>
-			  <?php }else{	?>
-			  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="saves" id="saves"><i class="glyphicon glyphicon-ok position-left"></i>Save</button>
-			   
-			  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="saves_and_new" id="save_and_new"><i class="glyphicon glyphicon-repeat position-left"></i>Save & New</button>
-			   
-			  <button type="reset" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-refresh position-left"></i>Clear</button>
-			  <?php }	?>
-			  &nbsp;
-			  <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo site_url('leads/index'); ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>
-			</div>
-		  </div>
+                  </div> 
+		 	  <br>
+			  <div class="form-group">
+				<label class="col-md-1 control-label" style="margin-left:4.5%;"></label>
+				<div class="col-md-6">
+				  <?php if(isset($record)){	?>
+				  <input type="hidden" name="args1" id="args1" value="<?php echo $record->id; ?>">
+				  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="updates" id="updates"><i class="glyphicon glyphicon-ok position-left"></i>Update</button>
+				  <?php }else{	?>
+				  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="saves" id="saves"><i class="glyphicon glyphicon-ok position-left"></i>Save</button>
+				  <button class="btn border-slate text-slate-800 btn-flat" type="submit" name="saves_and_new" id="save_and_new"><i class="glyphicon glyphicon-repeat position-left"></i>Save & New</button>
+				  <button type="reset" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-refresh position-left"></i>Clear</button>
+				 <?php } ?> &nbsp;
+				 <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo site_url('leads/index'); ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>
+				</div>
+			  </div>
 		</form> 		
 	<script type="text/javascript">	
-	function operate_custom_validate(){	
+	//function operate_custom_validate(){	
 		$(document).ready(function(){
 			var validator = $('#datas_form').validate({
-				rules: { 
-					name: {
+				rules: {
+					lead_ref: {
 						required: true 
 					},
-					email: {
-						required: true,
-						email:true 
+					contact_id: {
+						required: true
 					},
-					mobile_no: {
+					enquiry_date: {
 						required: true 
 					},
-					address: {
+					lead_type: {
 						required: true 
-					}  
+					}, 
+					lead_status: {
+						required: true 
+					},
+					priority: {
+						required: true
+					},
+					source_of_listing: {
+						required: true 
+					},
+					notes: {
+						required: true 
+					},<?php if($this->login_vs_user_role_id != 3){ ?>
+					assigned_to_id: {
+						required: true 
+					}, <?php } ?> 
 				},
-				messages: {
-					name: {
-						required: "This is required field"  
+				messages: { 
+					lead_ref: {
+						required: "This is required field",
 					},
-					email: {
-						required: "This is required field" ,
-						email:"Please enter a vaild Email Address!"  
+					contact_id: {
+						required: "This is required field",
 					},
-					mobile_no: {
-						required: "This is required field"  
+					enquiry_date: {
+						required: "This is required field",
 					},
-					address: {
-						required: "This is required field"  
-					}    
+					lead_type: {
+						required: "This is required field",
+					}, 
+					lead_status: {
+						required: "This is required field",
+					},
+					priority: {
+						required: "This is required field",
+					},
+					source_of_listing: {
+						required: "This is required field",
+					},
+					notes: {
+						required: "This is required field",
+					},<?php if($this->login_vs_user_role_id != 3){ ?>
+					assigned_to_id: {
+						required: "This is required field", 
+					}, <?php } ?> 
 				},
 				errorPlacement: function(error, element) {
 				  var placement = $(element).data('error');
@@ -519,7 +543,7 @@
 				}  
 			});
 		});
-	}
+	//}
 			 
 		function operate_remind_area(valss){
 			if(valss==1){ 

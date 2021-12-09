@@ -451,6 +451,8 @@ if($trash_res_nums>0){ ?>
                     
                     <div class="col-md-5 pull-right"> 
                     <div class="dt-buttons"> 
+						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="http://localhost/custom4/elaqacrm/index.php/leads/index/export_excel"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
+					
                      <?php if($trash_res_nums>0){ ?>
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      

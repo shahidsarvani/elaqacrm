@@ -5,7 +5,6 @@
 <!-- Theme JS files --> 
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/ui/prism.min.js"></script> 
 <script type="text/javascript" src="<?= asset_url(); ?>js/pages/sidebar_dual.js"></script>
-  
 <script src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <!-- /theme JS files -->
 <?php 
@@ -20,12 +19,10 @@ $trash_res_nums =  $this->general_model->check_controller_method_permission_acce
 if($add_res_nums>0 && $trash_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_add_del.js"></script>
 <?php 
-}else
-if($add_res_nums>0){ ?>
+}else if($add_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_add.js"></script>
 <?php  
-}else
-if($trash_res_nums>0){ ?>
+}else if($trash_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_del.js"></script>
 <?php 
 }else{ ?>
@@ -450,7 +447,7 @@ if($trash_res_nums>0){ ?>
                     </div>    
                     
                     <div class="col-md-5 pull-right"> 
-                    <div class="dt-buttons"> 
+                    <div class="dt-buttons">   
                      <?php if($trash_res_nums>0){ ?>
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      

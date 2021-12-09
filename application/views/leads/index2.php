@@ -22,7 +22,7 @@
 				$trash_url = 'leads/trash/'.$record->id;
 				$trash_url = site_url($trash_url); ?>
 				<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
-				<td><?php echo $sr;  echo ($record->is_new==1) ? ' <span class="badge_mini label-danger">new</span>':'';  ?></td>
+				<td> <div class="checkbox"> <label for="status"> <input type="checkbox" name="multi_action_check[]" id="multi_action_check_<?= $record->id; ?>" value="<?= $record->id; ?>" class="styled"> <?php echo $sr; ?> </label></div> <?php echo ($record->is_new==1) ? ' <span class="badge_mini badge badge-danger">new</span>' : '';  ?> </td>
 				<td><?= stripslashes($record->ref_no); ?></td>
 				<td><?php echo stripslashes($record->lead_type); ?> </td>
 				<td><?= stripslashes($record->lead_status); ?></td>
