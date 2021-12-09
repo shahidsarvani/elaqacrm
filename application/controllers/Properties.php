@@ -39,15 +39,7 @@ class Properties extends CI_Controller{
 	
 	/*
 	$res_nums =  $this->general_model->check_controller_method_permission_access('Portals','update',$this->dbs_user_role_id,'1');
-	*/
-	function delete_property($args0='',$args1=''){  
-		     
-	}
-	
-	
-	function delete_selected_properties(){ 
-	
-	}
+	*/ 
 	
 	function index($args_vals=''){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1'); 
@@ -285,7 +277,7 @@ class Properties extends CI_Controller{
 		} 
 	}
 				 
-	function index2($temps_property_type=''){  
+	function index2($temps_property_type=''){
 	
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1'); 
 		 
@@ -502,7 +494,7 @@ class Properties extends CI_Controller{
 		if($res_nums>0){
 			$data = array();	
 			$paras_arrs = array();	
-			$data['page_headings']="Sales Listings"; 
+			$data['page_headings'] = "Sales Listings"; 
 			 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
@@ -637,7 +629,7 @@ class Properties extends CI_Controller{
 			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/properties/sales_listings2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg;
@@ -658,9 +650,167 @@ class Properties extends CI_Controller{
 			//$data['category_arrs'] = $this->admin_model->get_all_categories();
 			 
 			
-			if(isset($args_vals) && $args_vals=="export_excel"){  
-			 /* ok */
-			}else{
+			if(isset($args_vals) && $args_vals=="export_excel"){
+				$paras_arrs = $data = array();
+				/* permission checks */
+				$vs_user_type_id = $this->session->userdata('us_role_id');
+				$vs_id = $this->session->userdata('us_id');
+					 
+				if(isset($_POST['refer_no'])){
+					$refer_no_val = $this->input->post('refer_no'); 
+					if(strlen($refer_no_val)>0){
+						$_SESSION['tmp_refer_no'] = $refer_no_val; 
+						$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+					}else{
+						unset($_SESSION['tmp_refer_no']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_refer_no'])){
+					$refer_no_val = $_SESSION['tmp_refer_no']; 
+					$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+				} 
+				
+				
+				if(isset($_POST['pics_nos'])){
+					$pics_nos_val = $this->input->post('pics_nos'); 
+					if(strlen($pics_nos_val)>0){
+						$_SESSION['tmp_pics_nos'] = $pics_nos_val; 
+						$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+					}else{
+						unset($_SESSION['tmp_pics_nos']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_pics_nos'])){
+					$pics_nos_val = $_SESSION['tmp_pics_nos']; 
+					$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+				}  
+				 
+				if(isset($_POST['price'])){
+					$price_val = $this->input->post('price');  
+					if(strlen($price_val)>0){
+						$_SESSION['tmp_price_val'] = $price_val; 
+						$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+					}else{
+						unset($_SESSION['tmp_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_price_val'])){ ///
+					$price_val = $_SESSION['tmp_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				} 
+				
+				if(isset($_POST['to_price'])){
+					$to_price_val = $this->input->post('to_price');  
+					if(strlen($to_price_val)>0){
+						$_SESSION['tmp_to_price_val'] = $to_price_val; 
+						$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+					}else{
+						unset($_SESSION['tmp_to_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+					$to_price_val = $_SESSION['tmp_to_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+				} 
+				 
+				if(isset($_POST['sel_emirate_location_id_val'])){
+					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
+					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
+					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
+				}
+						 
+				$is_property_type = 1; 
+			 
+				if(isset($_POST['sel_no_of_beds_id_val'])){
+					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
+					$_SESSION['tmp_no_of_beds_id_val'] = $no_of_beds_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+					
+				}else if(isset($_SESSION['tmp_no_of_beds_id_val'])){///
+					$no_of_beds_id_val = $_SESSION['tmp_no_of_beds_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+				} 
+				 
+				if(isset($_POST['sel_owner_id_val'])){
+					$owner_id_val = $this->input->post('sel_owner_id_val');  
+					$_SESSION['tmp_owner_id_val'] = $owner_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));  
+					
+				}else if(isset($_SESSION['tmp_owner_id_val'])){///
+					$owner_id_val = $_SESSION['tmp_owner_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));
+				}  
+				 
+				if(isset($_POST['sel_property_status_val'])){
+					$property_status_val = $this->input->post('sel_property_status_val');  
+					$_SESSION['tmp_property_status_val'] = $property_status_val;
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val)); 
+					
+				}else if(isset($_SESSION['tmp_property_status_val'])){ 
+					$property_status_val = $_SESSION['tmp_property_status_val'];
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val));
+				}  
+				 
+				if(isset($_POST['sel_assigned_to_id_val'])){
+					$assigned_to_id_val = $this->input->post('sel_assigned_to_id_val');  
+					$_SESSION['tmp_assigned_to_id_val'] = $assigned_to_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_assigned_to_id_val'])){ ///
+					$assigned_to_id_val = $_SESSION['tmp_assigned_to_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val));
+				}  
+				 
+				if(isset($_POST['sel_portal_id_val'])){
+					$portal_id_val = $this->input->post('sel_portal_id_val');  
+					$_SESSION['tmp_portal_id_val'] = $portal_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_portal_id_val'])){ ///
+					$portal_id_val = $_SESSION['tmp_portal_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
+				}
+					 
+				$data['sel_property_type'] = $is_property_type;
+				
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type));
+					
+				$export_data_arrs = $this->properties_model->get_all_cstm_quick_properties($paras_arrs);
+				  
+				$dataToExports = []; 	 
+				if(isset($export_data_arrs) && count($export_data_arrs)>0){
+					foreach($export_data_arrs as $export_data_arr){ 
+						$temp_arr = array();  
+						
+						$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
+						$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+						$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
+						$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
+						$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
+						$temp_arr['Status'] = $this->general_model->get_gen_property_status($export_data_arr->property_status);
+						 
+						$us_nm ='';
+						if($export_data_arr->assigned_to_id>0){
+							$usr_arr =  $this->general_model->get_user_info_by_id($export_data_arr->assigned_to_id);
+							$us_nm = stripslashes($usr_arr->name);
+						}
+						
+						$temp_arr['Assigned To'] = $us_nm;  
+					
+						$dataToExports[] = $temp_arr;
+					}
+				}    
+					
+				// set header
+				$filename = "CRM-Sale-Properties-".date('d-M-Y H:i:s').".xls";
+				
+				header("Content-Type: application/vnd.ms-excel");
+				header("Content-Disposition: attachment; filename=\"$filename\"");
+				$this->general_model->exportExcelData($dataToExports);
+			  
+		}else{
 			
 				/* for dropzone temp storage unset starts */ 
 				if(isset($_SESSION['Temp_Media_Images'])){
@@ -924,7 +1074,7 @@ class Properties extends CI_Controller{
 			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/properties/sales_listings2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; // $this->perPage;
@@ -945,7 +1095,7 @@ class Properties extends CI_Controller{
 	
 	
 	 function rent_listings($args_vals=''){
-		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
+		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 			$data = array();	
 			$paras_arrs = array();	
@@ -1084,7 +1234,7 @@ class Properties extends CI_Controller{
 			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/properties/rent_listings2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg;
@@ -1105,74 +1255,243 @@ class Properties extends CI_Controller{
 			//$data['category_arrs'] = $this->admin_model->get_all_categories();
 			 
 			
-			if(isset($args_vals) && $args_vals=="export_excel"){  
-			 /* ok */
-			}else{
-			
-				/* for dropzone temp storage unset starts */ 
-				if(isset($_SESSION['Temp_Media_Images'])){
-		
-					$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_photos();
-					if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
-						foreach($db_docs_arrs as $db_docs_arr){
-							 $tmp_fle_name = $db_docs_arr->image; 
-							 $tmp_proprty_id = $db_docs_arr->property_id; 
-							 $tmp_ip_address = $db_docs_arr->ip_address; 
-							 $tmp_dt_time = $db_docs_arr->datatimes; 
-							
-							 if(strlen($tmp_fle_name)>0){
-								unlink("downloads/property_photos/{$tmp_fle_name}");
-							 }
-							 
-							 $this->properties_model->delete_temp_property_dropzone_photos($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
-							 
-						} 
-					}  
+			if(isset($args_vals) && $args_vals=="export_excel"){   
+				$paras_arrs = $data='';
+				$dataToExports = [];  
+				$paras_arrs = $data = array();	 
 				
-					unset($_SESSION['Temp_Media_Images']);
-					unset($_SESSION['Temp_IP_Address']);
-					unset($_SESSION['Temp_DATE_Times']);  
-				}  
-				
-				if(isset($_SESSION['Temp_Documents_Files'])){
+				/* permission checks */
+				$vs_user_type_id = $this->session->userdata('us_role_id');
+				$vs_id = $this->session->userdata('us_id'); 
+				  
+				if($this->input->post('sel_per_page_val')){
+					$per_page_val = $this->input->post('sel_per_page_val'); 
+					$_SESSION['tmp_per_page_val'] = $per_page_val;  
 					
-					$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_documents(); 
-					if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
-						foreach($db_docs_arrs as $db_docs_arr){
-							$tmp_fle_name = $db_docs_arr->name; 
-							$tmp_proprty_id = $db_docs_arr->property_id; 
-							$tmp_ip_address = $db_docs_arr->ip_address; 
-							$tmp_dt_time = $db_docs_arr->datatimes; 
-							
-							if(strlen($tmp_fle_name)>0){
-								unlink("downloads/property_documents/{$tmp_fle_name}");
-							}
-							
-							$this->properties_model->delete_temp_property_dropzone_documents($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
-							
-						} 
+				}else if(isset($_SESSION['tmp_per_page_val'])){
+						$per_page_val = $_SESSION['tmp_per_page_val'];
 					}
-					 
-					unset($_SESSION['Temp_Documents_Files']);
-					unset($_SESSION['Temp_Documents_IP_Address']);
-					unset($_SESSION['Temp_Documents_DATE_Times']);  
+				   
+				if(isset($_POST['refer_no'])){
+					$refer_no_val = $this->input->post('refer_no'); 
+					if(strlen($refer_no_val)>0){
+						$_SESSION['tmp_refer_no'] = $refer_no_val; 
+						$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+					}else{
+						unset($_SESSION['tmp_refer_no']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_refer_no'])){
+					$refer_no_val = $_SESSION['tmp_refer_no']; 
+					$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+				}
+				
+				if(isset($_POST['pics_nos'])){
+					$pics_nos_val = $this->input->post('pics_nos'); 
+					if(strlen($pics_nos_val)>0){
+						$_SESSION['tmp_pics_nos'] = $pics_nos_val; 
+						$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+					}else{
+						unset($_SESSION['tmp_pics_nos']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_pics_nos'])){
+					$pics_nos_val = $_SESSION['tmp_pics_nos']; 
+					$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+				}
+				
+				 
+				if(isset($_POST['price'])){
+					$price_val = $this->input->post('price');  
+					if(strlen($price_val)>0){
+						$_SESSION['tmp_price_val'] = $price_val; 
+						$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+					}else{
+						unset($_SESSION['tmp_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_price_val'])){ ///
+					$price_val = $_SESSION['tmp_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				}
+				
+				if(isset($_POST['to_price'])){
+					$to_price_val = $this->input->post('to_price');  
+					if(strlen($to_price_val)>0){
+						$_SESSION['tmp_to_price_val'] = $to_price_val; 
+						$paras_arrs = array_merge($paras_arrs,array("to_price_val" => $to_price_val));
+					}else{
+						unset($_SESSION['tmp_to_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+					$to_price_val = $_SESSION['tmp_to_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
 				} 
+						
 				
-				if(isset($_SESSION['Temp_NT_IP_Address'])){ 
-					$tmp_proprty_id = -1;
-					$tmp_ip_address = $_SESSION['Temp_NT_IP_Address']; 
-					$tmp_dt_time = $_SESSION['Temp_NT_DATE_Times']; 
-					 
-					$this->properties_model->delete_temp_property_notes($tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
-					   
-					unset($_SESSION['Temp_NT_IP_Address']);
-					unset($_SESSION['Temp_NT_DATE_Times']); 
+				if(isset($_POST['sel_emirate_location_id_val'])){
+					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
+					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
+					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
+				}
+						 
+				$is_property_type = 2; 
+				
+				if(isset($_POST['sel_no_of_beds_id_val'])){
+					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
+					$_SESSION['tmp_no_of_beds_id_val'] = $no_of_beds_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+					
+				}else if(isset($_SESSION['tmp_no_of_beds_id_val'])){///
+					$no_of_beds_id_val = $_SESSION['tmp_no_of_beds_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+				} 
+				 
+				if(isset($_POST['sel_owner_id_val'])){
+					$owner_id_val = $this->input->post('sel_owner_id_val');  
+					$_SESSION['tmp_owner_id_val'] = $owner_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));  
+					
+				}else if(isset($_SESSION['tmp_owner_id_val'])){///
+					$owner_id_val = $_SESSION['tmp_owner_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));
 				}  
-				/* for dropzone temp storage unset end */  
+					 
+				if(isset($_POST['sel_property_status_val'])){
+					$property_status_val = $this->input->post('sel_property_status_val');  
+					$_SESSION['tmp_property_status_val'] = $property_status_val;
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val)); 
+					
+				}else if(isset($_SESSION['tmp_property_status_val'])){ 
+					$property_status_val = $_SESSION['tmp_property_status_val'];
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val));
+				}  
+					 
+				if(isset($_POST['sel_assigned_to_id_val'])){
+					$assigned_to_id_val = $this->input->post('sel_assigned_to_id_val');  
+					$_SESSION['tmp_assigned_to_id_val'] = $assigned_to_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_assigned_to_id_val'])){ ///
+					$assigned_to_id_val = $_SESSION['tmp_assigned_to_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val));
+				}  
 				
-				$this->load->view('properties/rent_listings',$data); 
+				if(isset($_POST['sel_portal_id_val'])){
+					$portal_id_val = $this->input->post('sel_portal_id_val');  
+					$_SESSION['tmp_portal_id_val'] = $portal_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_portal_id_val'])){ ///
+					$portal_id_val = $_SESSION['tmp_portal_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
+				}
+					 
+				$data['sel_property_type'] = $is_property_type;
+				
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type)); 
+				 
+				$export_data_arrs = $this->properties_model->get_all_cstm_quick_properties($paras_arrs);
+				
+				if(isset($export_data_arrs) && count($export_data_arrs)>0){
+				foreach($export_data_arrs as $export_data_arr){ 
+				$temp_arr = array();  
+				
+				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
+				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
+				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
+				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
+				$temp_arr['Status'] = $this->general_model->get_gen_property_status($export_data_arr->property_status);
+				 
+				$us_nm ='';
+				if($export_data_arr->assigned_to_id>0){
+					$usr_arr =  $this->general_model->get_user_info_by_id($export_data_arr->assigned_to_id);
+					$us_nm = stripslashes($usr_arr->name);
+				}
+				
+				$temp_arr['Assigned To'] = $us_nm;   
+				$dataToExports[] = $temp_arr;
+				
+				}
+			}   
 			
-			}
+			// set header
+			$filename = "CRM-Rent-Properties-".date('d-M-Y H:i:s').".xls";
+			
+			header("Content-Type: application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename=\"$filename\"");
+			$this->general_model->exportExcelData($dataToExports);  
+			 
+		}else{
+		
+			/* for dropzone temp storage unset starts */ 
+			if(isset($_SESSION['Temp_Media_Images'])){
+	
+				$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_photos();
+				if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+					foreach($db_docs_arrs as $db_docs_arr){
+						 $tmp_fle_name = $db_docs_arr->image; 
+						 $tmp_proprty_id = $db_docs_arr->property_id; 
+						 $tmp_ip_address = $db_docs_arr->ip_address; 
+						 $tmp_dt_time = $db_docs_arr->datatimes; 
+						
+						 if(strlen($tmp_fle_name)>0){
+							unlink("downloads/property_photos/{$tmp_fle_name}");
+						 }
+						 
+						 $this->properties_model->delete_temp_property_dropzone_photos($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+						 
+					} 
+				}  
+			
+				unset($_SESSION['Temp_Media_Images']);
+				unset($_SESSION['Temp_IP_Address']);
+				unset($_SESSION['Temp_DATE_Times']);  
+			}  
+			
+			if(isset($_SESSION['Temp_Documents_Files'])){
+				
+				$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_documents(); 
+				if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+					foreach($db_docs_arrs as $db_docs_arr){
+						$tmp_fle_name = $db_docs_arr->name; 
+						$tmp_proprty_id = $db_docs_arr->property_id; 
+						$tmp_ip_address = $db_docs_arr->ip_address; 
+						$tmp_dt_time = $db_docs_arr->datatimes; 
+						
+						if(strlen($tmp_fle_name)>0){
+							unlink("downloads/property_documents/{$tmp_fle_name}");
+						}
+						
+						$this->properties_model->delete_temp_property_dropzone_documents($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+						
+					} 
+				}
+				 
+				unset($_SESSION['Temp_Documents_Files']);
+				unset($_SESSION['Temp_Documents_IP_Address']);
+				unset($_SESSION['Temp_Documents_DATE_Times']);  
+			} 
+			
+			if(isset($_SESSION['Temp_NT_IP_Address'])){ 
+				$tmp_proprty_id = -1;
+				$tmp_ip_address = $_SESSION['Temp_NT_IP_Address']; 
+				$tmp_dt_time = $_SESSION['Temp_NT_DATE_Times']; 
+				 
+				$this->properties_model->delete_temp_property_notes($tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+				   
+				unset($_SESSION['Temp_NT_IP_Address']);
+				unset($_SESSION['Temp_NT_DATE_Times']); 
+			}  
+			/* for dropzone temp storage unset end */  
+			
+			$this->load->view('properties/rent_listings',$data); 
+		
+		}
 			  
 		}else{
 			$this->load->view('no_permission_access'); 
@@ -1182,7 +1501,7 @@ class Properties extends CI_Controller{
 			 
 	function rent_listings2($temps_property_type=''){  
 	
-		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1'); 
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties', 'index', $this->dbs_role_id,'1'); 
 		 
 		if($res_nums>0){		
 			
@@ -1371,7 +1690,7 @@ class Properties extends CI_Controller{
 			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/properties/rent_listings2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; // $this->perPage;
@@ -1388,7 +1707,1182 @@ class Properties extends CI_Controller{
 			$this->load->view('no_permission_access'); 
 		} 
 	}
- 
+	
+	
+	function archived_listings($args_vals=''){
+		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+			$data = array();	
+			$paras_arrs = array();	
+			$data['page_headings'] = "Archived Listings"; 
+			 
+			/* permission checks */
+			$vs_user_type_id = $this->session->userdata('us_role_id');
+			$vs_id = $this->session->userdata('us_id');
+			
+			$s_val = $category_id_val = $assigned_to_id_val = $is_featured_val = '';
+			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					unset($_SESSION['tmp_per_page_val']);
+				} 
+				
+			if($this->input->post('s_val')){
+				$s_val = $this->input->post('s_val'); 
+				$_SESSION['tmp_s_val'] = $s_val; 
+				$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+			}else if(isset($_SESSION['tmp_s_val'])){
+					unset($_SESSION['tmp_s_val']);
+				}   	
+				
+			if($this->input->post('category_id_vals')){
+				$category_id_vals = $this->input->post('category_id_vals'); 
+				$_SESSION['tmp_category_id_vals'] = $category_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
+			}else if(isset($_SESSION['tmp_category_id_vals'])){
+					unset($_SESSION['tmp_category_id_vals']);
+				}
+				
+			if($this->input->post('emirate_id_vals')){
+				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
+				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
+			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
+					unset($_SESSION['tmp_emirate_id_vals']);
+				}
+				
+			if($this->input->post('location_id_vals')){
+				$location_id_vals = $this->input->post('location_id_vals'); 
+				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
+			}else if(isset($_SESSION['tmp_location_id_vals'])){
+					unset($_SESSION['tmp_location_id_vals']);
+				}  	
+				
+			if($this->input->post('sub_location_id_vals')){
+				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
+				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
+			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
+					unset($_SESSION['tmp_sub_location_id_vals']);
+				}
+				
+			if($this->input->post('portal_id_vals')){
+				$portal_id_vals = $this->input->post('portal_id_vals'); 
+				$_SESSION['tmp_portal_id_vals'] = $portal_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals));
+			}else if(isset($_SESSION['tmp_portal_id_vals'])){
+					unset($_SESSION['tmp_portal_id_vals']);
+				}
+				
+			if($this->input->post('assigned_to_id_vals')){
+				$assigned_to_id_vals = $this->input->post('assigned_to_id_vals'); 
+				$_SESSION['tmp_assigned_to_id_vals'] = $assigned_to_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals));
+			}else if(isset($_SESSION['tmp_assigned_to_id_vals'])){
+					unset($_SESSION['tmp_assigned_to_id_vals']);
+				}
+				
+			if($this->input->post('owner_id_vals')){
+				$owner_id_vals = $this->input->post('owner_id_vals'); 
+				$_SESSION['tmp_owner_id_vals'] = $owner_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals));
+			}else if(isset($_SESSION['tmp_owner_id_vals'])){
+					unset($_SESSION['tmp_owner_id_vals']);
+				}
+				
+			if($this->input->post('property_status_vals')){
+				$property_status_vals = $this->input->post('property_status_vals'); 
+				$_SESSION['tmp_property_status_vals'] = $property_status_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals));
+			}else if(isset($_SESSION['tmp_property_status_vals'])){
+					unset($_SESSION['tmp_property_status_vals']);
+				}
+				
+			if($this->input->post('price')){
+				$price_val = $this->input->post('price'); 
+				$_SESSION['tmp_price_val'] = $price_val; 
+				$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+			}else if(isset($_SESSION['tmp_price_val'])){
+					unset($_SESSION['tmp_price_val']);
+				}
+				
+			if($this->input->post('to_price')){
+				$to_price_val = $this->input->post('to_price'); 
+				$_SESSION['tmp_to_price_val'] = $to_price_val; 
+				$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+			}else if(isset($_SESSION['tmp_to_price_val'])){
+					unset($_SESSION['tmp_to_price_val']);
+				}	 
+			
+			if($this->input->post('from_date')){
+				$from_date_val = $this->input->post('from_date'); 
+				$_SESSION['tmp_from_date_val'] = $from_date_val; 
+				$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+			}else if(isset($_SESSION['tmp_from_date_val'])){
+					unset($_SESSION['tmp_from_date_val']);
+				}
+				
+			if($this->input->post('to_date')){
+				$to_date_val = $this->input->post('to_date'); 
+				$_SESSION['tmp_to_date_val'] = $to_date_val; 
+				$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+			}else if(isset($_SESSION['tmp_to_date_val'])){
+					unset($_SESSION['tmp_to_date_val']);
+				}	 
+			
+			/* for rental */	 
+			/*$is_property_type = 2;    
+			$data['sel_property_type'] = $is_property_type;
+			$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type));*/
+			 
+			$paras_arrs = array_merge($paras_arrs, array("is_archived" => '1'));
+			  
+			if(isset($_SESSION['tmp_per_page_val'])){
+				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+			}else{
+				$show_pers_pg = $this->perPage;
+			}
+			 
+			//total rows count
+			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
+			
+			//pagination configuration
+			$config['target']      = '#dyns_list';
+			$config['base_url']    = site_url('/properties/archived_listings2');
+			$config['total_rows']  = $totalRec;
+			$config['per_page']    = $show_pers_pg;
+			
+			$this->ajax_pagination->initialize($config); 
+			
+			$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
+			
+			$records = $data['records'] = $this->properties_model->get_all_cstm_properties($paras_arrs);
+			
+			if($vs_user_type_id==2){ 
+				$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
+			}else{
+				$arrs_field = array('role_id'=> '3'); 
+			}
+			
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
+			//$data['category_arrs'] = $this->admin_model->get_all_categories();
+			 
+			if(isset($args_vals) && $args_vals=="export_excel"){   
+				$paras_arrs = $data='';
+				$dataToExports = [];  
+				$paras_arrs = $data = array();	 
+				
+				/* permission checks */
+				$vs_user_type_id = $this->session->userdata('us_role_id');
+				$vs_id = $this->session->userdata('us_id'); 
+				  
+				if($this->input->post('sel_per_page_val')){
+					$per_page_val = $this->input->post('sel_per_page_val'); 
+					$_SESSION['tmp_per_page_val'] = $per_page_val;  
+					
+				}else if(isset($_SESSION['tmp_per_page_val'])){
+						$per_page_val = $_SESSION['tmp_per_page_val'];
+					}
+				   
+				if(isset($_POST['refer_no'])){
+					$refer_no_val = $this->input->post('refer_no'); 
+					if(strlen($refer_no_val)>0){
+						$_SESSION['tmp_refer_no'] = $refer_no_val; 
+						$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+					}else{
+						unset($_SESSION['tmp_refer_no']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_refer_no'])){
+					$refer_no_val = $_SESSION['tmp_refer_no']; 
+					$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+				}
+				
+				if(isset($_POST['pics_nos'])){
+					$pics_nos_val = $this->input->post('pics_nos'); 
+					if(strlen($pics_nos_val)>0){
+						$_SESSION['tmp_pics_nos'] = $pics_nos_val; 
+						$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+					}else{
+						unset($_SESSION['tmp_pics_nos']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_pics_nos'])){
+					$pics_nos_val = $_SESSION['tmp_pics_nos']; 
+					$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+				}
+				
+				 
+				if(isset($_POST['price'])){
+					$price_val = $this->input->post('price');  
+					if(strlen($price_val)>0){
+						$_SESSION['tmp_price_val'] = $price_val; 
+						$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+					}else{
+						unset($_SESSION['tmp_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_price_val'])){ ///
+					$price_val = $_SESSION['tmp_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				}
+				
+				if(isset($_POST['to_price'])){
+					$to_price_val = $this->input->post('to_price');  
+					if(strlen($to_price_val)>0){
+						$_SESSION['tmp_to_price_val'] = $to_price_val; 
+						$paras_arrs = array_merge($paras_arrs,array("to_price_val" => $to_price_val));
+					}else{
+						unset($_SESSION['tmp_to_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+					$to_price_val = $_SESSION['tmp_to_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+				}
+				
+				if(isset($_POST['sel_emirate_location_id_val'])){
+					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
+					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
+					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
+				} 
+				
+				if(isset($_POST['sel_no_of_beds_id_val'])){
+					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
+					$_SESSION['tmp_no_of_beds_id_val'] = $no_of_beds_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+					
+				}else if(isset($_SESSION['tmp_no_of_beds_id_val'])){///
+					$no_of_beds_id_val = $_SESSION['tmp_no_of_beds_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+				} 
+				 
+				if(isset($_POST['sel_owner_id_val'])){
+					$owner_id_val = $this->input->post('sel_owner_id_val');  
+					$_SESSION['tmp_owner_id_val'] = $owner_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));  
+					
+				}else if(isset($_SESSION['tmp_owner_id_val'])){///
+					$owner_id_val = $_SESSION['tmp_owner_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));
+				}  
+					 
+				if(isset($_POST['sel_property_status_val'])){
+					$property_status_val = $this->input->post('sel_property_status_val');  
+					$_SESSION['tmp_property_status_val'] = $property_status_val;
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val)); 
+					
+				}else if(isset($_SESSION['tmp_property_status_val'])){ 
+					$property_status_val = $_SESSION['tmp_property_status_val'];
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val));
+				}  
+					 
+				if(isset($_POST['sel_assigned_to_id_val'])){
+					$assigned_to_id_val = $this->input->post('sel_assigned_to_id_val');  
+					$_SESSION['tmp_assigned_to_id_val'] = $assigned_to_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_assigned_to_id_val'])){ ///
+					$assigned_to_id_val = $_SESSION['tmp_assigned_to_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val));
+				}  
+				
+				if(isset($_POST['sel_portal_id_val'])){
+					$portal_id_val = $this->input->post('sel_portal_id_val');  
+					$_SESSION['tmp_portal_id_val'] = $portal_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_portal_id_val'])){ ///
+					$portal_id_val = $_SESSION['tmp_portal_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
+				}
+			
+				/*$is_property_type = 2; 		 
+				$data['sel_property_type'] = $is_property_type; 
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type)); */
+				$paras_arrs = array_merge($paras_arrs, array("is_archived" => '1'));
+				 
+				$export_data_arrs = $this->properties_model->get_all_cstm_quick_properties($paras_arrs);
+				
+				if(isset($export_data_arrs) && count($export_data_arrs)>0){
+				foreach($export_data_arrs as $export_data_arr){ 
+				$temp_arr = array();  
+				
+				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
+				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
+				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
+				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
+				$temp_arr['Status'] = $this->general_model->get_gen_property_status($export_data_arr->property_status);
+				 
+				$us_nm ='';
+				if($export_data_arr->assigned_to_id>0){
+					$usr_arr =  $this->general_model->get_user_info_by_id($export_data_arr->assigned_to_id);
+					$us_nm = stripslashes($usr_arr->name);
+				}
+				
+				$temp_arr['Assigned To'] = $us_nm;   
+				$dataToExports[] = $temp_arr;
+				
+				}
+			}   
+			
+			// set header
+			$filename = "CRM-Archived-Properties-".date('d-M-Y H:i:s').".xls";
+			
+			header("Content-Type: application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename=\"$filename\"");
+			$this->general_model->exportExcelData($dataToExports);  
+			 
+		}else{
+		
+			/* for dropzone temp storage unset starts */ 
+			if(isset($_SESSION['Temp_Media_Images'])){
+	
+				$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_photos();
+				if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+					foreach($db_docs_arrs as $db_docs_arr){
+						 $tmp_fle_name = $db_docs_arr->image; 
+						 $tmp_proprty_id = $db_docs_arr->property_id; 
+						 $tmp_ip_address = $db_docs_arr->ip_address; 
+						 $tmp_dt_time = $db_docs_arr->datatimes; 
+						
+						 if(strlen($tmp_fle_name)>0){
+							unlink("downloads/property_photos/{$tmp_fle_name}");
+						 }
+						 
+						 $this->properties_model->delete_temp_property_dropzone_photos($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+						 
+					} 
+				}  
+			
+				unset($_SESSION['Temp_Media_Images']);
+				unset($_SESSION['Temp_IP_Address']);
+				unset($_SESSION['Temp_DATE_Times']);  
+			}  
+			
+			if(isset($_SESSION['Temp_Documents_Files'])){
+				
+				$db_docs_arrs = $this->properties_model->get_temp_post_property_dropzone_documents(); 
+				if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+					foreach($db_docs_arrs as $db_docs_arr){
+						$tmp_fle_name = $db_docs_arr->name; 
+						$tmp_proprty_id = $db_docs_arr->property_id; 
+						$tmp_ip_address = $db_docs_arr->ip_address; 
+						$tmp_dt_time = $db_docs_arr->datatimes; 
+						
+						if(strlen($tmp_fle_name)>0){
+							unlink("downloads/property_documents/{$tmp_fle_name}");
+						}
+						
+						$this->properties_model->delete_temp_property_dropzone_documents($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+						
+					} 
+				}
+				 
+				unset($_SESSION['Temp_Documents_Files']);
+				unset($_SESSION['Temp_Documents_IP_Address']);
+				unset($_SESSION['Temp_Documents_DATE_Times']);  
+			} 
+			
+			if(isset($_SESSION['Temp_NT_IP_Address'])){ 
+				$tmp_proprty_id = -1;
+				$tmp_ip_address = $_SESSION['Temp_NT_IP_Address']; 
+				$tmp_dt_time = $_SESSION['Temp_NT_DATE_Times']; 
+				 
+				$this->properties_model->delete_temp_property_notes($tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+				   
+				unset($_SESSION['Temp_NT_IP_Address']);
+				unset($_SESSION['Temp_NT_DATE_Times']); 
+			}  
+			/* for dropzone temp storage unset end */  
+			
+			$this->load->view('properties/archived_listings',$data); 
+		
+		}
+			  
+		}else{
+			$this->load->view('no_permission_access'); 
+		} 
+	}
+
+			 
+	function archived_listings2($temps_property_type=''){  
+	
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties', 'index', $this->dbs_role_id,'1'); 
+		 
+		if($res_nums>0){		
+				
+			$paras_arrs = $data = array();	
+			$page = $this->input->post('page');
+			if(!$page){
+				$offset = 0;
+			}else{
+				$offset = $page;
+			} 
+			
+			$data['page'] = $page;
+			
+			/* permission checks */
+			$vs_user_type_id = $this->session->userdata('us_role_id');
+			$vs_id = $this->session->userdata('us_id');
+			
+			/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
+			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+		
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];
+				}  
+			 
+			if(isset($_POST['s_val'])){
+				$s_val = $this->input->post('s_val'); 
+				if(strlen($s_val)>0){
+					$_SESSION['tmp_s_val'] = $s_val; 
+					$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+				}else{
+					unset($_SESSION['tmp_s_val']);	
+				}
+				
+			}else if(isset($_SESSION['tmp_s_val'])){
+				$s_val = $_SESSION['tmp_s_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+			}       
+			 
+			if(isset($_POST['category_id_vals'])){
+				$category_id_vals = $this->input->post('category_id_vals');  
+				$_SESSION['tmp_category_id_vals'] = $category_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_category_id_vals'])){   
+				$category_id_vals = $_SESSION['tmp_category_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
+			}  
+			
+			if(isset($_POST['emirate_id_vals'])){
+				$emirate_id_vals = $this->input->post('emirate_id_vals');  
+				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
+				$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
+			}  
+			
+			if(isset($_POST['location_id_vals'])){
+				$location_id_vals = $this->input->post('location_id_vals');  
+				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_location_id_vals'])){  
+				$location_id_vals = $_SESSION['tmp_location_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
+			} 
+			 
+			if(isset($_POST['sub_location_id_vals'])){
+				$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
+				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
+				$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
+			} 
+			 
+			if(isset($_POST['portal_id_vals'])){
+				$portal_id_vals = $this->input->post('portal_id_vals');  
+				$_SESSION['tmp_portal_id_vals'] = $portal_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_portal_id_vals'])){  
+				$portal_id_vals = $_SESSION['tmp_portal_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals));
+			}  
+			 
+			if(isset($_POST['assigned_to_id_vals'])){
+				$assigned_to_id_vals = $this->input->post('assigned_to_id_vals');  
+				$_SESSION['tmp_assigned_to_id_vals'] = $assigned_to_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_assigned_to_id_vals'])){ 
+				$assigned_to_id_vals = $_SESSION['tmp_assigned_to_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals));
+			}
+			
+			if(isset($_POST['owner_id_vals'])){
+				$owner_id_vals = $this->input->post('owner_id_vals');  
+				$_SESSION['tmp_owner_id_vals'] = $owner_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_owner_id_vals'])){ 
+				$owner_id_vals = $_SESSION['tmp_owner_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals));
+			}
+			
+			if(isset($_POST['property_status_vals'])){
+				$property_status_vals = $this->input->post('property_status_vals');  
+				$_SESSION['tmp_property_status_vals'] = $property_status_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals)); 
+				
+			}else if(isset($_SESSION['tmp_property_status_vals'])){  ///
+				$property_status_vals = $_SESSION['tmp_property_status_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals));
+			} 
+			  
+			if(isset($_POST['price'])){
+				$price_val = $this->input->post('price');  
+				if(strlen($price_val)>0){
+					$_SESSION['tmp_price_val'] = $price_val; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				}else{
+					unset($_SESSION['tmp_price_val']);	
+				}
+			}else if(isset($_SESSION['tmp_price_val'])){ ///
+				$price_val = $_SESSION['tmp_price_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+			}
+			
+			if(isset($_POST['to_price'])){
+				$to_price_val = $this->input->post('to_price');  
+				if(strlen($to_price_val)>0){
+					$_SESSION['tmp_to_price_val'] = $to_price_val; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+				}else{
+					unset($_SESSION['tmp_to_price_val']);	
+				}
+			}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+				$to_price_val = $_SESSION['tmp_to_price_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+			}  
+			
+			if(isset($_POST['from_date'])){
+				$from_date_val = $this->input->post('from_date');  
+				if(strlen($from_date_val)>0){
+					$_SESSION['tmp_from_date_val'] = $from_date_val; 
+					$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+				}else{
+					unset($_SESSION['tmp_from_date_val']);	
+				}
+			}else if(isset($_SESSION['tmp_from_date_val'])){ ///
+				$from_date_val = $_SESSION['tmp_from_date_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+			}
+			
+			if(isset($_POST['to_date'])){
+				$to_date_val = $this->input->post('to_date');  
+				if(strlen($to_date_val)>0){
+					$_SESSION['tmp_to_date_val'] = $to_date_val; 
+					$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+				}else{
+					unset($_SESSION['tmp_to_date_val']);	
+				}
+			}else if(isset($_SESSION['tmp_to_date_val'])){ ///
+				$to_date_val = $_SESSION['tmp_to_date_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+			}   
+				/* for rental */
+				/*$is_property_type = 2;    
+				$data['sel_property_type'] = $is_property_type;
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type));*/
+				$paras_arrs = array_merge($paras_arrs, array("is_archived" => '1'));
+				   
+				if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+				}else{
+					$show_pers_pg = $this->perPage;
+				}   
+				   
+				//total rows count
+				$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
+				
+				//pagination configuration
+				$config['target']      = '#dyns_list';
+				$config['base_url']    = site_url('/properties/archived_listings2');
+				$config['total_rows']  = $totalRec;
+				$config['per_page']    = $show_pers_pg; // $this->perPage;
+				
+				$this->ajax_pagination->initialize($config); 
+				
+				$paras_arrs = array_merge($paras_arrs, array('start'=>$offset,'limit' => $show_pers_pg));
+				
+				$records = $data['records'] = $this->properties_model->get_all_cstm_properties($paras_arrs); 
+				
+				$this->load->view('properties/archived_listings2',$data);  
+			 
+			}else{
+				$this->load->view('no_permission_access'); 
+			} 
+		}
+	
+	
+ 	function deleted_listings($args_vals=''){
+		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+			$data = array();	
+			$paras_arrs = array();	
+			$data['page_headings'] = "Deleted Listings"; 
+			 
+			/* permission checks */
+			$vs_user_type_id = $this->session->userdata('us_role_id');
+			$vs_id = $this->session->userdata('us_id');
+			
+			$s_val = $category_id_val = $assigned_to_id_val = $is_featured_val = '';
+			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					unset($_SESSION['tmp_per_page_val']);
+				} 
+				
+			if($this->input->post('s_val')){
+				$s_val = $this->input->post('s_val'); 
+				$_SESSION['tmp_s_val'] = $s_val; 
+				$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+			}else if(isset($_SESSION['tmp_s_val'])){
+					unset($_SESSION['tmp_s_val']);
+				}   	
+				
+			if($this->input->post('category_id_vals')){
+				$category_id_vals = $this->input->post('category_id_vals'); 
+				$_SESSION['tmp_category_id_vals'] = $category_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
+			}else if(isset($_SESSION['tmp_category_id_vals'])){
+					unset($_SESSION['tmp_category_id_vals']);
+				}
+				
+			if($this->input->post('emirate_id_vals')){
+				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
+				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
+			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
+					unset($_SESSION['tmp_emirate_id_vals']);
+				}
+				
+			if($this->input->post('location_id_vals')){
+				$location_id_vals = $this->input->post('location_id_vals'); 
+				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
+			}else if(isset($_SESSION['tmp_location_id_vals'])){
+					unset($_SESSION['tmp_location_id_vals']);
+				}  	
+				
+			if($this->input->post('sub_location_id_vals')){
+				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
+				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
+			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
+					unset($_SESSION['tmp_sub_location_id_vals']);
+				}
+				
+			if($this->input->post('portal_id_vals')){
+				$portal_id_vals = $this->input->post('portal_id_vals'); 
+				$_SESSION['tmp_portal_id_vals'] = $portal_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals));
+			}else if(isset($_SESSION['tmp_portal_id_vals'])){
+					unset($_SESSION['tmp_portal_id_vals']);
+				}
+				
+			if($this->input->post('assigned_to_id_vals')){
+				$assigned_to_id_vals = $this->input->post('assigned_to_id_vals'); 
+				$_SESSION['tmp_assigned_to_id_vals'] = $assigned_to_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals));
+			}else if(isset($_SESSION['tmp_assigned_to_id_vals'])){
+					unset($_SESSION['tmp_assigned_to_id_vals']);
+				}
+				
+			if($this->input->post('owner_id_vals')){
+				$owner_id_vals = $this->input->post('owner_id_vals'); 
+				$_SESSION['tmp_owner_id_vals'] = $owner_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals));
+			}else if(isset($_SESSION['tmp_owner_id_vals'])){
+					unset($_SESSION['tmp_owner_id_vals']);
+				}
+				
+			if($this->input->post('property_status_vals')){
+				$property_status_vals = $this->input->post('property_status_vals'); 
+				$_SESSION['tmp_property_status_vals'] = $property_status_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals));
+			}else if(isset($_SESSION['tmp_property_status_vals'])){
+					unset($_SESSION['tmp_property_status_vals']);
+				}
+				
+			if($this->input->post('price')){
+				$price_val = $this->input->post('price'); 
+				$_SESSION['tmp_price_val'] = $price_val; 
+				$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+			}else if(isset($_SESSION['tmp_price_val'])){
+					unset($_SESSION['tmp_price_val']);
+				}
+				
+			if($this->input->post('to_price')){
+				$to_price_val = $this->input->post('to_price'); 
+				$_SESSION['tmp_to_price_val'] = $to_price_val; 
+				$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+			}else if(isset($_SESSION['tmp_to_price_val'])){
+					unset($_SESSION['tmp_to_price_val']);
+				}	 
+			
+			if($this->input->post('from_date')){
+				$from_date_val = $this->input->post('from_date'); 
+				$_SESSION['tmp_from_date_val'] = $from_date_val; 
+				$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+			}else if(isset($_SESSION['tmp_from_date_val'])){
+					unset($_SESSION['tmp_from_date_val']);
+				}
+				
+			if($this->input->post('to_date')){
+				$to_date_val = $this->input->post('to_date'); 
+				$_SESSION['tmp_to_date_val'] = $to_date_val; 
+				$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+			}else if(isset($_SESSION['tmp_to_date_val'])){
+					unset($_SESSION['tmp_to_date_val']);
+				}	 
+			
+			/* for rental */	 
+			/*$is_property_type = 2;    
+			$data['sel_property_type'] = $is_property_type;
+			$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type));*/
+			
+			
+			$paras_arrs = array_merge($paras_arrs, array("is_deleted" => '1'));
+			 
+			  
+			if(isset($_SESSION['tmp_per_page_val'])){
+				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+			}else{
+				$show_pers_pg = $this->perPage;
+			}
+			 
+			//total rows count
+			$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
+			
+			//pagination configuration
+			$config['target']      = '#dyns_list';
+			$config['base_url']    = site_url('/properties/deleted_listings2');
+			$config['total_rows']  = $totalRec;
+			$config['per_page']    = $show_pers_pg;
+			
+			$this->ajax_pagination->initialize($config); 
+			
+			$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
+			
+			$records = $data['records'] = $this->properties_model->get_all_cstm_properties($paras_arrs);
+			
+			if($vs_user_type_id==2){ 
+				$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
+			}else{
+				$arrs_field = array('role_id'=> '3'); 
+			}
+			
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
+			//$data['category_arrs'] = $this->admin_model->get_all_categories();
+			 
+			if(isset($args_vals) && $args_vals=="export_excel"){   
+				$paras_arrs = $data='';
+				$dataToExports = [];  
+				$paras_arrs = $data = array();	 
+				
+				/* permission checks */
+				$vs_user_type_id = $this->session->userdata('us_role_id');
+				$vs_id = $this->session->userdata('us_id'); 
+				  
+				if($this->input->post('sel_per_page_val')){
+					$per_page_val = $this->input->post('sel_per_page_val'); 
+					$_SESSION['tmp_per_page_val'] = $per_page_val;  
+					
+				}else if(isset($_SESSION['tmp_per_page_val'])){
+						$per_page_val = $_SESSION['tmp_per_page_val'];
+					}
+				   
+				if(isset($_POST['refer_no'])){
+					$refer_no_val = $this->input->post('refer_no'); 
+					if(strlen($refer_no_val)>0){
+						$_SESSION['tmp_refer_no'] = $refer_no_val; 
+						$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+					}else{
+						unset($_SESSION['tmp_refer_no']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_refer_no'])){
+					$refer_no_val = $_SESSION['tmp_refer_no']; 
+					$paras_arrs = array_merge($paras_arrs, array("refer_no_val" => $refer_no_val));
+				}
+				
+				if(isset($_POST['pics_nos'])){
+					$pics_nos_val = $this->input->post('pics_nos'); 
+					if(strlen($pics_nos_val)>0){
+						$_SESSION['tmp_pics_nos'] = $pics_nos_val; 
+						$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+					}else{
+						unset($_SESSION['tmp_pics_nos']);	
+					}
+					
+				}else if(isset($_SESSION['tmp_pics_nos'])){
+					$pics_nos_val = $_SESSION['tmp_pics_nos']; 
+					$paras_arrs = array_merge($paras_arrs, array("pics_nos_val" => $pics_nos_val));
+				}
+				
+				 
+				if(isset($_POST['price'])){
+					$price_val = $this->input->post('price');  
+					if(strlen($price_val)>0){
+						$_SESSION['tmp_price_val'] = $price_val; 
+						$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+					}else{
+						unset($_SESSION['tmp_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_price_val'])){ ///
+					$price_val = $_SESSION['tmp_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				}
+				
+				if(isset($_POST['to_price'])){
+					$to_price_val = $this->input->post('to_price');  
+					if(strlen($to_price_val)>0){
+						$_SESSION['tmp_to_price_val'] = $to_price_val; 
+						$paras_arrs = array_merge($paras_arrs,array("to_price_val" => $to_price_val));
+					}else{
+						unset($_SESSION['tmp_to_price_val']);	
+					}
+				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+					$to_price_val = $_SESSION['tmp_to_price_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+				}
+				
+				if(isset($_POST['sel_emirate_location_id_val'])){
+					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
+					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
+					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
+					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
+				} 
+				
+				if(isset($_POST['sel_no_of_beds_id_val'])){
+					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
+					$_SESSION['tmp_no_of_beds_id_val'] = $no_of_beds_id_val; 
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+					
+				}else if(isset($_SESSION['tmp_no_of_beds_id_val'])){///
+					$no_of_beds_id_val = $_SESSION['tmp_no_of_beds_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("no_of_beds_id_val" => $no_of_beds_id_val));
+				} 
+				 
+				if(isset($_POST['sel_owner_id_val'])){
+					$owner_id_val = $this->input->post('sel_owner_id_val');  
+					$_SESSION['tmp_owner_id_val'] = $owner_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));  
+					
+				}else if(isset($_SESSION['tmp_owner_id_val'])){///
+					$owner_id_val = $_SESSION['tmp_owner_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("owner_id_val" => $owner_id_val));
+				}  
+					 
+				if(isset($_POST['sel_property_status_val'])){
+					$property_status_val = $this->input->post('sel_property_status_val');  
+					$_SESSION['tmp_property_status_val'] = $property_status_val;
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val)); 
+					
+				}else if(isset($_SESSION['tmp_property_status_val'])){ 
+					$property_status_val = $_SESSION['tmp_property_status_val'];
+					$paras_arrs = array_merge($paras_arrs, array("property_status_val" => $property_status_val));
+				}  
+					 
+				if(isset($_POST['sel_assigned_to_id_val'])){
+					$assigned_to_id_val = $this->input->post('sel_assigned_to_id_val');  
+					$_SESSION['tmp_assigned_to_id_val'] = $assigned_to_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_assigned_to_id_val'])){ ///
+					$assigned_to_id_val = $_SESSION['tmp_assigned_to_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_val" => $assigned_to_id_val));
+				}  
+				
+				if(isset($_POST['sel_portal_id_val'])){
+					$portal_id_val = $this->input->post('sel_portal_id_val');  
+					$_SESSION['tmp_portal_id_val'] = $portal_id_val;
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val)); 
+					
+				}else if(isset($_SESSION['tmp_portal_id_val'])){ ///
+					$portal_id_val = $_SESSION['tmp_portal_id_val'];
+					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
+				}
+			
+				/*$is_property_type = 2; 		 
+				$data['sel_property_type'] = $is_property_type; 
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type)); */
+				 
+				$paras_arrs = array_merge($paras_arrs, array("is_deleted" => '1')); 
+				$export_data_arrs = $this->properties_model->get_all_cstm_quick_properties($paras_arrs);
+				
+				if(isset($export_data_arrs) && count($export_data_arrs)>0){
+				foreach($export_data_arrs as $export_data_arr){ 
+				$temp_arr = array();  
+				
+				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
+				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
+				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
+				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
+				$temp_arr['Status'] = $this->general_model->get_gen_property_status($export_data_arr->property_status);
+				 
+				$us_nm ='';
+				if($export_data_arr->assigned_to_id>0){
+					$usr_arr =  $this->general_model->get_user_info_by_id($export_data_arr->assigned_to_id);
+					$us_nm = stripslashes($usr_arr->name);
+				}
+				
+				$temp_arr['Assigned To'] = $us_nm;   
+				$dataToExports[] = $temp_arr;
+				
+				}
+			}   
+			
+			// set header
+			$filename = "CRM-Deleted-Properties-".date('d-M-Y H:i:s').".xls";
+			
+			header("Content-Type: application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename=\"$filename\"");
+			$this->general_model->exportExcelData($dataToExports);  
+			 
+		}else{ 
+			
+			$this->load->view('properties/deleted_listings',$data); 
+		
+		}
+			  
+		}else{
+			$this->load->view('no_permission_access'); 
+		} 
+	} 
+			 
+	function deleted_listings2($temps_property_type=''){  
+	
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties', 'index', $this->dbs_role_id,'1'); 
+		 
+		if($res_nums>0){		
+				
+			$paras_arrs = $data = array();	
+			$page = $this->input->post('page');
+			if(!$page){
+				$offset = 0;
+			}else{
+				$offset = $page;
+			} 
+			
+			$data['page'] = $page;
+			
+			/* permission checks */
+			$vs_user_type_id = $this->session->userdata('us_role_id');
+			$vs_id = $this->session->userdata('us_id');
+			
+			/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
+			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+		
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];
+				}  
+			 
+			if(isset($_POST['s_val'])){
+				$s_val = $this->input->post('s_val'); 
+				if(strlen($s_val)>0){
+					$_SESSION['tmp_s_val'] = $s_val; 
+					$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+				}else{
+					unset($_SESSION['tmp_s_val']);	
+				}
+				
+			}else if(isset($_SESSION['tmp_s_val'])){
+				$s_val = $_SESSION['tmp_s_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("s_val" => $s_val));
+			}       
+			 
+			if(isset($_POST['category_id_vals'])){
+				$category_id_vals = $this->input->post('category_id_vals');  
+				$_SESSION['tmp_category_id_vals'] = $category_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_category_id_vals'])){   
+				$category_id_vals = $_SESSION['tmp_category_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
+			}  
+			
+			if(isset($_POST['emirate_id_vals'])){
+				$emirate_id_vals = $this->input->post('emirate_id_vals');  
+				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
+				$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
+			}  
+			
+			if(isset($_POST['location_id_vals'])){
+				$location_id_vals = $this->input->post('location_id_vals');  
+				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_location_id_vals'])){  
+				$location_id_vals = $_SESSION['tmp_location_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
+			} 
+			 
+			if(isset($_POST['sub_location_id_vals'])){
+				$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
+				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
+				$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
+			} 
+			 
+			if(isset($_POST['portal_id_vals'])){
+				$portal_id_vals = $this->input->post('portal_id_vals');  
+				$_SESSION['tmp_portal_id_vals'] = $portal_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_portal_id_vals'])){  
+				$portal_id_vals = $_SESSION['tmp_portal_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("portal_id_vals" => $portal_id_vals));
+			}  
+			 
+			if(isset($_POST['assigned_to_id_vals'])){
+				$assigned_to_id_vals = $this->input->post('assigned_to_id_vals');  
+				$_SESSION['tmp_assigned_to_id_vals'] = $assigned_to_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_assigned_to_id_vals'])){ 
+				$assigned_to_id_vals = $_SESSION['tmp_assigned_to_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("assigned_to_id_vals" => $assigned_to_id_vals));
+			}
+			
+			if(isset($_POST['owner_id_vals'])){
+				$owner_id_vals = $this->input->post('owner_id_vals');  
+				$_SESSION['tmp_owner_id_vals'] = $owner_id_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals)); 
+				
+			}else if(isset($_SESSION['tmp_owner_id_vals'])){ 
+				$owner_id_vals = $_SESSION['tmp_owner_id_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("owner_id_vals" => $owner_id_vals));
+			}
+			
+			if(isset($_POST['property_status_vals'])){
+				$property_status_vals = $this->input->post('property_status_vals');  
+				$_SESSION['tmp_property_status_vals'] = $property_status_vals; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals)); 
+				
+			}else if(isset($_SESSION['tmp_property_status_vals'])){  ///
+				$property_status_vals = $_SESSION['tmp_property_status_vals']; 
+				$paras_arrs = array_merge($paras_arrs, array("property_status_vals" => $property_status_vals));
+			} 
+			  
+			if(isset($_POST['price'])){
+				$price_val = $this->input->post('price');  
+				if(strlen($price_val)>0){
+					$_SESSION['tmp_price_val'] = $price_val; 
+					$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+				}else{
+					unset($_SESSION['tmp_price_val']);	
+				}
+			}else if(isset($_SESSION['tmp_price_val'])){ ///
+				$price_val = $_SESSION['tmp_price_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("price_val" => $price_val));
+			}
+			
+			if(isset($_POST['to_price'])){
+				$to_price_val = $this->input->post('to_price');  
+				if(strlen($to_price_val)>0){
+					$_SESSION['tmp_to_price_val'] = $to_price_val; 
+					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+				}else{
+					unset($_SESSION['tmp_to_price_val']);	
+				}
+			}else if(isset($_SESSION['tmp_to_price_val'])){ ///
+				$to_price_val = $_SESSION['tmp_to_price_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
+			}  
+			
+			if(isset($_POST['from_date'])){
+				$from_date_val = $this->input->post('from_date');  
+				if(strlen($from_date_val)>0){
+					$_SESSION['tmp_from_date_val'] = $from_date_val; 
+					$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+				}else{
+					unset($_SESSION['tmp_from_date_val']);	
+				}
+			}else if(isset($_SESSION['tmp_from_date_val'])){ ///
+				$from_date_val = $_SESSION['tmp_from_date_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("from_date_val" => $from_date_val));
+			}
+			
+			if(isset($_POST['to_date'])){
+				$to_date_val = $this->input->post('to_date');  
+				if(strlen($to_date_val)>0){
+					$_SESSION['tmp_to_date_val'] = $to_date_val; 
+					$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+				}else{
+					unset($_SESSION['tmp_to_date_val']);	
+				}
+			}else if(isset($_SESSION['tmp_to_date_val'])){ ///
+				$to_date_val = $_SESSION['tmp_to_date_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("to_date_val" => $to_date_val));
+			}   
+				/* for rental */
+				/*$is_property_type = 2;    
+				$data['sel_property_type'] = $is_property_type;
+				$paras_arrs = array_merge($paras_arrs, array("is_property_type" => $is_property_type));*/
+				
+				$paras_arrs = array_merge($paras_arrs, array("is_deleted" => '1'));
+				   
+				if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+				}else{
+					$show_pers_pg = $this->perPage;
+				}   
+				   
+				//total rows count
+				$totalRec = count($this->properties_model->get_all_cstm_properties($paras_arrs));
+				
+				//pagination configuration
+				$config['target']      = '#dyns_list';
+				$config['base_url']    = site_url('/properties/deleted_listings2');
+				$config['total_rows']  = $totalRec;
+				$config['per_page']    = $show_pers_pg; // $this->perPage;
+				
+				$this->ajax_pagination->initialize($config); 
+				
+				$paras_arrs = array_merge($paras_arrs, array('start'=>$offset,'limit' => $show_pers_pg));
+				
+				$records = $data['records'] = $this->properties_model->get_all_cstm_properties($paras_arrs); 
+				
+				$this->load->view('properties/deleted_listings2',$data);  
+			 
+			}else{
+				$this->load->view('no_permission_access'); 
+			} 
+		}
+		
+		
+		
 	 function delete_aj(){   
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1'); 
 		 
@@ -1406,13 +2900,33 @@ class Properties extends CI_Controller{
 		}  
 	 }
 	 
-	 
-	function trash_aj(){    
-		
+	  function del_restore_aj($args0='0', $args1){  
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 				
-		$data['page_headings']="Listings"; 
+			$data['page_headings'] = "Listings"; 
+			
+			if(isset($args1) && $args1>0){
+			
+				$datetimes = date('Y-m-d H:i:s');
+				$datas = array('updated_on' => $datetimes,'is_deleted' => '0'); 
+				$this->properties_model->update_property_data($args1, $datas);  
+			}
+			
+			//$this->deleted_listings2();
+			
+			redirect('properties/deleted_listings/'); 
+		
+		}else{
+			$this->load->view('no_permission_access'); 
+		}
+	 } 
+	 
+	  function trash_aj(){  
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+				
+		$data['page_headings'] = "Listings"; 
 		
 		if(isset($_POST["args1"]) && $_POST["args1"]>0){
 			$args1 = $this->input->post("args1"); 
@@ -1447,66 +2961,236 @@ class Properties extends CI_Controller{
 				//$this->properties_model->trash_property_assigned_portal_feature_data($args2);
 				}
 			//redirect('properties/deleted_properties_list'); 
-			 $this->index2();
+			 $this->deleted_listings2();
 		}else{
 			$this->load->view('no_permission_access'); 
 		}
 	 } 
+	
 	 
-	 
-	 function trash_multiple(){    
+	  function trash_multiple($paras1 ='0'){    
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
 		if($res_nums>0){
-				
-		$data['page_headings']="Listings";  
-			
-		if(isset($_POST["multi_action_check"]) && count($_POST["multi_action_check"])>0){
-			$del_checks = $_POST["multi_action_check"]; 
-			foreach($del_checks as $args1){ 
-			  
-			$pht_arrs = $this->properties_model->get_all_property_photos_by_property_id($args1);  
-			$docxs_arrs = $this->properties_model->get_all_property_documents_by_property_id($args1); 
-				
-				if(isset($pht_arrs) && count($pht_arrs) >0){
-					foreach($pht_arrs as $pht_arr){
-						$tmp_phts = $pht_arr->image;
-						if(strlen($tmp_phts)>0){
-							unlink("downloads/property_photos/{$tmp_phts}");
-						}
-					}
 					
-					$this->properties_model->trash_property_photo($args1);
-				} 
+			$data['page_headings'] = "Listings";  
 				
-				if(isset($docxs_arrs) && count($docxs_arrs) >0){
-					foreach($docxs_arrs as $docxs_arr){
-						$tmp_fls3 = $docxs_arr->name;
-						if(strlen($tmp_fls3)>0){
-							unlink("downloads/property_documents/{$tmp_fls3}");
-						}
+			if(isset($_POST["multi_action_check"]) && count($_POST["multi_action_check"])>0){
+				$del_checks = $_POST["multi_action_check"]; 
+				
+				foreach($del_checks as $args1){ 
+					  
+					$pht_arrs = $this->properties_model->get_all_property_photos_by_property_id($args1);  
+					$docxs_arrs = $this->properties_model->get_all_property_documents_by_property_id($args1); 
+						
+						if(isset($pht_arrs) && count($pht_arrs) >0){
+							foreach($pht_arrs as $pht_arr){
+								$tmp_phts = $pht_arr->image;
+								if(strlen($tmp_phts)>0){
+									unlink("downloads/property_photos/{$tmp_phts}");
+								}
+							}
+							
+							$this->properties_model->trash_property_photo($args1);
+						} 
+						
+						if(isset($docxs_arrs) && count($docxs_arrs) >0){
+							foreach($docxs_arrs as $docxs_arr){
+								$tmp_fls3 = $docxs_arr->name;
+								if(strlen($tmp_fls3)>0){
+									unlink("downloads/property_documents/{$tmp_fls3}");
+								}
+							}
+							$this->properties_model->trash_property_documents($args1);
+						}	
+						 
+						$this->properties_model->trash_property($args1);
+						
+						//$this->properties_model->delete_properties_portals_data($args2);
+						 
+						//$this->properties_model->trash_property_assigned_portal_feature_data($args2); 
 					}
-					$this->properties_model->trash_property_documents($args1);
-				}	
-				 
-				$this->properties_model->trash_property($args1);
-				
-				//$this->properties_model->delete_properties_portals_data($args2);
-				 
-				//$this->properties_model->trash_property_assigned_portal_feature_data($args2);
-				 
 				}
-			}
-			//redirect('properties/deleted_properties_list'); 
-			 $this->index2();
-		}else{
+				//redirect('properties/deleted_properties_list'); 
+				 $this->deleted_listings2();
+			}else{
 			$this->load->view('no_permission_access'); 
 		}
 	 } 
 	 
-	  
 	 
-	 function add(){  
+	 
+	 // sales 0
+	 // rent 4
+	 // Archived 1
+	 // 
+	function delete_property($args0='0', $args1=''){  
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+			if(isset($args1) && $args1!=''){ /*deleted*/ 
+				 /* sending email on delete property starts */ 
+				$property_dtl ='';   
+				$datetimes = date('Y-m-d H:i:s');
+				$datas = array('updated_on' => $datetimes,'is_deleted' => '1');		
+				$res0 = $this->properties_model->update_property_data($args1,$datas); 
+				if(isset($res0)){ 
+					
+					$created_on = date('Y-m-d H:i:s');		
+					$property_record_arr = $this->properties_model->get_property_by_id($args1);
+					if(isset($property_record_arr)){
+						$sel_db_portal_ids = $property_record_arr->show_on_portal_ids;
+						$tmps_db_portal_ids_arr = explode(',',$sel_db_portal_ids);
+						if(isset($tmps_db_portal_ids_arr) && in_array("2", $tmps_db_portal_ids_arr)){
+							$dubizzle_propty_nums = $this->properties_model->count_portal_property_by_id($args1,'2');
+							if($dubizzle_propty_nums==0){  
+								$datas333 = array('property_id' => $args1,'portal_id' => '2','datetimes' => $created_on);
+								$this->properties_model->insert_portal_property_data($datas333);
+							}else if($dubizzle_propty_nums>0){ 
+								$datas333 = array('datetimes' => $created_on);
+								$this->properties_model->update_portal_property_datas($args1,'2',$datas333);
+							}
+						}  
+					}
+							
+						if(isset($args0) && $args0 ==6){
+							redirect("properties/portal_properties_list");
+						}else if(isset($args0) && $args0==5){   
+							redirect("properties/leads_properties_list");
+						}else if(isset($args0) && $args0==4){   
+							//redirect("properties/rent_listings");
+							$this->rent_listings2();
+						}else if(isset($args0) && $args0==3){
+							//redirect("properties/sales_listings");
+							$this->sales_listings2();
+						}else if(isset($args0) && $args0==2){
+							redirect("properties/dealt_properties_list");
+						}else if($args0==1){
+							redirect("properties/archived_listings");	
+						}else{ 
+							//redirect("properties/sales_listings");
+							$this->sales_listings2();
+						} 
+						
+					}else{
+						//redirect($this->agent->referrer());
+						
+						if(isset($args0) && $args0 ==6){
+							redirect("properties/portal_properties_list");
+						}else if(isset($args0) && $args0==5){   
+							redirect("properties/leads_properties_list");
+						}else if(isset($args0) && $args0==4){   
+							//redirect("properties/rent_listings");
+							$this->rent_listings2();
+						}else if(isset($args0) && $args0==3){
+							//redirect("properties/sales_listings");
+							$this->sales_listings2();
+						}else if(isset($args0) && $args0==2){
+							redirect("properties/dealt_properties_list");
+						}else if($args0==1){
+							redirect("properties/archived_listings");	
+						}else{ 
+							//redirect("properties/sales_listings");
+							$this->sales_listings2();
+						} 
+						
+					}
+				}else{
+					redirect($this->agent->referrer());
+				}
+		}else{
+			$datas['page_headings']="Invalid Access!";
+			$this->load->view('no_permission_page',$datas);
+		}
+	}
+
+	
+	function delete_selected_properties(){  
+		
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){
+			
+			if(isset($_POST['multi_action_check']) && count($_POST['multi_action_check'])>0 && isset($_POST['args0'])){ 
+				$args0 = $_POST['args0'];
+				$del_checks = $_POST['multi_action_check'];
+			
+				foreach($del_checks as $args1){ 	 
+				
+					$property_dtl =''; 
+					$datetimes = date('Y-m-d H:i:s');
+					$datas = array('updated_on' => $datetimes,'is_deleted' => '1');		
+					$res0 = $this->properties_model->update_property_data($args1,$datas); 
+					if(isset($res0)){
+						$created_on = date('Y-m-d H:i:s');		
+						$property_record_arr = $this->properties_model->get_property_by_id($args1);
+						if(isset($property_record_arr) && count($property_record_arr)>0){
+							$sel_db_portal_ids = $property_record_arr->show_on_portal_ids;
+							$tmps_db_portal_ids_arr = explode(',',$sel_db_portal_ids);
+							if(isset($tmps_db_portal_ids_arr) && in_array("2", $tmps_db_portal_ids_arr)){
+								$dubizzle_propty_nums = $this->properties_model->count_portal_property_by_id($args1,'2');
+								if($dubizzle_propty_nums==0){  
+									$datas333 = array('property_id' => $args1,'portal_id' => '2','datetimes' => $created_on);
+									$this->properties_model->insert_portal_property_data($datas333);
+								}else if($dubizzle_propty_nums>0){ 
+									$datas333 = array('datetimes' => $created_on);
+									$this->properties_model->update_portal_property_datas($args1,'2',$datas333);
+								}
+							}  
+						} 		
+					} 	
+				}  
+					
+				if(isset($args0) && $args0 ==6){
+					redirect("properties/portal_properties_list");
+				}else if(isset($args0) && $args0==5){   
+					redirect("properties/leads_properties_list");
+				}else if(isset($args0) && $args0==4){   
+					//redirect("properties/rent_listings");
+					$this->rent_listings2();
+				}else if(isset($args0) && $args0==3){
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				}else if(isset($args0) && $args0==2){
+					redirect("properties/dealt_properties_list");
+				}else if($args0==1){
+					redirect("properties/archived_listings");	
+				}else{ 
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				}  		
+					
+			}else{  
+				//redirect($this->agent->referrer());
+				 
+				$args0 = (isset($_POST['args0'])) ? $_POST['args0'] : 0;
+				
+				if(isset($args0) && $args0 ==6){
+					redirect("properties/portal_properties_list");
+				}else if(isset($args0) && $args0==5){   
+					redirect("properties/leads_properties_list");
+				}else if(isset($args0) && $args0==4){   
+					//redirect("properties/rent_listings");
+					$this->rent_listings2();
+				}else if(isset($args0) && $args0==3){
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				}else if(isset($args0) && $args0==2){
+					redirect("properties/dealt_properties_list");
+				}else if($args0==1){
+					redirect("properties/archived_listings");	
+				}else{ 
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				} 
+			} 
+		 
+		}else{
+			$datas['page_headings']="Invalid Access!";
+			$this->load->view('no_permission_page',$datas);
+		}    
+	} 
+ 
+	 
+	 function add($args0='0'){  
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
@@ -1516,7 +3200,7 @@ class Properties extends CI_Controller{
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
-			 
+			$data['args0']  = $args0; 
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
@@ -1597,54 +3281,51 @@ class Properties extends CI_Controller{
 				// validation fail
 					$this->load->view('properties/add',$data);
 				}else{  
+				
 					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'ref_no' => $ref_no,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'emirate_id' => $emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'created_by' => $vs_id,'ip_address' => $ip_address,'created_on' => $date_times);   
 					
 					$res = $this->properties_model->insert_property_data($datas); 
 					if(isset($res)){
 						$last_property_id = $this->db->insert_id();
-						
-						
-	/*  photo script starts */	
-	if(isset($_SESSION['Temp_Media_Images']) && count($_SESSION['Temp_Media_Images'])>0){
-		 /*$_FILES["images"] = $_SESSION['Temp_Media_Images'];*/
-		 $tmp_ips = $_SESSION['Temp_IP_Address'];
-		 $tmp_dts = $_SESSION['Temp_DATE_Times'];
+							 
+						/*  photo script starts */	
+						if(isset($_SESSION['Temp_Media_Images']) && count($_SESSION['Temp_Media_Images'])>0){
+							 /*$_FILES["images"] = $_SESSION['Temp_Media_Images'];*/
+							 $tmp_ips = $_SESSION['Temp_IP_Address'];
+							 $tmp_dts = $_SESSION['Temp_DATE_Times'];
+							 
+							$datas3 = array('property_id' => $last_property_id); 
+							$this->properties_model->update_temp_property_dropzone_photos('-1',$tmp_ips,$tmp_dts,$datas3);
+						}  
+						/*  photo script ends */
+		
+						/* property documents script starts */ 
+						if(isset($_SESSION['Temp_Documents_Files']) && count($_SESSION['Temp_Documents_Files'])>0){
+							 /*$_FILES["documents"] = $_SESSION['Temp_Documents_Files'];*/
+							 $tmp_ips = $_SESSION['Temp_Documents_IP_Address'];
+							 $tmp_dts = $_SESSION['Temp_Documents_DATE_Times'];
+							 
+							$datas3 = array('property_id' => $last_property_id); 
+							$this->properties_model->update_temp_property_dropzone_documents('-1',$tmp_ips,$tmp_dts,$datas3);
+						}  
+						/* property documents script ends */
 		 
-		$datas3 = array('property_id' => $last_property_id); 
-		$this->properties_model->update_temp_property_dropzone_photos('-1',$tmp_ips,$tmp_dts,$datas3);
-	}  
-	/*  photo script ends */
-	
-	/* property documents script starts */ 
-	if(isset($_SESSION['Temp_Documents_Files']) && count($_SESSION['Temp_Documents_Files'])>0){
-		 /*$_FILES["documents"] = $_SESSION['Temp_Documents_Files'];*/
-		 $tmp_ips = $_SESSION['Temp_Documents_IP_Address'];
-		 $tmp_dts = $_SESSION['Temp_Documents_DATE_Times'];
-		 
-		$datas3 = array('property_id' => $last_property_id); 
-		$this->properties_model->update_temp_property_dropzone_documents('-1',$tmp_ips,$tmp_dts,$datas3);
-	}  
-	/* property documents script ends */
-	
-	
-	
-	   
-	/* property notes script starts */ 
-	if(isset($_SESSION['Temp_NT_IP_Address']) && strlen($_SESSION['Temp_NT_DATE_Times'])>0){ 
-		 $tmp_ips = $_SESSION['Temp_NT_IP_Address'];
-		 $tmp_dts = $_SESSION['Temp_NT_DATE_Times'];
-		 
-		$datas3 = array('property_id' => $last_property_id); 
-		$this->properties_model->update_temp_property_notes('-1',$tmp_ips,$tmp_dts,$datas3);
-	}  
-	/* property notes script ends */
-						
-						
+						/* property notes script starts */ 
+						if(isset($_SESSION['Temp_NT_IP_Address']) && strlen($_SESSION['Temp_NT_DATE_Times'])>0){ 
+							 $tmp_ips = $_SESSION['Temp_NT_IP_Address'];
+							 $tmp_dts = $_SESSION['Temp_NT_DATE_Times'];
+							 
+							$datas3 = array('property_id' => $last_property_id); 
+							$this->properties_model->update_temp_property_notes('-1',$tmp_ips,$tmp_dts,$datas3);
+						}  
+						/* property notes script ends */
+							
 						$this->session->set_flashdata('success_msg','Record inserted successfully!');
+					
 					}else{
 						$this->session->set_flashdata('error_msg','Error: while inserting record!');
-					} 
-					 
+					}
+					
 					if(isset($_SESSION['Temp_Media_Images'])){
 						unset($_SESSION['Temp_Media_Images']);
 						unset($_SESSION['Temp_IP_Address']);
@@ -1661,11 +3342,26 @@ class Properties extends CI_Controller{
 						unset($_SESSION['Temp_NT_IP_Address']);
 						unset($_SESSION['Temp_NT_DATE_Times']);  
 					}
-					 
+						 
 					if(isset($_POST['saves_and_new'])){
-						redirect("properties/add");
+						redirect("properties/add/".$args0);
 					}else{
-						redirect("properties/index");	
+					 
+						if(isset($args0) && $args0==1){
+							redirect("properties/archived_listings");	
+						}else if(isset($args0) && $args0==2){
+							redirect("properties/dealt_properties_list");
+						}else if(isset($args0) && $args0==3){
+							redirect("properties/sales_listings");
+						}else if(isset($args0) && $args0==4){   
+							redirect("properties/rent_listings");
+						}else if(isset($args0) && $args0 ==5){ 
+							redirect("properties/leads_properties_list");
+						}else if(isset($args0) && $args0==6){   
+							redirect("properties/portal_properties_list");	
+						}else{ 
+							redirect("properties/properties_list");
+						}  	
 					} 
 				} 	 
 				
@@ -1678,7 +3374,8 @@ class Properties extends CI_Controller{
 		}
 	}  
 	 
-	 function update($args1=''){ 
+	 
+	 function update($args0='0', $args1=''){ 
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
@@ -1687,7 +3384,7 @@ class Properties extends CI_Controller{
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
-			 
+			$data['args0'] = $args0;  
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
@@ -1770,7 +3467,7 @@ class Properties extends CI_Controller{
 				$this->form_validation->set_rules("source_of_listing", "Source of Listing", "trim|required|xss_clean");   
 				 
 				if($this->form_validation->run() == FALSE){
-				// validation fail
+					// validation fail
 					$this->load->view('properties/update',$data);
 				}else if($args1>0){ /*'ref_no' => $ref_no,*/ 
 					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'emirate_id' => $emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'ip_address' => $ip_address,'updated_on' => $date_times);   
@@ -1783,11 +3480,34 @@ class Properties extends CI_Controller{
 						$this->session->set_flashdata('error_msg','Error: while updating record!');
 					}  
 					 
-					if(isset($_POST['saves_and_new'])){
+					/*if(isset($_POST['saves_and_new'])){
 						redirect("properties/add");
 					}else{
 						redirect("properties/index");	
-					} 
+					}*/ 
+					
+					if(isset($args0) && $args0==1){
+						redirect("properties/archived_listings");	
+					}else if(isset($args0) && $args0==2){
+						redirect("properties/dealt_properties_list");
+					}else if(isset($args0) && $args0==3){
+						redirect("properties/sales_listings");
+					}else if(isset($args0) && $args0==4){   
+						redirect("properties/rent_listings");
+					}else if(isset($args0) && $args0 ==5){ 
+						redirect("properties/leads_properties_list");
+					}else if(isset($args0) && $args0==6){   
+						redirect("properties/portal_properties_list");	
+					}else{ 
+						redirect("properties/properties_list");
+					}  
+					
+					/*if($args0 == 3){
+						redirect("properties/add");
+					}else if($args0 == 4){
+						redirect("properties/add");
+					}else */
+					
 				} 	 
 				
 			}else{
@@ -1799,9 +3519,8 @@ class Properties extends CI_Controller{
 		}
 	}  
 	 
-	
-	 function property_detail($args1=''){ 
-		
+	 
+	 function property_detail($args1=''){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','view',$this->dbs_user_role_id,'1');
 		if($res_nums>0){
 			if($args1>0){ 
@@ -1825,11 +3544,8 @@ class Properties extends CI_Controller{
 
 	 /* properties operations starts */
 	 
-	 function trash($args2=''){ }  
-	  
-	 
-	 
-	 
+	 //function trash($args2=''){ }  
+	    
 	 function fetch_emirate_locations($args3=''){ 
 		$data['emirate_location_arrs'] = $this->properties_model->fetch_emirate_locations($args3);
 		$this->load->view('ajax/fetch_emirate_locations',$data); 

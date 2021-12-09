@@ -15,11 +15,11 @@
 		} 
 	
 		foreach($records as $record){ 
-			$operate_url = 'properties/update/4/'.$record->id;
+			$operate_url = 'properties/update/1/'.$record->id;
 			$operate_url = site_url($operate_url);
 			
 			//$trash_url = 'properties/trash_aj/'.$record->id;
-			$trash_url = 'properties/delete_property/4/'.$record->id;
+			$trash_url = 'properties/delete_property/1/'.$record->id;
 			$trash_url = site_url($trash_url); ?>    
 			 
 			 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">

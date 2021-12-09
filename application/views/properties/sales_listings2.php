@@ -15,10 +15,11 @@
 		} 
 	
 		foreach($records as $record){ 
-			$operate_url = 'properties/update/'.$record->id;
+			$operate_url = 'properties/update/3/'.$record->id;
 			$operate_url = site_url($operate_url);
 			
-			$trash_url = 'properties/trash_aj/'.$record->id;
+			//$trash_url = 'properties/trash_aj/'.$record->id;
+			$trash_url = 'properties/delete_property/3/'.$record->id;
 			$trash_url = site_url($trash_url); ?>    
 			 
 			 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
@@ -55,16 +56,21 @@
                  <td class="text-center"><?php echo number_format($record->price,0,".",","); /*CRM_CURRENCY.' '.*/ ?></td>  
                   <td class="text-center"><?php echo date('d-M-Y',strtotime($record->created_on)); ?></td>   
                   <td class="text-center"> 
-                     <ul class="icons-list">
-                    <?php if($view_res_nums>0){ ?>  
-                      	<li class="text-primary-600"><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i></a></li>   
-                   <?php } if($update_res_nums>0){ ?> 
-                            <li class="text-primary-600"><a href="<?php echo $operate_url; ?>"><i class="icon-pencil7"></i></a></li> 
-                    <?php } 
-                        if($trash_res_nums>0){ ?>  
-                            <li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li>
-                  <?php } ?> 
-                    </ul>  
+				  	<ul class="icons-list">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+							<ul class="dropdown-menu dropdown-menu-right">  	 
+						  <?php if($view_res_nums>0){ ?>   
+								<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
+						   <?php } if($update_res_nums>0){ ?> 
+									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+							<?php } 
+								if($trash_res_nums>0){ ?>  
+								   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+						  <?php } ?>  
+							</ul>
+						</li>
+					</ul>   
                   </td> 
                 </tr>
 							
@@ -74,7 +80,7 @@
         <tr>
            <td colspan="9">
            <div style="float:left;"> 
-           <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select" onChange="operate_properties();">
+           <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select2" onChange="operate_properties();">
               <option value="25"> Pages</option>
               <option value="25" <?php echo (isset($_SESSION['tmp_per_page_val']) && $_SESSION['tmp_per_page_val']==25) ? 'selected="selected"':''; ?>> 25 </option>
               <option value="50" <?php echo (isset($_SESSION['tmp_per_page_val']) && $_SESSION['tmp_per_page_val']==50) ? 'selected="selected"':''; ?>> 50 </option>

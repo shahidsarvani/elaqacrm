@@ -8,6 +8,186 @@ class Properties_model extends CI_Model {
 	}  
 
 	 /* properties photos starts  */ 
+	 
+	 
+	function get_all_cstm_quick_properties($params = array()){ 
+		
+		$vs_user_type_id= $this->session->userdata('us_role_id'); 
+		$temp_agents_ids = '';
+		if($vs_user_type_id==2){  
+			$vs_id = $this->session->userdata('us_id');
+			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
+			
+			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+				foreach($agnt_arrs as $agnt_arr){
+					$temp_agents_ids .= $agnt_arr->id.",";
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+			}	 
+		} 
+		 
+		$whrs ='';
+		$vs_id = $this->session->userdata('us_id'); 
+		
+		if($vs_user_type_id==3){ 
+			$whrs .=" AND p.assigned_to_id=$vs_id ";
+		}else if($vs_user_type_id==2){  
+		
+			if(array_key_exists("assigned_to_id_val",$params)){
+				$assigned_to_id_val =   $params['assigned_to_id_val'];  
+				if(strlen($assigned_to_id_val)>0){ 
+					$whrs .=" AND p.assigned_to_id IN ($assigned_to_id_val) ";
+				} 
+			}else{  
+				if($temp_agents_ids!=''){
+					//$whrs .=" AND p.assigned_to_id IN ($temp_agents_ids) ";
+					$whrs .=" AND ( p.assigned_to_id='$vs_id' OR p.assigned_to_id IN ($temp_agents_ids) ) "; 
+				}else{ 
+					$whrs .=" AND p.assigned_to_id='$vs_id'  ";
+				}	 
+			}
+		}else if(array_key_exists("assigned_to_id_val",$params)){
+				$assigned_to_id_val = $params['assigned_to_id_val']; 
+				if(strlen($assigned_to_id_val)>0){ 
+					$whrs .=" AND p.assigned_to_id IN ($assigned_to_id_val) ";
+				}  
+			}  
+			
+		/*$whrs .= " AND ( p.title LIKE '%$s_val%' OR p.description LIKE '%$s_val%' OR p.ref_no LIKE '%$s_val%' OR p.unit_no LIKE '%$s_val%' OR p.property_address LIKE '%$s_val%' ) ";*/
+		if(array_key_exists("refer_no_val",$params)){
+			$refer_no_val = $params['refer_no_val'];
+			if(strlen($refer_no_val)>0){
+				$whrs .= " AND p.ref_no LIKE '%$refer_no_val%' ";
+			}
+		}
+		
+		/*if(array_key_exists("unit_no_val",$params)){
+			$unit_no_val = $params['unit_no_val'];  
+			if(strlen($unit_no_val)>0){
+				$whrs .= " AND p.unit_no LIKE '%$unit_no_val%' ";  
+			}
+		} */ 
+		
+		if(array_key_exists("price_val",$params) && array_key_exists("to_price_val",$params)){ 
+			$str_price_val = $params['price_val'];
+			$to_price_val = $params['to_price_val']; 
+			
+			if(strlen($str_price_val)>0 && strlen($to_price_val)>0){
+				$whrs .=" AND ( p.price >='$str_price_val' AND p.price <='$to_price_val' ) ";
+			}  
+        } 
+		
+		if(array_key_exists("emirate_location_id_val",$params)){
+			$emirate_location_id_val = $params['emirate_location_id_val'];  
+			if(strlen($emirate_location_id_val)>0){ 
+				$whrs .=" AND p.sub_location_id IN ($emirate_location_id_val) ";
+			}
+		}   
+		
+		if(array_key_exists("no_of_beds_id_val",$params)){
+			$no_of_beds_id_val = $params['no_of_beds_id_val'];  
+			if(strlen($no_of_beds_id_val)>0){ 
+				$whrs .=" AND p.no_of_beds_id IN ($no_of_beds_id_val) ";
+			}
+		}  
+		
+		if(array_key_exists("owner_id_val",$params)){
+			$owner_id_val = $params['owner_id_val']; 
+			if(strlen($owner_id_val)>0){
+			 
+				$whrs .=" AND p.owner_id IN ($owner_id_val) ";
+			}
+		}
+		
+	$whrs1 = '';
+	if(array_key_exists("portal_id_val",$params)){
+		$portal_id_val = $params['portal_id_val']; 
+		if(strlen($portal_id_val)>0){
+			$tmp_portal_id_val_arrs = explode(',',$portal_id_val);
+			if(isset($tmp_portal_id_val_arrs)){
+				foreach($tmp_portal_id_val_arrs as $tmp_portal_id_val_arr){
+					
+					$whrs1 .= " FIND_IN_SET('$tmp_portal_id_val_arr', p.show_on_portal_ids) OR "; 	
+				} 
+				
+				$whrs1 = substr("$whrs1",0,-3);
+				
+				$whrs .= " AND ( $whrs1 )";
+			}  
+		}
+	}  
+		
+		/*if(array_key_exists("published_val",$params)){
+			$sel_published_val = $params['published_val']; 
+			if(strlen($sel_published_val)>0){
+				$whrs .=" AND p.is_published=$sel_published_val";
+			}
+		} */
+		
+		if(array_key_exists("property_status_val",$params)){
+			$property_status_val = $params['property_status_val']; 
+			if($property_status_val>0){
+				$whrs .= " AND p.property_status=$property_status_val";
+			}
+		}  
+		
+		if(array_key_exists("is_property_type",$params)){
+			$is_property_type = $params['is_property_type']; 
+			if($is_property_type>0){
+				$whrs .= " AND p.property_type=$is_property_type";
+			}
+		} 
+		
+		
+		if(array_key_exists("is_archived",$params)){
+			$is_archived = $params['is_archived']; 
+			if(strlen($is_archived)>0){
+				$whrs .= " AND p.is_archived=$is_archived";
+			}
+		}else{
+			$whrs .= " AND p.is_archived='0' ";
+		}
+		
+		if(array_key_exists("is_deleted",$params)){
+			$is_deleted = $params['is_deleted']; 
+			if(strlen($is_deleted)>0){
+				$whrs .= " AND p.is_deleted=$is_deleted";
+			}
+		}else{
+			$whrs .= " AND p.is_deleted='0' ";
+		} 
+		 
+		$limits ='';
+		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+			$tot_limit =   $params['limit'];
+			$str_limit =   $params['start']; 			 
+			$limits = " LIMIT $str_limit, $tot_limit ";
+        }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
+             $tot_limit =   $params['limit'];
+			$limits = " LIMIT $tot_limit ";
+		} 
+		  
+		/*$query = $this->db->query("SELECT p.id, p.ref_no, p.unit_no, p.price, p.property_status, p.is_published, p.assigned_to_id, p.is_new, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.is_deleted='0' AND p.is_archived='0' AND p.is_dealt='0' AND property_status NOT IN (1,2) AND p.is_lead='0' $whrs ORDER BY p.id DESC $limits "); */
+		
+		
+		if(array_key_exists("pics_nos_val",$params)){
+			$pics_nos_val = $params['pics_nos_val'];  
+			if($pics_nos_val> -1){ 
+				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, COUNT(o.id) AS pics_nos FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN property_images_tbl o ON p.id=o.property_id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs GROUP BY p.id HAVING COUNT(o.id)='$pics_nos_val' ORDER BY p.id DESC $limits ");
+				
+				 
+			}else{
+				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits ");
+			}
+		}else{
+		
+			$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
+		}   /*  p.is_deleted='0' AND p.is_archived='0' */
+		return $query->result(); /* p.created_on DESC */
+	}
+		
+		
+		
     function get_tmp_max_property_photos_sort_val($tmp_proprtyid,$tmp_ips){
         if($tmp_proprtyid== -1 && strlen($tmp_ips)>0){
             $this->db->select_max("sort_order");
@@ -221,15 +401,7 @@ class Properties_model extends CI_Model {
 		}else{
 			return '';
 		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+	} 	
 	
 	
 	function fetch_property_list_emirate_locations($args3){ 
@@ -364,7 +536,7 @@ class Properties_model extends CI_Model {
 			$category_id_vals = $params['category_id_vals'];   
 			if(strlen($category_id_vals)>0){ 
 				//$whrs .=" AND FIND_IN_SET($category_id_vals, p.category_id) "; 
-				$whrs .=" AND p.category_id IN ($category_id_vals) ";
+				$whrs .= " AND p.category_id IN ($category_id_vals) ";
 			}
 		}   
 		
@@ -372,7 +544,7 @@ class Properties_model extends CI_Model {
 			$emirate_id_vals = $params['emirate_id_vals'];  
 			if(strlen($emirate_id_vals)>0){  
 				//$whrs .=" AND FIND_IN_SET($emirate_id_vals, p.emirate_id) ";  
-				$whrs .=" AND p.emirate_id IN ($emirate_id_vals) ";
+				$whrs .= " AND p.emirate_id IN ($emirate_id_vals) ";
 			}
 		}  
 		 
@@ -380,7 +552,7 @@ class Properties_model extends CI_Model {
 			$location_id_vals = $params['location_id_vals'];  
 			if(strlen($location_id_vals)>0){ 
 				//$whrs .=" AND FIND_IN_SET($location_id_vals, p.location_id) "; 
-				$whrs .=" AND p.location_id IN ($location_id_vals) ";
+				$whrs .= " AND p.location_id IN ($location_id_vals) ";
 			}
 		} 
 		
@@ -388,14 +560,14 @@ class Properties_model extends CI_Model {
 			$sub_location_id_vals = $params['sub_location_id_vals'];  
 			if(strlen($sub_location_id_vals)>0){ 
 				//$whrs .=" AND FIND_IN_SET($sub_location_id_vals, p.sub_location_id) "; 
-				$whrs .=" AND p.sub_location_id IN ($sub_location_id_vals) ";
+				$whrs .= " AND p.sub_location_id IN ($sub_location_id_vals) ";
 			}
 		}  	
 		
 		if(array_key_exists("portal_id_vals",$params)){
 			$portal_id_vals = $params['portal_id_vals'];  
 			if(strlen($portal_id_vals)>0){  
-			 	$whrs .=" AND ( FIND_IN_SET($portal_id_vals, p.show_on_portal_ids) OR p.show_on_portal_ids IN ($portal_id_vals) ) "; 
+			 	$whrs .= " AND ( FIND_IN_SET($portal_id_vals, p.show_on_portal_ids) OR p.show_on_portal_ids IN ($portal_id_vals) ) "; 
 			}
 		}
 		
@@ -403,7 +575,7 @@ class Properties_model extends CI_Model {
 			$owner_id_vals = $params['owner_id_vals'];  
 			if(strlen($owner_id_vals)>0){  
 				//$whrs .=" AND FIND_IN_SET($owner_id_vals, p.owner_id) "; 
-				$whrs .=" AND p.owner_id IN ($owner_id_vals) ";
+				$whrs .= " AND p.owner_id IN ($owner_id_vals) ";
 			}
 		}
 		
@@ -411,23 +583,41 @@ class Properties_model extends CI_Model {
 			$property_status_vals = $params['property_status_vals']; 
 			if(strlen($property_status_vals)>0){  
 				//$whrs .=" AND FIND_IN_SET($property_status_vals, p.property_status) "; 
-				$whrs .=" AND p.property_status IN ($property_status_vals) ";
+				$whrs .= " AND p.property_status IN ($property_status_vals) ";
 			}
 		}  
 		
-		/*if(array_key_exists("is_property_type",$params)){
+		if(array_key_exists("is_property_type",$params)){
 			$is_property_type = $params['is_property_type']; 
 			if($is_property_type>0){
-				$whrs .=" AND p.property_type=$is_property_type";
+				$whrs .= " AND p.property_type=$is_property_type";
 			}
-		}*/   
+		}
+		
+		if(array_key_exists("is_archived",$params)){
+			$is_archived = $params['is_archived'];
+			if(strlen($is_archived)>0){
+				$whrs .= " AND p.is_archived=$is_archived";
+			}
+		}else{
+			$whrs .= " AND p.is_archived='0' ";
+		}
+		
+		if(array_key_exists("is_deleted",$params)){
+			$is_deleted = $params['is_deleted']; 
+			if(strlen($is_deleted)>0){
+				$whrs .= " AND p.is_deleted=$is_deleted";
+			}
+		}else{
+			$whrs .= " AND p.is_deleted='0' ";
+		}   
 		
 		if(array_key_exists("price_val",$params) && array_key_exists("to_price_val",$params)){ 
 			$str_price_val = $params['price_val'];
 			$to_price_val = $params['to_price_val']; 
 			
 			if(strlen($str_price_val)>0 && strlen($to_price_val)>0){
-				$whrs .=" AND ( p.price >='$str_price_val' AND p.price <='$to_price_val' ) ";
+				$whrs .= " AND ( p.price >='$str_price_val' AND p.price <='$to_price_val' ) ";
 			}  
         }
 		
@@ -436,7 +626,7 @@ class Properties_model extends CI_Model {
 			$to_date_val = $params['to_date_val']; 
 			
 			if(strlen($from_date_val)>0 && strlen($to_date_val)>0){
-				$whrs .=" AND ( DATE_FORMAT(p.created_on,'%Y-%m-%d')>='$from_date_val' AND DATE_FORMAT(p.created_on,'%Y-%m-%d')<='$to_date_val' ) ";
+				$whrs .= " AND ( DATE_FORMAT(p.created_on,'%Y-%m-%d')>='$from_date_val' AND DATE_FORMAT(p.created_on,'%Y-%m-%d')<='$to_date_val' ) ";
 			}  
         }
 		 
@@ -450,7 +640,7 @@ class Properties_model extends CI_Model {
 			$limits = " LIMIT $tot_limit ";
 		}   
 		   
-		$query = $this->db->query("SELECT p.id, p.ref_no, p.title, c.name AS cate_name, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids, p.price, u.name AS crt_usr_name, em.name AS em_name, em_lc.name AS em_lc_name, sl.name AS sub_loc_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, p.property_status AS property_status, p.created_on AS created_on FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN emirates_tbl em ON p.emirate_id=em.id LEFT JOIN emirate_locations_tbl em_lc ON p.location_id=em_lc.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.is_deleted='0' AND p.is_archived='0' $whrs ORDER BY p.id DESC $limits "); 
+		$query = $this->db->query("SELECT p.id, p.ref_no, p.title, c.name AS cate_name, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids, p.price, u.name AS crt_usr_name, em.name AS em_name, em_lc.name AS em_lc_name, sl.name AS sub_loc_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, p.property_status AS property_status, p.created_on AS created_on FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN emirates_tbl em ON p.emirate_id=em.id LEFT JOIN emirate_locations_tbl em_lc ON p.location_id=em_lc.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 $whrs ORDER BY p.id DESC $limits "); 
 		return $query->result(); 
 	} 
 	
@@ -459,8 +649,7 @@ class Properties_model extends CI_Model {
 			$query = $this->db->query("SELECT p.*, c.name AS cate_name, u.name AS crt_usr_name, em.name AS em_name, em_lc.name AS em_lc_name, sl.name AS sub_loc_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, sr_lst.title AS sr_lst_title FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN emirates_tbl em ON p.emirate_id=em.id LEFT JOIN emirate_locations_tbl em_lc ON p.location_id=em_lc.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN source_of_listings_tbl sr_lst ON p.source_of_listing=sr_lst.id WHERE p.id=$paras1 "); 
 			return $query->row();
 		} 
-	}  
-	   
+	}
 	
 	function get_all_property_photos_by_property_id($args1){  
 		$this->db->select('image'); 
@@ -533,6 +722,38 @@ class Properties_model extends CI_Model {
 		}
 		 
 		 return $prop_ref_no_max_vals; 
+	}
+	
+	
+	function insert_portal_property_data($data){ 
+		return $this->db->insert('portal_deleted_properties', $data);
+	} 
+	
+	function count_portal_property_by_id($parass1,$parass2){ 
+	 	$num_rows =0;
+		if($parass1>0 && $parass2>0){  
+			$this->db->where(" property_id='$parass1' ");
+			$this->db->where(" portal_id='$parass2' "); 
+			$num_rows = $this->db->count_all_results('portal_deleted_properties'); 
+		}
+		return $num_rows;
+	}
+	
+	function update_portal_property_datas($parass1,$parass2,$data){
+		if($parass1>0 && $parass2>0){  
+			$this->db->where(" property_id='$parass1' ");
+			$this->db->where(" portal_id='$parass2' "); 
+			return $this->db->update('portal_deleted_properties', $data);
+		} 
+	}
+	
+	function trash_deleted_portal_property($parass1,$parass2){
+		if($parass1>0 && $parass2>0){  
+			$this->db->where(" property_id='$parass1' ");
+			$this->db->where(" portal_id='$parass2' ");  
+			$this->db->delete('portal_deleted_properties'); 
+			return true;
+		} 
 	}
 	 
  	   

@@ -15,11 +15,11 @@
 		} 
 	
 		foreach($records as $record){ 
-			$operate_url = 'properties/update/4/'.$record->id;
+			$operate_url = 'properties/del_restore_aj/1/'.$record->id;
 			$operate_url = site_url($operate_url);
 			
-			//$trash_url = 'properties/trash_aj/'.$record->id;
-			$trash_url = 'properties/delete_property/4/'.$record->id;
+			$trash_url = 'properties/trash_aj/'.$record->id;
+			//$trash_url = 'properties/delete_property/1/'.$record->id;
 			$trash_url = site_url($trash_url); ?>    
 			 
 			 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
@@ -31,10 +31,9 @@
                 <td class="text-center"><?= stripslashes($record->ref_no); ?></td>
                 <td><?= stripslashes($record->title); ?></td>
                 <td><?= stripslashes($record->cate_name); ?></td>    
-                <td>
-				  <?php 
+                <td><?php 
 					if($record->assigned_to_id>0){
-						$usr_arr =  $this->general_model->get_user_info_by_id($record->assigned_to_id);
+						$usr_arr = $this->general_model->get_user_info_by_id($record->assigned_to_id);
 						echo stripslashes($usr_arr->name);
 					} ?> 
                 </td>    
@@ -60,11 +59,14 @@
 					 <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
 						<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
-					  <?php if($view_res_nums>0){ ?>   
-							<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
-					   <?php } if($update_res_nums>0){ ?> 
-								<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+					  <?php 
+						  if($update_res_nums>0){ ?> 
+								<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="glyphicon glyphicon-repeat"></i> Restore</a> </li>
 						<?php } 
+						
+						 if($view_res_nums>0){ ?>   
+							<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
+					   <?php } 
 							if($trash_res_nums>0){ ?>  
 							   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
 					  <?php } ?>  

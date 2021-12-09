@@ -76,10 +76,7 @@ if($trash_res_nums>0){ ?>
 			 
 			$.ajax({
 				method: "POST",
-				url: "<?php echo site_url('/properties/rent_listings2/'); ?>", 
-				
-				//category_id_vals emirate_id_vals location_id_vals sub_location_id_vals portal_id_vals assigned_to_id_vals owner_id_vals property_status_vals 
-				 
+				url: "<?php echo site_url('/properties/deleted_listings2/'); ?>",   
 				data: { page: 0, sel_per_page_val:sel_per_page_val, s_val:s_val, category_id_vals:category_id_vals, emirate_id_vals:emirate_id_vals, location_id_vals:location_id_vals, sub_location_id_vals:sub_location_id_vals, portal_id_vals:portal_id_vals, assigned_to_id_vals:assigned_to_id_vals, owner_id_vals:owner_id_vals, property_status_vals:property_status_vals, price:price, to_price:to_price, from_date:from_date, to_date:to_date },
 				beforeSend: function(){
 					$('.loading').show();
@@ -88,9 +85,9 @@ if($trash_res_nums>0){ ?>
 					$('.loading').hide();
 					$('#dyns_list').html(data);
 					
-					$('.select').select2({
-						minimumResultsForSearch: Infinity
-					});
+					//$('.select2').select2({
+					//	minimumResultsForSearch: Infinity
+					///});
 					
 					/*$( '[data-toggle=popover]' ).popover();
 					
@@ -103,10 +100,10 @@ if($trash_res_nums>0){ ?>
 		}); 
 	} 
 	
-	function operate_archived_properties(){ 
+	function restore_selected_properties(){ 
 		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
 		if(conf_msg){
-			document.getElementById('datas_form').action = "<?= site_url('properties/archived_selected_properties');?>"; 	
+			document.getElementById('datas_form').action = "<?= site_url('properties/restore_selected_properties');?>"; 	
 			document.getElementById('datas_form').submit();
 		}else{
 			return false;	
@@ -164,7 +161,7 @@ if($trash_res_nums>0){ ?>
 		<div class="category-title">
             <span>Search</span>
             <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('properties/rent_listings'); ?>';" data-action="reload"></a></li>
+                <li><a onClick="window.location='<?= site_url('properties/deleted_listings'); ?>';" data-action="reload"></a></li>
                 <li><a href="#" data-action="collapse"></a></li>
             </ul>
         </div>
@@ -434,10 +431,10 @@ if($trash_res_nums>0){ ?>
             </div>
         </div> 
         
-	<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add/4/'); ?>">
+	<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add/1/'); ?>">
     <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
        
-    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/delete_selected_properties'); ?>" method="post">   
+    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/trash_multiple'); ?>" method="post">   
         <div class="panel-body"> 
             <div class="row">
             <div class="col-md-12"> 
@@ -457,19 +454,16 @@ if($trash_res_nums>0){ ?>
 				  <div class="col-md-8 pull-right"> 
                     <div class="dt-buttons"> 
 					
-						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="<?= site_url('properties/rent_listings/export_excel'); ?>"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
+						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="<?= site_url('properties/deleted_listings/export_excel'); ?>"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
                      <?php if($trash_res_nums>0){ ?>
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      
-                    <?php } if($add_res_nums>0){ ?> 
-                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('properties/add/4/'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
-                    <?php }
-						
+                    <?php }  
 						if($add_res_nums==0 && $trash_res_nums==0){  ?>
 							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
 					<?php } ?> 
 					
-						<button type="button" name="submit_archive_properties" id="submit_archive_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Archive Selected" onclick="operate_archived_properties();"> <i class="glyphicon glyphicon-repeat"></i> Archive Selected </button>  
+						<button type="button" name="submit_restore_properties" id="submit_restore_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Restore Selected" onClick="restore_selected_properties();"> <i class="glyphicon glyphicon-repeat"></i> Restore Selected </button>  
 					
                         </div>
                     </div> 
@@ -542,11 +536,11 @@ if($trash_res_nums>0){ ?>
         $sr=1; 
         if(isset($records) && count($records)>0){
             foreach($records as $record){ 
-                $operate_url = 'properties/update/4/'.$record->id;
+                $operate_url = 'properties/del_restore_aj/1/'.$record->id;
                 $operate_url = site_url($operate_url); 
                 
-                // $trash_url = 'properties/trash_aj/'.$record->id;
-                $trash_url = 'properties/delete_property/4/'.$record->id;
+                $trash_url = 'properties/trash_aj/'.$record->id;
+                //$trash_url = 'properties/delete_property/1/'.$record->id;
 			    $trash_url = site_url($trash_url); ?>
                 
                 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
@@ -586,12 +580,14 @@ if($trash_res_nums>0){ ?>
 					<ul class="icons-list">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
-							<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
-						  <?php if($view_res_nums>0){ ?>   
+							<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	
+							<?php
+								if($update_res_nums>0){ ?> 
+									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="glyphicon glyphicon-repeat"></i> Restore</a> </li>
+							<?php }  
+						  		 if($view_res_nums>0){ ?>   
 								<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
-						   <?php } if($update_res_nums>0){ ?> 
-									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
-							<?php } 
+						   <?php } 
 								if($trash_res_nums>0){ ?>  
 								   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
 						  <?php } ?>  
@@ -626,7 +622,7 @@ if($trash_res_nums>0){ ?>
     <div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div>
     </div>   
 </div>  
-<input type="hidden" name="args0" id="args0" value="4" />
+<input type="hidden" name="args0" id="args0" value="0" />
      </form>
         </div>
         <!-- /sidebars overview --> 

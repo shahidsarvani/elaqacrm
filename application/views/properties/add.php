@@ -47,7 +47,7 @@
               <?php echo $this->session->flashdata('error_msg'); ?> </div>
             <?php } ?> 
             <!-- Horizontal form --> 
-            <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url('properties/add'); ?>" class="form-horizontal" onSubmit="return operate_custom_validation();">
+            <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url('properties/add/'.$args0); ?>" class="form-horizontal" onSubmit="return operate_custom_validation();">
               <div class="panel panel-flat">
                 <div class="panel-heading">
                   <h5 class="panel-title"> 
@@ -210,139 +210,137 @@
                 }
             } ?>
             
-	<script type="text/javascript">
-    
-        function opereate_ref_no(sel_vls){
-            var pre_ref_val = document.getElementById('ref_no').value;
-            if(pre_ref_val!=''){ 
-                pre_ref_val = pre_ref_val.replace(/BSO-S/g,''); 
-                pre_ref_val = pre_ref_val.replace(/BSO-R/g,''); 
-                
-                pre_ref_val = pre_ref_val.replace(/S/g,''); 
-                pre_ref_val = pre_ref_val.replace(/R/g,''); 
-                
-                pre_ref_val = pre_ref_val.replace(/L-/g,''); 
-            } 
-            
-            if(sel_vls==2){ 
-                var nw_pre_ref_val = "<?php echo $conf_rent_inititals; ?>"+pre_ref_val;
-                document.getElementById('ref_no').value = nw_pre_ref_val;
-            }else{
-                var nw_pre_ref_val = "<?php echo $conf_sale_inititals; ?>"+pre_ref_val;
-                document.getElementById('ref_no').value = nw_pre_ref_val;	
-            } 
-        } 
-				
-		$(function() { 
-		<?php
-			$usr_popup_url = 'users/users_popup_list';
-			$usr_popup_url = site_url($usr_popup_url); ?> 
-			 
-			$('#modal_remote_user').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $usr_popup_url; ?>', function() {
-		 
-					$('.select').select2({
-						minimumResultsForSearch: Infinity
-					});
-				});
-			});
- 
- 		<?php
-			$ownr_popup_url = 'owners/owners_popup_list';
-			$ownr_popup_url = site_url($ownr_popup_url); ?> 
-			 
-			$('#modal_remote_owner').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $ownr_popup_url; ?>', function() {
-		 
-					$('.select').select2({
-						minimumResultsForSearch: Infinity
-					});
-				});
-			});   
+			<script type="text/javascript">
 			
-		<?php
-			$prpty_amenities_popup_url = 'property_features/amenities_popup_list/';
-			$prpty_amenities_popup_url = site_url($prpty_amenities_popup_url); ?> 
-			
-			$('#modal_remote_amenities').on('show.bs.modal', function() {
-		
-				var private_amenities_data_val = document.getElementById("private_amenities_data").value;  	
-				var commercial_amenities_data_val = document.getElementById("commercial_amenities_data").value;  	 			
-				
-				var amenities_data_url =  "<?php echo $prpty_amenities_popup_url; ?>"+private_amenities_data_val+"__"+commercial_amenities_data_val;
-				
-				var repls = "_";
-				amenities_data_url = amenities_data_url.replace(/,/g,repls);
-				   
-				$(this).find('.modal-body').load(amenities_data_url, function() {
-		 
-					$('.select').select2({
-						minimumResultsForSearch: Infinity
-					});
-				});
-			});  
-		});   
-		
-		function clickeds_users(sels_vals) {  
-			$(document).ready(function(){
-			<?php  
-				$tmp_usr_pth1 = '/users/fetch_users_list/';
-				$tmp_usr_pth1 = site_url($tmp_usr_pth1);	?>
-				
-				$.ajax({
-					url: '<?php echo $tmp_usr_pth1; ?>'+sels_vals,
-					cache: false,
-					type: 'POST', 
-					data: { 'submits':1 },
-					success: function (result,status,xhr) { 
-						document.getElementById("fetch_users").innerHTML = result; 
-						$('.select').select2({
-							minimumResultsForSearch: Infinity
-						}); 
-					}
-				});    
-			}); 
-		}  
-		
-		function clickeds(sels_vals) {  
-			$(document).ready(function(){
-			<?php  
-				$tmp_ownr_pth1 = '/owners/fetch_owners_list/';
-				$tmp_ownr_pth1 = site_url($tmp_ownr_pth1);	?>
-				
-				$.ajax({
-					url: '<?php echo $tmp_ownr_pth1; ?>'+sels_vals,
-					cache: false,
-					type: 'POST', 
-					data: { 'submits':1 },
-					success: function (result,status,xhr) { 
-						document.getElementById("fetch_owners").innerHTML = result; 
-						$('.select').select2({
-							minimumResultsForSearch: Infinity
-						}); 
-					}
-				});    
-			}); 
-		}  
-		
-		function operate_amenities_datas(sels_vals1,sels_vals2) {
-			if(sels_vals1!='' || sels_vals2!=''){
-				document.getElementById("private_amenities_data").value = sels_vals1;
-				document.getElementById("commercial_amenities_data").value = sels_vals2;
-				
-				var private_ame_nums = sels_vals1.length;
-				var commercial_ame_nums = sels_vals2.length;
-				private_ame_nums = private_ame_nums * 1;
-				commercial_ame_nums = commercial_ame_nums * 1;
-				
-				var total_nums = private_ame_nums + commercial_ame_nums;
+				function opereate_ref_no(sel_vls){
+					var pre_ref_val = document.getElementById('ref_no').value;
+					if(pre_ref_val!=''){ 
+						pre_ref_val = pre_ref_val.replace(/BSO-S/g,''); 
+						pre_ref_val = pre_ref_val.replace(/BSO-R/g,''); 
+						
+						pre_ref_val = pre_ref_val.replace(/S/g,''); 
+						pre_ref_val = pre_ref_val.replace(/R/g,''); 
+						
+						pre_ref_val = pre_ref_val.replace(/L-/g,''); 
+					} 
+					
+					if(sel_vls==2){ 
+						var nw_pre_ref_val = "<?php echo $conf_rent_inititals; ?>"+pre_ref_val;
+						document.getElementById('ref_no').value = nw_pre_ref_val;
+					}else{
+						var nw_pre_ref_val = "<?php echo $conf_sale_inititals; ?>"+pre_ref_val;
+						document.getElementById('ref_no').value = nw_pre_ref_val;	
+					} 
+				} 
+						
+				$(function() { 
+				<?php
+					$usr_popup_url = 'users/users_popup_list';
+					$usr_popup_url = site_url($usr_popup_url); ?> 
+					 
+					$('#modal_remote_user').on('show.bs.modal', function() {
+						$(this).find('.modal-body').load('<?php echo $usr_popup_url; ?>', function() {
 				 
-				document.getElementById("fetch_amenities_nums").innerHTML = total_nums;
-			}
-		}  
-    </script>
-    
-    	
+							$('.select').select2({
+								minimumResultsForSearch: Infinity
+							});
+						});
+					});
+		 
+				<?php
+					$ownr_popup_url = 'owners/owners_popup_list';
+					$ownr_popup_url = site_url($ownr_popup_url); ?> 
+					 
+					$('#modal_remote_owner').on('show.bs.modal', function() {
+						$(this).find('.modal-body').load('<?php echo $ownr_popup_url; ?>', function() {
+				 
+							$('.select').select2({
+								minimumResultsForSearch: Infinity
+							});
+						});
+					});   
+					
+				<?php
+					$prpty_amenities_popup_url = 'property_features/amenities_popup_list/';
+					$prpty_amenities_popup_url = site_url($prpty_amenities_popup_url); ?> 
+					
+					$('#modal_remote_amenities').on('show.bs.modal', function() {
+				
+						var private_amenities_data_val = document.getElementById("private_amenities_data").value;  	
+						var commercial_amenities_data_val = document.getElementById("commercial_amenities_data").value;  	 			
+						
+						var amenities_data_url =  "<?php echo $prpty_amenities_popup_url; ?>"+private_amenities_data_val+"__"+commercial_amenities_data_val;
+						
+						var repls = "_";
+						amenities_data_url = amenities_data_url.replace(/,/g,repls);
+						   
+						$(this).find('.modal-body').load(amenities_data_url, function() {
+				 
+							$('.select').select2({
+								minimumResultsForSearch: Infinity
+							});
+						});
+					});  
+				});   
+				
+				function clickeds_users(sels_vals) {  
+					$(document).ready(function(){
+					<?php  
+						$tmp_usr_pth1 = '/users/fetch_users_list/';
+						$tmp_usr_pth1 = site_url($tmp_usr_pth1);	?>
+						
+						$.ajax({
+							url: '<?php echo $tmp_usr_pth1; ?>'+sels_vals,
+							cache: false,
+							type: 'POST', 
+							data: { 'submits':1 },
+							success: function (result,status,xhr) { 
+								document.getElementById("fetch_users").innerHTML = result; 
+								$('.select').select2({
+									minimumResultsForSearch: Infinity
+								}); 
+							}
+						});    
+					}); 
+				}  
+				
+				function clickeds(sels_vals) {  
+					$(document).ready(function(){
+					<?php  
+						$tmp_ownr_pth1 = '/owners/fetch_owners_list/';
+						$tmp_ownr_pth1 = site_url($tmp_ownr_pth1);	?>
+						
+						$.ajax({
+							url: '<?php echo $tmp_ownr_pth1; ?>'+sels_vals,
+							cache: false,
+							type: 'POST', 
+							data: { 'submits':1 },
+							success: function (result,status,xhr) { 
+								document.getElementById("fetch_owners").innerHTML = result; 
+								$('.select').select2({
+									minimumResultsForSearch: Infinity
+								}); 
+							}
+						});    
+					}); 
+				}  
+				
+				function operate_amenities_datas(sels_vals1,sels_vals2) {
+					if(sels_vals1!='' || sels_vals2!=''){
+						document.getElementById("private_amenities_data").value = sels_vals1;
+						document.getElementById("commercial_amenities_data").value = sels_vals2;
+						
+						var private_ame_nums = sels_vals1.length;
+						var commercial_ame_nums = sels_vals2.length;
+						private_ame_nums = private_ame_nums * 1;
+						commercial_ame_nums = commercial_ame_nums * 1;
+						
+						var total_nums = private_ame_nums + commercial_ame_nums;
+						 
+						document.getElementById("fetch_amenities_nums").innerHTML = total_nums;
+					}
+				}  
+			</script> 
     
     	<div id="modal_remote_user" class="modal fade" data-backdrop="false"> 
             <div class="modal-dialog modal-lg">
@@ -395,194 +393,194 @@
             </div>
         </div>    
             
-            <div class="col-md-4">
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="ref_no">Ref # <span class="reds"> *</span></label>
-                <div class="col-md-9">
-                  <input name="ref_no" id="ref_no" type="text" class="form-control" value="<?php echo $temp_ref_no; ?>" readonly title="Read only - system created">
-                  <span class="text-danger"><?php echo form_error('ref_no'); ?></span> </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="assigned_to_id">Assigned To <span class="reds">*</span></label>
-                <div class="col-md-9"> 
-                    <span id="fetch_users">
-                      <select name="assigned_to_id" id="assigned_to_id" class="form-control select2" data-error="#assigned_to_id1">
-                        <option value="">Select Assigned To Name</option>
-                        <?php  
-                            if(isset($user_arrs) && count($user_arrs)>0){
-                                foreach($user_arrs as $user_arr){
-                                $sel_1 = '';
-                                if(isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id){
-                                    $sel_1 = 'selected="selected"';
-                                }else if(isset($record) && $record->assigned_to_id==$user_arr->id){
-                                    $sel_1 = 'selected="selected"';
-                                } ?>
-                                <option value="<?= $user_arr->id; ?>" <?php echo $sel_1; ?>>
-                                <?= stripslashes($user_arr->name); ?>
-                                </option>
-                                <?php 
-                                }
-                            } ?>
-                         </select> 
-                        </span>
-                     <a data-toggle="modal" data-target="#modal_remote_user"><i class="glyphicon glyphicon-plus position-left"></i> Add Assigned To</a> 
-                     
-                     <span id="assigned_to_id1" class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
-              </div>
-               
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="owner_id">Owners <span class="reds">*</span></label>
-                <div class="col-md-9">
-                    <span id="fetch_owners">
-                     <select name="owner_id" id="owner_id" class="form-control select2" data-error="#owner_id1">
-                     <option value="">Select Owner Name </option>
-                    <?php  
-                        if(isset($owner_arrs) && count($owner_arrs)>0){
-                            foreach($owner_arrs as $owner_arr){
-                            $sel_1 = '';
-                            if(isset($_POST['owner_id']) && $_POST['owner_id']==$owner_arr->id){
-                                $sel_1 = 'selected="selected"';
-                            }else if(isset($record) && $record->owner_id==$owner_arr->id){
-                                $sel_1 = 'selected="selected"';
-                            } ?>
-                            <option value="<?= $owner_arr->id; ?>" <?php echo $sel_1; ?>>
-                                <?= stripslashes($owner_arr->name); ?>
-                            </option>
-                            <?php 
-                            }
-                        } ?>
-                    	</select>  
-                    </span> 
-                 	<a data-toggle="modal" data-target="#modal_remote_owner"><i class="glyphicon glyphicon-plus position-left"></i> Add Owners</a>   
-                  <span id="owner_id1" class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
-              </div> 
-              
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="no_of_beds_id">Bedrooms <span class="reds">*</span> </label>
-                <div class="col-md-9">
-                  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select2" data-error="#no_of_beds_id1" >
-                    <option value="">Select No. of Bedrooms</option>
-                    <?php   
-                    for($b=1; $b<=10; $b++){ 
-                        $sel_1 = '';
-                        if(isset($_POST['no_of_beds_id']) && $_POST['no_of_beds_id']==$b){
-                            $sel_1 = 'selected="selected"';
-                        }else if(isset($record) && $record->no_of_beds_id==$b){
-                            $sel_1 = 'selected="selected"';
-                        } ?>
-                    <option value="<?= $b; ?>" <?php echo $sel_1; ?>>
-                    <?= ($b==10) ? $b.'+' : $b; ?>
-                    </option>
-                    <?php } ?>
-                  </select>
-                  <span id="no_of_beds_id1" class="text-danger"><?php echo form_error('no_of_beds_id'); ?></span> </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="no_of_baths">Bathrooms <span class="reds">*</span></label>
-                <div class="col-md-9">
-                  <select name="no_of_baths" id="no_of_baths" class="form-control select2" data-error="#no_of_baths1">
-                    <option value="">Select No. of Bathrooms</option>
-                    <?php   
-                        for($b=1; $b<=10; $b++){ 
-                            $sel_1 = '';
-                            if(isset($_POST['no_of_baths']) && $_POST['no_of_baths']==$b){
-                                $sel_1 = 'selected="selected"';
-                            }else if(isset($record) && $record->no_of_baths==$b){
-                                $sel_1 = 'selected="selected"';
-                            } ?>
-                    <option value="<?= $b; ?>" <?php echo $sel_1; ?>>
-                    <?= ($b==10) ? $b.'+' : $b; ?>
-                    </option>
-                    <?php } ?>
-                  </select>
-                  <span id="no_of_baths1" class="text-danger"><?php echo form_error('no_of_baths'); ?></span> </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="emirate_id">Emirates <span class="reds">*</span></label>
-                <div class="col-md-9">
-                  <?php 
-                        if(isset($_POST['emirate_id']) && $_POST['emirate_id']>0){
-                            $sel_emirate_ids = $_POST['emirate_id'];
-                        }else if(isset($record) && $record->emirate_id >0){
-                            $sel_emirate_ids = $record->emirate_id;
-                        }else{
-                            $sel_emirate_ids = 3;
-                        }  ?>
-                  <select name="emirate_id" id="emirate_id" class="form-control select2" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');" data-error="#emirate_id1" >
-                    <option value="">Select Emirate </option>
-                    <?php  
-                        if(isset($emirate_arrs) && count($emirate_arrs)>0){
-                            foreach($emirate_arrs as $emirate_arr){
-                            $sel_1 = '';
-                            if(isset($sel_emirate_ids) && $sel_emirate_ids==$emirate_arr->id){
-                                $sel_1 = 'selected="selected"';
-                            } ?>
-                    <option value="<?= $emirate_arr->id; ?>" <?php echo $sel_1; ?>>
-                    <?= stripslashes($emirate_arr->name); ?>
-                    </option>
-                    <?php 
-                            }
-                        } ?>
-                  </select>
-                  <span id="emirate_id1" class="text-danger"><?php echo form_error('emirate_id'); ?></span> </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="location_id">Locations <span class="reds">*</span></label>
-                <div class="col-md-9"> 
-                <span id="fetch_emirate_locations">
-                  <select name="location_id" id="location_id" class="form-control select2" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');" data-error="#location_id1">
-                    <option value="">Select Emirate Location </option>
-                    <?php  
-                        $emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations($sel_emirate_ids);
-                        if(isset($emirate_location_arrs) && count($emirate_location_arrs)>0){
-                            foreach($emirate_location_arrs as $emirate_location_arr){
-                                $sel_1 = '';
-                                if(isset($_POST['location_id']) && $_POST['location_id']==$emirate_location_arr->id){
-                                    $sel_1 = 'selected="selected"';
-                                }else if(isset($record) && $record->location_id==$emirate_location_arr->id){
-                                    $sel_1 = 'selected="selected"';
-                                }  ?>
-                                <option value="<?= $emirate_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_location_arr->name); ?> </option>
-                         <?php 
-                            }
-                        }  ?>
-                  </select>
-                  </span> 
-                  <span id="location_id1" class="text-danger"><?php echo form_error('location_id'); ?></span> </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-3 control-label" for="sub_location_id">Sub Locations <span class="reds">*</span></label>
-                <div class="col-md-9"> <span id="fetch_emirate_sub_locations">
-                  <select name="sub_location_id" id="sub_location_id" class="form-control select2" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" data-error="#sub_location_id1">
-                    <option value="">Select Emirate Sub Location </option>
-                    <?php 
-                    $tmps_location_id='';
-                    if(isset($_POST['location_id']) && strlen($_POST['location_id'])>0){
-                        $tmps_location_id = $_POST['location_id'];
-                    }else if(isset($record->location_id) && $record->location_id>0){
-                        $tmps_location_id = $record->location_id;
-                    }
-                    
-                    $emirate_sub_location_arrs = $this->emirates_sub_location_model->fetch_emirate_sub_locations($tmps_location_id);
-                    if(isset($emirate_sub_location_arrs) && is_array($emirate_sub_location_arrs)){
-                        foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
-                        $sel_1 = '';
-                        if(isset($_POST['sub_location_id']) && $_POST['sub_location_id']==$emirate_sub_location_arr->id){
-                            $sel_1 = 'selected="selected"';
-                        }else if(isset($record) && $record->sub_location_id==$emirate_sub_location_arr->id){
-                            $sel_1 = 'selected="selected"';
-                        } ?>
-                          <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_sub_location_arr->name); ?> </option>
-                    <?php 
-                        }
-                    } 
-                  ?>
-                  </select>
-                  </span> <span id="sub_location_id1" class="text-danger"><?php echo form_error('sub_location_id'); ?></span> </div>
-              </div> 
-                    
-            </div>
+		<div class="col-md-4">
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="ref_no">Ref # <span class="reds"> *</span></label>
+			<div class="col-md-9">
+			  <input name="ref_no" id="ref_no" type="text" class="form-control" value="<?php echo $temp_ref_no; ?>" readonly title="Read only - system created">
+			  <span class="text-danger"><?php echo form_error('ref_no'); ?></span> </div>
+		  </div>
+		  
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="assigned_to_id">Assigned To <span class="reds">*</span></label>
+			<div class="col-md-9"> 
+				<span id="fetch_users">
+				  <select name="assigned_to_id" id="assigned_to_id" class="form-control select2" data-error="#assigned_to_id1">
+					<option value="">Select Assigned To Name</option>
+					<?php  
+						if(isset($user_arrs) && count($user_arrs)>0){
+							foreach($user_arrs as $user_arr){
+							$sel_1 = '';
+							if(isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id){
+								$sel_1 = 'selected="selected"';
+							}else if(isset($record) && $record->assigned_to_id==$user_arr->id){
+								$sel_1 = 'selected="selected"';
+							} ?>
+							<option value="<?= $user_arr->id; ?>" <?php echo $sel_1; ?>>
+							<?= stripslashes($user_arr->name); ?>
+							</option>
+							<?php 
+							}
+						} ?>
+					 </select> 
+					</span>
+				 <a data-toggle="modal" data-target="#modal_remote_user"><i class="glyphicon glyphicon-plus position-left"></i> Add Assigned To</a> 
+				 
+				 <span id="assigned_to_id1" class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
+		  </div>
+		   
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="owner_id">Owners <span class="reds">*</span></label>
+			<div class="col-md-9">
+				<span id="fetch_owners">
+				 <select name="owner_id" id="owner_id" class="form-control select2" data-error="#owner_id1">
+				 <option value="">Select Owner Name </option>
+				<?php  
+					if(isset($owner_arrs) && count($owner_arrs)>0){
+						foreach($owner_arrs as $owner_arr){
+						$sel_1 = '';
+						if(isset($_POST['owner_id']) && $_POST['owner_id']==$owner_arr->id){
+							$sel_1 = 'selected="selected"';
+						}else if(isset($record) && $record->owner_id==$owner_arr->id){
+							$sel_1 = 'selected="selected"';
+						} ?>
+						<option value="<?= $owner_arr->id; ?>" <?php echo $sel_1; ?>>
+							<?= stripslashes($owner_arr->name); ?>
+						</option>
+						<?php 
+						}
+					} ?>
+					</select>  
+				</span> 
+				<a data-toggle="modal" data-target="#modal_remote_owner"><i class="glyphicon glyphicon-plus position-left"></i> Add Owners</a>   
+			  <span id="owner_id1" class="text-danger"><?php echo form_error('assigned_to_id'); ?></span> </div>
+		  </div> 
+		  
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="no_of_beds_id">Bedrooms <span class="reds">*</span> </label>
+			<div class="col-md-9">
+			  <select name="no_of_beds_id" id="no_of_beds_id" class="form-control select2" data-error="#no_of_beds_id1" >
+				<option value="">Select No. of Bedrooms</option>
+				<?php   
+				for($b=1; $b<=10; $b++){ 
+					$sel_1 = '';
+					if(isset($_POST['no_of_beds_id']) && $_POST['no_of_beds_id']==$b){
+						$sel_1 = 'selected="selected"';
+					}else if(isset($record) && $record->no_of_beds_id==$b){
+						$sel_1 = 'selected="selected"';
+					} ?>
+				<option value="<?= $b; ?>" <?php echo $sel_1; ?>>
+				<?= ($b==10) ? $b.'+' : $b; ?>
+				</option>
+				<?php } ?>
+			  </select>
+			  <span id="no_of_beds_id1" class="text-danger"><?php echo form_error('no_of_beds_id'); ?></span> </div>
+		  </div>
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="no_of_baths">Bathrooms <span class="reds">*</span></label>
+			<div class="col-md-9">
+			  <select name="no_of_baths" id="no_of_baths" class="form-control select2" data-error="#no_of_baths1">
+				<option value="">Select No. of Bathrooms</option>
+				<?php   
+					for($b=1; $b<=10; $b++){ 
+						$sel_1 = '';
+						if(isset($_POST['no_of_baths']) && $_POST['no_of_baths']==$b){
+							$sel_1 = 'selected="selected"';
+						}else if(isset($record) && $record->no_of_baths==$b){
+							$sel_1 = 'selected="selected"';
+						} ?>
+				<option value="<?= $b; ?>" <?php echo $sel_1; ?>>
+				<?= ($b==10) ? $b.'+' : $b; ?>
+				</option>
+				<?php } ?>
+			  </select>
+			  <span id="no_of_baths1" class="text-danger"><?php echo form_error('no_of_baths'); ?></span> </div>
+		  </div>
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="emirate_id">Emirates <span class="reds">*</span></label>
+			<div class="col-md-9">
+			  <?php 
+					if(isset($_POST['emirate_id']) && $_POST['emirate_id']>0){
+						$sel_emirate_ids = $_POST['emirate_id'];
+					}else if(isset($record) && $record->emirate_id >0){
+						$sel_emirate_ids = $record->emirate_id;
+					}else{
+						$sel_emirate_ids = 3;
+					}  ?>
+			  <select name="emirate_id" id="emirate_id" class="form-control select2" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');" data-error="#emirate_id1" >
+				<option value="">Select Emirate </option>
+				<?php  
+					if(isset($emirate_arrs) && count($emirate_arrs)>0){
+						foreach($emirate_arrs as $emirate_arr){
+						$sel_1 = '';
+						if(isset($sel_emirate_ids) && $sel_emirate_ids==$emirate_arr->id){
+							$sel_1 = 'selected="selected"';
+						} ?>
+				<option value="<?= $emirate_arr->id; ?>" <?php echo $sel_1; ?>>
+				<?= stripslashes($emirate_arr->name); ?>
+				</option>
+				<?php 
+						}
+					} ?>
+			  </select>
+			  <span id="emirate_id1" class="text-danger"><?php echo form_error('emirate_id'); ?></span> </div>
+		  </div>
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="location_id">Locations <span class="reds">*</span></label>
+			<div class="col-md-9"> 
+			<span id="fetch_emirate_locations">
+			  <select name="location_id" id="location_id" class="form-control select2" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');" data-error="#location_id1">
+				<option value="">Select Emirate Location </option>
+				<?php  
+					$emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations($sel_emirate_ids);
+					if(isset($emirate_location_arrs) && count($emirate_location_arrs)>0){
+						foreach($emirate_location_arrs as $emirate_location_arr){
+							$sel_1 = '';
+							if(isset($_POST['location_id']) && $_POST['location_id']==$emirate_location_arr->id){
+								$sel_1 = 'selected="selected"';
+							}else if(isset($record) && $record->location_id==$emirate_location_arr->id){
+								$sel_1 = 'selected="selected"';
+							}  ?>
+							<option value="<?= $emirate_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_location_arr->name); ?> </option>
+					 <?php 
+						}
+					}  ?>
+			  </select>
+			  </span> 
+			  <span id="location_id1" class="text-danger"><?php echo form_error('location_id'); ?></span> </div>
+		  </div>
+		  <div class="form-group">
+			<label class="col-md-3 control-label" for="sub_location_id">Sub Locations <span class="reds">*</span></label>
+			<div class="col-md-9"> <span id="fetch_emirate_sub_locations">
+			  <select name="sub_location_id" id="sub_location_id" class="form-control select2" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" data-error="#sub_location_id1">
+				<option value="">Select Emirate Sub Location </option>
+				<?php 
+				$tmps_location_id='';
+				if(isset($_POST['location_id']) && strlen($_POST['location_id'])>0){
+					$tmps_location_id = $_POST['location_id'];
+				}else if(isset($record->location_id) && $record->location_id>0){
+					$tmps_location_id = $record->location_id;
+				}
+				
+				$emirate_sub_location_arrs = $this->emirates_sub_location_model->fetch_emirate_sub_locations($tmps_location_id);
+				if(isset($emirate_sub_location_arrs) && is_array($emirate_sub_location_arrs)){
+					foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
+					$sel_1 = '';
+					if(isset($_POST['sub_location_id']) && $_POST['sub_location_id']==$emirate_sub_location_arr->id){
+						$sel_1 = 'selected="selected"';
+					}else if(isset($record) && $record->sub_location_id==$emirate_sub_location_arr->id){
+						$sel_1 = 'selected="selected"';
+					} ?>
+					  <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_sub_location_arr->name); ?> </option>
+				<?php 
+					}
+				} 
+			  ?>
+			  </select>
+			  </span> <span id="sub_location_id1" class="text-danger"><?php echo form_error('sub_location_id'); ?></span> </div>
+		  </div> 
+				
+		</div>
             
        	<div class="col-md-4">
         	<div class="form-group">
@@ -767,8 +765,23 @@
               &nbsp;
               <button type="reset" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-refresh position-left"></i>Clear</button> 
               &nbsp;
-              <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo site_url('properties/index'); ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button> 
-          
+			  <?php
+				if(isset($args0) && $args0==1){
+					$cancel_url = site_url("properties/archived_listings");	
+				}else if(isset($args0) && $args0==2){
+					$cancel_url = site_url("properties/dealt_properties_list");
+				}else if(isset($args0) && $args0==3){
+					$cancel_url = site_url("properties/sales_listings");
+				}else if(isset($args0) && $args0==4){   
+					$cancel_url = site_url("properties/rent_listings");
+				}else if(isset($args0) && $args0 ==5){ 
+					$cancel_url = site_url("properties/leads_properties_list");
+				}else if(isset($args0) && $args0==6){   
+					$cancel_url = site_url("properties/portal_properties_list");	
+				}else{ 
+					$cancel_url = site_url("properties/properties_list");
+				} ?> 
+              <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo $cancel_url; ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>  
             </div>
         </div>
      </div>

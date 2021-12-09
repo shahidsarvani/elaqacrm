@@ -88,7 +88,7 @@ if($trash_res_nums>0){ ?>
 					$('.loading').hide();
 					$('#dyns_list').html(data);
 					
-					$('.select').select2({
+					$('.select2').select2({
 						minimumResultsForSearch: Infinity
 					});
 					
@@ -101,6 +101,16 @@ if($trash_res_nums>0){ ?>
 				}
 			});
 		}); 
+	}
+	
+	function operate_archived_properties(){ 
+		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
+		if(conf_msg){
+			document.getElementById('datas_form').action = "<?= site_url('properties/archived_selected_properties');?>"; 	
+			document.getElementById('datas_form').submit();
+		}else{
+			return false;	
+		}
 	} 
 </script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/custom_multiselect.js"></script>    
@@ -374,8 +384,7 @@ if($trash_res_nums>0){ ?>
         </div>
     </div>
     <!-- /filter -->
-	<script>
-        //jQuery.noConflict()(function($){	 	  
+		<script>  	  
             $(document).ready(function(){   
                 $('#from_date').datepicker({
                     format: "yyyy-mm-dd"
@@ -390,11 +399,8 @@ if($trash_res_nums>0){ ?>
                         $('.datepicker').hide();
                         operate_properties();
                 });  
-            });
-        //});
+            }); 
     	</script>
-								 
-
     	</div>
 	</div>
 </div>
@@ -427,17 +433,17 @@ if($trash_res_nums>0){ ?>
             </div>
         </div> 
         
-		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add'); ?>">
-       <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
+	<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add/3'); ?>">
+    <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
        
-    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/trash_multiple'); ?>" method="post">   
+    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/delete_selected_properties'); ?>" method="post">   
         <div class="panel-body"> 
             <div class="row">
             <div class="col-md-12"> 
                 <div class="form-group mb-md">   
                   <div class="col-md-2">  
                    <div class="col-md-9">   
-                      <select name="per_page" id="per_page" class="form-control input-sm mb-md  select" onChange="operate_properties();">
+                      <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_properties();">
                       <option value="25"> Pages</option>
                       <option value="25"> 25 </option>
                       <option value="50"> 50 </option>
@@ -446,29 +452,30 @@ if($trash_res_nums>0){ ?>
                     </div>
                      <div class="col-md-3">  </div>
                   </div> 
-                    <div class="col-md-3">   
-                    </div>    
-                    
-                    <div class="col-md-5 pull-right"> 
+                  <div class="col-md-10 pull-right"> 
                     <div class="dt-buttons"> 
-						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="http://localhost/custom4/elaqacrm/index.php/leads/index/export_excel"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
+						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="<?= site_url('properties/sales_listings/export_excel'); ?>"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
 					
                      <?php if($trash_res_nums>0){ ?>
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      
                     <?php } if($add_res_nums>0){ ?> 
-                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('properties/add'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
+                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('properties/add/3/'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
                     <?php }
 						
 						if($add_res_nums==0 && $trash_res_nums==0){  ?>
 							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
 					<?php } ?>
+					
+					<button type="button" name="submit_archive_properties" id="submit_archive_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Archive Selected" onclick="operate_archived_properties();"> <i class="glyphicon glyphicon-repeat"></i> Archive Selected </button>
+					
+					
                         
                         </div>
                     </div> 
                 </div>
             </div>
-            </div>
+          </div>
               
      <style>
          #datatable-default_filter{
@@ -525,7 +532,7 @@ if($trash_res_nums>0){ ?>
               <th width="13%">Category </th>
               <th width="13%">Assigned To </th>
               <th width="9%" class="text-center">Status</th>
-              <th width="9%" class="text-center">Price</th>
+              <th width="9%" class="text-center">Price (<?php echo CRM_CURRENCY; ?>)</th>
               <th width="12%" class="text-center">Created On</th>
               <th width="12%" class="text-center">Action</th>
             </tr>
@@ -535,11 +542,12 @@ if($trash_res_nums>0){ ?>
         $sr=1; 
         if(isset($records) && count($records)>0){
             foreach($records as $record){ 
-                $operate_url = 'properties/update/'.$record->id;
+                $operate_url = 'properties/update/3/'.$record->id;
                 $operate_url = site_url($operate_url); 
                 
-                $trash_url = 'properties/trash_aj/'.$record->id;
-                $trash_url = site_url($trash_url); ?>
+                //$trash_url = 'properties/trash_aj/'.$record->id;
+                $trash_url = 'properties/delete_property/3/'.$record->id; 
+				$trash_url = site_url($trash_url); ?>
                 
                 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                   <td class="text-center">
@@ -574,18 +582,22 @@ if($trash_res_nums>0){ ?>
                   </td> 
                  <td class="text-center"><?php echo number_format($record->price,0,".",","); /*CRM_CURRENCY.' '.*/ ?></td>  
                   <td class="text-center"><?php echo date('d-M-Y',strtotime($record->created_on)); ?></td>   
-                  <td class="text-center">  
-                     <ul class="icons-list">
-                     <?php if($view_res_nums>0){ ?>  
-                      	<li class="text-primary-600"><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i></a></li>  
-                        
-                   <?php } if($update_res_nums>0){ ?> 
-                            <li class="text-primary-600"><a href="<?php echo $operate_url; ?>"><i class="icon-pencil7"></i></a></li> 
-                    <?php } 
-                        if($trash_res_nums>0){ ?>  
-                            <li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li>
-                  <?php } ?> 
-                    </ul>  
+                  <td class="text-center">   
+					<ul class="icons-list">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+							<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
+						  <?php if($view_res_nums>0){ ?>   
+								<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
+						   <?php } if($update_res_nums>0){ ?> 
+									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+							<?php } 
+								if($trash_res_nums>0){ ?>  
+								   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+						  <?php } ?>  
+							</ul>
+						</li>
+					</ul> 
                   </td> 
                 </tr>
                 <?php 
@@ -593,7 +605,7 @@ if($trash_res_nums>0){ ?>
                 } ?> 
                <tr>
                <td colspan="9">
-               <div style="float:left;"> <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select" onChange="operate_properties();">
+               <div style="float:left;"> <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select2" onChange="operate_properties();">
                   <option value="25"> Pages</option>
                   <option value="25"> 25 </option>
                   <option value="50"> 50 </option>
@@ -609,23 +621,23 @@ if($trash_res_nums>0){ ?>
                 <?php } ?>
               </tbody>
             </table> 
-    </div>     						 
-<div class="loading" style="display: none;">
-    <div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div>
-    </div>   
-</div>  
-     </form>
-        </div>
-        <!-- /sidebars overview --> 
+   		 </div>     						 
+		<div class="loading" style="display: none;">
+			<div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div>
+			</div>   
+		</div>  
+		<input type="hidden" name="args0" id="args0" value="3" />
+      </form>
+	 </div>
+	<!-- /sidebars overview -->  
+   </div>
+ </div>
+ <!-- /detached content -->
 
-    </div>
-</div>
-<!-- /detached content -->
 
-
-					<!-- Footer -->
-					<?php $this->load->view('widgets/footer'); ?>
-					<!-- /footer -->
+	<!-- Footer -->
+	<?php $this->load->view('widgets/footer'); ?>
+	<!-- /footer -->
 
 				</div>
 				<!-- /content area -->
