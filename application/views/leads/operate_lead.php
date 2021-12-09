@@ -192,7 +192,7 @@
 									//operate_properties();
 							});
 							
-							$('#enquiry_time').timepicker();
+							//$('#enquiry_time').pickatime();
 							
 							//$('#enquiry_time').datetimepicker({
 								//format: "hh:mm:ss"
