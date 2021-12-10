@@ -106,8 +106,8 @@
     <!-- <form name="datas_form" id="datas_form" action="" method="post">-->
      
      
-     	<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('permissions/add'); ?>">
-       <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
+     <input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('permissions/add'); ?>">
+     <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
        
    	 <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('permissions/trash_multiple'); ?>" method="post">  
      
@@ -115,7 +115,7 @@
         <div class="col-md-12"> 
             <div class="form-group mb-md">   
               <div class="col-md-1">    
-              <select name="per_page" id="per_page" class="form-control input-sm mb-md  select" onChange="operate_permission_list();">
+              <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_permission_list();">
               <option value="25"> Pages</option>
               <option value="25"> 25 </option>
               <option value="50"> 50 </option>
@@ -123,7 +123,7 @@
             </select> 
             </div> 
             <div class="col-md-3"> 
-            	<select name="module_id" id="module_id" class="form-control input-sm mb-md select" onChange="operate_permission_list();">
+            	<select name="module_id" id="module_id" class="form-control input-sm mb-md select2" onChange="operate_permission_list();">
                     <option value="">Select Module...</option>
                     <?php  	
                     $par_modules_arrs = $this->admin_model->get_all_parent_modules('0'); 			  
@@ -156,7 +156,7 @@
             </div>
             
             <div class="col-md-3"> 
-            	 <select name="user_type_id" id="user_type_id" class="form-control input-sm mb-md populate select" onChange="operate_permission_list();">
+            	 <select name="user_type_id" id="user_type_id" class="form-control input-sm mb-md select2" onChange="operate_permission_list();">
                  <option value="">Select Role Name...</option> 
                  <?php  
                     $role_arrs = $this->admin_model->get_all_roles();

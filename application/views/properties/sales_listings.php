@@ -467,7 +467,7 @@ if($trash_res_nums>0){ ?>
 							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
 					<?php } ?>
 					
-					<button type="button" name="submit_archive_properties" id="submit_archive_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Archive Selected" onclick="operate_archived_properties();"> <i class="glyphicon glyphicon-repeat"></i> Archive Selected </button>
+					<button type="button" name="submit_archive_properties" id="submit_archive_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Archive Selected" onClick="operate_archived_properties();"> <i class="glyphicon glyphicon-repeat"></i> Archive Selected </button>
 					
 					
                         
