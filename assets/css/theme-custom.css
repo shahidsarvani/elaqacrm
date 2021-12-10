@@ -57,3 +57,26 @@ div.pagination span.disabled {
 label.error{
 	color:#F30;	
 }
+
+
+
+.navbar.navbar-inverse {
+    height: 60px;
+}
+
+.navbar-inverse .navbar-header {
+    margin-top: 7px;
+}
+
+.navbar-inverse .navbar-nav li {
+    position: absolute;
+    top: 19px;
+}
+
+.navbar-inverse .navbar-nav.navbar-right li {
+    position: inherit;
+}
+
+.navbar-inverse .navbar-nav.navbar-right {
+    margin-top: 10px;
+}
