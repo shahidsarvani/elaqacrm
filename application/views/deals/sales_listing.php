@@ -30,7 +30,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 <?php 
 } ?>   
 
-<script type="text/javascript" src="<?= asset_url(); ?>js/custom_multiselect.js"></script>    
+<script type="text/javascript" src="<?= asset_url(); ?>js/custom_multiselect.js"></script>       
 <style>
 .cstms_badges .badge-primary{
 	margin-bottom:1px;
@@ -61,202 +61,199 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 				<?php $this->load->view('widgets/content_header'); ?>
 				<!-- /page header -->
 
-				<script>
-				function operate_sale_deals(){ 	 	  
-					$(document).ready(function(){
-							
-						var sel_per_page_val =0;			
-						var refer_no = document.getElementById("refer_no").value;
-						var unit_no = document.getElementById("unit_no").value;
-						var price = document.getElementById("price").value;
-						var to_price1 = document.getElementById("to_price").value; 
-						var est_deal_date_val = document.getElementById("est_deal_date").value;
-						 
-						var sel_per_page = document.getElementById("per_page");
-						var sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value;
-						
-						var sel_status_val = document.getElementById("status");
-						var sel_property_status_val = sel_status_val.options[sel_status_val.selectedIndex].value;
+	<script>
+	function operate_sale_deals(){
+		$(document).ready(function(){
+			//refer_no unit_no  price  to_price  est_deal_date
+			//status   owner_ids  contact_ids  emirate_location_ids  assigned_to_ids	
+			var sel_per_page_val =0;			
+			var refer_no = document.getElementById("refer_no").value;
+			var unit_no = document.getElementById("unit_no").value;
+			var price = document.getElementById("price").value;
+			var to_price1 = document.getElementById("to_price").value; 
+			var est_deal_date_val = document.getElementById("est_deal_date").value;
 			
-						var sel_emirate_location_id_val = document.getElementById("emirate_location_id").value;
-						var sel_assigned_to_id_val = document.getElementById("assigned_to_id").value;
-						var sel_contact_id_val = document.getElementById("contact_id").value;
-						var sel_owner_id_val = document.getElementById("owner_id").value;
-						 
-						$.ajax({
-							method: "POST",
-							url: "<?php echo site_url('/deals/sales_listing2/'); ?>",
-							data: { page: 0, sel_per_page_val:sel_per_page_val, refer_no: refer_no, unit_no: unit_no, price: price, to_price: to_price1, sel_emirate_location_id_val: sel_emirate_location_id_val, sel_property_status_val: sel_property_status_val, sel_assigned_to_id_val: sel_assigned_to_id_val, sel_est_deal_date_val : est_deal_date_val, contact_id_val: sel_contact_id_val, owner_id_val: sel_owner_id_val },
-							beforeSend: function(){
-								$('.loading').show();    
-							},
-							success: function(data){
-								$('.loading').hide();
-								$('#dyns_list').html(data);
-								
-								//$( '[data-toggle=popover]' ).popover();
-								
-								//$('.simple-ajax-modal').magnificPopup({
-								//	type: 'ajax',
-								//	modal: true
-								//});
-							}
-						});
-					});
+			var sel_per_page_val = $("#per_page option:selected").val(); 
+			var selMulti = $.map($("#status option:selected"), function (el, i) { return $(el).val(); }); 
+			var sel_property_status_val = selMulti.join(",");
+			
+			var selMulti = $.map($("#owner_ids option:selected"), function (el, i) { return $(el).val(); }); 
+			var sel_owner_id_val = selMulti.join(",");
+			
+			var selMulti = $.map($("#contact_ids option:selected"), function (el, i) { return $(el).val(); }); 
+			var sel_contact_id_val = selMulti.join(",");
+			
+			var selMulti = $.map($("#emirate_location_ids option:selected"), function (el, i) { return $(el).val(); }); 
+			var sel_emirate_location_id_val = selMulti.join(",");
+			
+			var selMulti = $.map($("#assigned_to_ids option:selected"), function (el, i) { return $(el).val(); }); 
+			var sel_assigned_to_id_val = selMulti.join(",");  
+			
+			$.ajax({
+				method: "POST",
+				url: "<?php echo site_url('/deals/sales_listing2/'); ?>",
+				data: { page: 0, sel_per_page_val:sel_per_page_val, refer_no: refer_no, unit_no: unit_no, price: price, to_price: to_price1, sel_emirate_location_id_val: sel_emirate_location_id_val, sel_property_status_val: sel_property_status_val, sel_assigned_to_id_val: sel_assigned_to_id_val, sel_est_deal_date_val : est_deal_date_val, contact_id_val: sel_contact_id_val, owner_id_val: sel_owner_id_val },
+				beforeSend: function(){
+					$('.loading').show();    
+				},
+				success: function(data){
+					$('.loading').hide();
+					$('#dyns_list').html(data);
+					
+					//$( '[data-toggle=popover]' ).popover();
+					
+					//$('.simple-ajax-modal').magnificPopup({
+					//	type: 'ajax',
+					//	modal: true
+					//});
 				}
-				</script>
+			});
+		});
+	}
+	</script>
 
-
+	<style>
+		.checkbox .disabled, .checkbox .disabled input[type="checkbox"] {
+			display:none;
+		} 
+	</style>
     <!-- Content area -->
     <div class="content">
     <form name="datas_form" id="datas_form" action="" method="post">
     <!-- Detached sidebar -->
-    <div class="sidebar-detached">
+     <div class="sidebar-detached">
     <div class="sidebar sidebar-default">
-    <div class="sidebar-content">  
-  <!-- <input name="owner_id" id="owner_id" type="hidden" value="">
-	<input name="contact_id" id="contact_id" type="hidden" value="">     
-	<input name="emirate_location_id" id="emirate_location_id" type="hidden" value="">
-	<input name="assigned_to_id" id="assigned_to_id" type="hidden" value="">   -->
-	           
-    <!-- Filter -->  
-    <div class="sidebar-category"> 
-		<div class="category-title">
-            <span>Search</span>
-            <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('deals/sales_listings'); ?>';" data-action="reload"></a></li>
-                <li><a href="#" data-action="collapse"></a></li>
-            </ul>
-        </div>
-        <div class="category-content">  
-        <div class="form-group"> 
-            <div class="row">
-                <div class="col-xs-12">  
-                   <input name="refer_no" id="refer_no" type="text" class="form-control input-sm mb-md" value="<?php echo set_value('refer_no'); ?>" placeholder="Ref No ..." onKeyUp="operate_sale_deals();">
-                </div>     
-            </div> 
-          </div> 
-         
-        <div class="form-group"> 
-            <div class="row">
-                <div class="col-xs-12">  
-				   <select name="status" id="status" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_sale_deals();">
-					  <option value="">Select </option>
-					  <option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
-						  <option value="Close" <?php if(isset($_POST['status']) && $_POST['status']=='Close'){ echo 'selected="selected"'; } ?>> Close </option>
-						  <option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option> 
-					</select>
-                </div>     
-            </div> 
-          </div>    
-         
-          <div class="form-group">  
-            <div class="row">
-             <div class="col-xs-12">  
-               <select name="owner_ids" id="owner_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_sale_deals();">
-	  <?php  
-		$owners_arrs = $this->general_model->get_gen_all_owners_list();
-		if(isset($owners_arrs) && count($owners_arrs)>0){
-			foreach($owners_arrs as $owners_arr){ ?>
-				<option value="<?= $owners_arr->id; ?>" <?php echo (isset($_POST['owner_ids']) && $_POST['owner_ids']==$owners_arr->id) ? 'selected="selected"':''; ?>> <?= stripslashes($owners_arr->name).' ( '.stripslashes($owners_arr->email).' - '.stripslashes($owners_arr->phone_no).' )'; ?> </option>
-	  <?php 
-			}
-		} ?>
-	</select> 
-                  </div> 
-                </div>
-            </div> 
-            
-            <div class="form-group">  
-                <div class="row">
-                 <div class="col-xs-12">   
-                   <select name="contact_ids" id="contact_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_sale_deals();">
-	<?php  
-		if(isset($contact_arrs) && count($contact_arrs)>0){
-			foreach($contact_arrs as $contact_arr){ ?>
-				<option value="<?= $contact_arr->id; ?>" <?php echo (isset($_POST['contact_ids']) && $_POST['contact_ids']==$contact_arr->id) ? 'selected="selected"':''; ?>> <?= stripslashes($contact_arr->name).' ( '.stripslashes($contact_arr->email).' - '.stripslashes($contact_arr->phone_no).' )'; ?> </option>
-	  <?php 
-			}
-		} ?>
-	</select>
-                  
-                  </div> 
+    <div class="sidebar-content">    
+   	 <!-- Filter -->  
+		<div class="sidebar-category"> 
+			<div class="category-title">
+				<span>Search</span>
+				<ul class="icons-list">
+					<li><a onClick="window.location='<?= site_url('deals/sales_listings'); ?>';" data-action="reload"></a></li>
+					<li><a href="#" data-action="collapse"></a></li>
+				</ul>
+			</div>
+			<div class="category-content">  
+			<div class="form-group"> 
+				<div class="row">
+					<div class="col-xs-12">  
+					   <input name="refer_no" id="refer_no" type="text" class="form-control input-sm" value="<?php echo set_value('refer_no'); ?>" placeholder="Ref No..." onKeyUp="operate_sale_deals();">
+					</div>     
+				</div> 
+			  </div> 
+			 
+			<div class="form-group"> 
+				<div class="row">
+					<div class="col-xs-12">  
+					   <select name="status" id="status" class="form-control input-sm select2" onChange="operate_sale_deals();">
+						  <option value=""> Select Status </option>
+						  <option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
+							  <option value="Close" <?php if(isset($_POST['status']) && $_POST['status']=='Close'){ echo 'selected="selected"'; } ?>> Close </option>
+							  <option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option> 
+						</select>
+					</div>     
+				</div> 
+			  </div>    
+			 
+			  <div class="form-group">  
+				<div class="row">
+				 <div class="col-xs-12">  
+				   <select name="owner_ids" id="owner_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_sale_deals();" data-placeholder="Select Owner"> 
+					  <?php  
+						$owners_arrs = $this->general_model->get_gen_all_owners_list();
+						if(isset($owners_arrs) && count($owners_arrs)>0){
+							foreach($owners_arrs as $owners_arr){ ?>
+								<option value="<?= $owners_arr->id; ?>" <?php echo (isset($_POST['owner_ids']) && $_POST['owner_ids']==$owners_arr->id) ? 'selected="selected"':''; ?>> <?= stripslashes($owners_arr->name).' ( '.stripslashes($owners_arr->email).' - '.stripslashes($owners_arr->phone_no).' )'; ?> </option>
+					  <?php 
+							}
+						} ?>
+						</select> 
+					  </div> 
+					</div>
+				</div> 
+				
+				<div class="form-group">  
+					<div class="row">
+					 <div class="col-xs-12">   
+					   <select name="contact_ids" id="contact_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_sale_deals();" data-placeholder="Select Contact">
+						<?php  
+							if(isset($contact_arrs) && count($contact_arrs)>0){
+								foreach($contact_arrs as $contact_arr){ ?>
+									<option value="<?= $contact_arr->id; ?>" <?php echo (isset($_POST['contact_ids']) && $_POST['contact_ids']==$contact_arr->id) ? 'selected="selected"':''; ?>> <?= stripslashes($contact_arr->name).' ( '.stripslashes($contact_arr->email).' - '.stripslashes($contact_arr->phone_no).' )'; ?> </option>
+						  <?php 
+								}
+							} ?>
+						</select> 
+					  </div> 
+					</div>
 				</div>
-            </div>
-             
-        <div class="form-group">  
-            <div class="row">
-             <div class="col-xs-12">   
-               <select name="emirate_location_ids" id="emirate_location_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_sale_deals();">
-	  <?php  	
-$emirate_sub_location_arrs = $this->admin_model->get_all_emirate_sub_locations(); 
-if(isset($emirate_sub_location_arrs) && count($emirate_sub_location_arrs)>0){
-foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){
-
-$sel_1 = '';
-if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emirate_sub_location_arr->id){
-	$sel_1 = 'selected="selected"';
-} ?>
-	  <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>>
-		<?= stripslashes($emirate_sub_location_arr->name); ?>
-		</option>
-	  <?php 
-} 
-} ?>
-	</select> 
-              </div> 
-             </div>
-           </div>  
-            
-            <div class="form-group"> 
-            	<div class="row">
-                 	<div class="col-xs-12">  
-                  	 <input name="unit_no" id="unit_no" type="text" class="form-control input-sm mb-md" value="<?php echo set_value('unit_no'); ?>" placeholder="Unit No ..." onKeyUp="operate_sale_deals();">
-                	</div> 
+				 
+			<div class="form-group">  
+				<div class="row">
+				 <div class="col-xs-12">   
+				   <select name="emirate_location_ids" id="emirate_location_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_sale_deals();" data-placeholder="Select Sub Location">  
+					<?php  	
+						$emirate_sub_location_arrs = $this->admin_model->get_all_emirate_sub_locations(); 
+						if(isset($emirate_sub_location_arrs) && count($emirate_sub_location_arrs)>0){
+							foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
+								$sel_1 = (isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emirate_sub_location_arr->id) ? 'selected="selected"' : ''; ?>
+								<option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>>
+								<?= stripslashes($emirate_sub_location_arr->name); ?>
+								</option>
+						 <?php 
+							} 
+						} ?>
+					</select> 
+				  </div> 
+				 </div>
+			   </div>  
+				
+				<div class="form-group"> 
+					<div class="row">
+						<div class="col-xs-12">  
+						 <input name="unit_no" id="unit_no" type="text" class="form-control input-sm mb-md" value="<?php echo set_value('unit_no'); ?>" placeholder="Unit No ..." onKeyUp="operate_sale_deals();">
+						</div> 
+					</div>
 				</div>
-            </div>
-            
-           <div class="form-group"> 
-             <div class="row">
-                <div class="col-xs-12">
-                    <input name="price" id="price" type="text" class="form-control input-sm" value="<?php echo set_value('price'); ?>" placeholder="From Price" onKeyUp="operate_sale_deals();"> - <input name="to_price" id="to_price" type="text" class="form-control input-sm" value="<?php echo set_value('to_price'); ?>" placeholder="To Price" onKeyUp="operate_sale_deals();">
-                 </div> 
-            </div>
-        </div>
-	<?php if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>         
-	   <div class="form-group"> 
-		<div class="row">
-			<div class="col-xs-12"> 
-            <select name="assigned_to_ids" id="assigned_to_ids" class="multiselect_cls" multiple="multiple" onChange="operate_sale_deals();">
-		  <?php  
-			if(isset($user_arrs) && count($user_arrs)>0){
-				foreach($user_arrs as $user_arr){ ?>
-					<option value="<?= $user_arr->id; ?>" <?php echo (isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id) ? 'selected="selected"':''; ?>>
-					<?= stripslashes($user_arr->name); ?>
-		  </option>
-		  <?php 
-				}
-			} ?>
-		</select>
-            </div> 
-         </div>
-        </div>
-   <?php } ?>	      
-            <div class="form-group">
-             <div class="row">
-        		<div class="col-xs-12">
-            	 <input name="est_deal_date" id="est_deal_date" type="text" class="form-control" value="<?php //echo $est_deal_date; ?>" style="text-align:center;" placeholder="Est. Date...">
-                 </div> 
-             </div>
-            </div>
-                
-        </div>
-    </div>
-    <!-- /filter --> 
+				
+			   <div class="form-group"> 
+				 <div class="row">
+					<div class="col-xs-12">
+						<input name="price" id="price" type="text" class="form-control input-sm" value="<?php echo set_value('price'); ?>" placeholder="From Price" onKeyUp="operate_sale_deals();"> - <input name="to_price" id="to_price" type="text" class="form-control input-sm" value="<?php echo set_value('to_price'); ?>" placeholder="To Price" onKeyUp="operate_sale_deals();">
+					 </div> 
+				</div>
+			</div>
+		<?php if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>         
+		   <div class="form-group"> 
+			<div class="row">
+				<div class="col-xs-12"> 
+				<select name="assigned_to_ids" id="assigned_to_ids" class="multi-select-search" multiple="multiple" onChange="operate_sale_deals();" data-placeholder="Select Agent"> 
+					<?php  
+					if(isset($user_arrs) && count($user_arrs)>0){
+						foreach($user_arrs as $user_arr){ ?>
+							<option value="<?= $user_arr->id; ?>" <?php echo (isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id) ? 'selected="selected"':''; ?>> <?= stripslashes($user_arr->name); ?> </option>
+						<?php 
+						}
+					} ?>
+				</select>
+				</div> 
+			 </div>
+			</div>
+	   <?php } ?>	      
+				<div class="form-group">
+				 <div class="row">
+					<div class="col-xs-12">
+					 <input name="est_deal_date" id="est_deal_date" type="text" class="form-control" value="<?php //echo $est_deal_date; ?>" style="text-align:center;" placeholder="Est. Date...">
+					 </div> 
+				 </div>
+				</div>
+					
+			</div>
+		</div>
+   		<!-- /filter --> 
     	</div>
 	</div>
-</div>
-
+</div> 
     <!-- /detached sidebar -->
     </form>
 
@@ -292,7 +289,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
             <div class="col-md-12"> 
                 <div class="form-group mb-md">   
                   <div class="col-md-2">  
-                     <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_sale_deals();">
+                     <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_sale_deals();">
                       <option value="25"> Pages</option>
                       <option value="25"> 25 </option>
                       <option value="50"> 50 </option>
@@ -328,15 +325,12 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 			$(document).ready(function(){  
 				$('#est_deal_date').datepicker({
 				  format: "yyyy-mm-dd"
-					}).on('change', function(){
+					}).on('change', function(){  
 						$('.datepicker').hide();
 						operate_sale_deals();
-				});
-				
-				
-				$('.multiselect_cls').multiselect();
+				}); 
 			}); 
-		</script>
+		 </script>
 		 <div class="table-responsive">      
 			<table class="table table-bordered table-striped table-hover">   
 				<thead>
@@ -357,7 +351,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 				<tbody id="dyns_list">
 				<?php    
 				if($view_res_nums >0){ 
-					$sr=1; 
+					$sr=1;
 					if(isset($records) && count($records)>0){
 						foreach($records as $record){ 
 							$details_url = 'deals/deal_detail/'.$record->id;
@@ -415,7 +409,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 						}  ?> 
 					<tr>
 						<td colspan="11">
-							<div style="float:left;">  <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_sale_deals();">
+							<div style="float:left;">  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_sale_deals();">
 							<option value="25"> Pages</option>
 							<option value="25"> 25 </option>
 							<option value="50"> 50 </option>
@@ -428,7 +422,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 					}else{ ?>	
 						 <tr>
 						   <td colspan="11" align="center">
-						   <div style="float:left;"> <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_sale_deals();">
+						   <div style="float:left;"> <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_sale_deals();">
 						  <option value="25"> Pages</option>
 						  <option value="25"> 25 </option>
 						  <option value="50"> 50 </option>
@@ -473,7 +467,6 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 		<!-- /page content -->
 
 	</div>
-	<!-- /page container -->
-
+	<!-- /page container --> 
 </body>
 </html>

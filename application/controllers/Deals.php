@@ -43,26 +43,25 @@ class Deals extends CI_Controller{
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Deals','index',$this->dbs_role_id,'1');  
 		if($res_nums>0){
-				
-			$paras_arrs = array(); 
+			$paras_arrs = array();
 			$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();
 			$data['owner_arrs'] =$this->general_model->get_gen_all_owners_list();
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 			
-			$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
+			$s_val = $category_id_val = $assigned_to_id_val = $is_featured_val = $is_property_type = '';
 			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
 			
 			$paras_arrs = array_merge($paras_arrs, array("types_val" => '1'));
 	 
 			if($this->input->post('sel_per_page_val')){
-				$per_page_val = $this->input->post('sel_per_page_val'); 
-				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				$per_page_val = $this->input->post('sel_per_page_val');
+				$_SESSION['tmp_per_page_val'] = $per_page_val;
 				
 			}else if(isset($_SESSION['tmp_per_page_val'])){
 					unset($_SESSION['tmp_per_page_val']);
-				} 
+				}
 				
 			if($this->input->post('refer_no')){
 				$refer_no_val = $this->input->post('refer_no'); 
@@ -709,6 +708,10 @@ class Deals extends CI_Controller{
 		
 		$this->load->model('categories_model');
 		$this->load->model('no_of_bedrooms_model');
+		$this->load->model('properties_model');
+		$this->load->model('leads_model');
+		
+		$data['lead_arrs'] = $this->leads_model->get_all_leads();
 		  
 		$data['args0'] = $args0;   
 		/*get_gen_all_users_list();*/
@@ -720,7 +723,8 @@ class Deals extends CI_Controller{
 		
 		$data['category_arrs'] = $this->categories_model->get_all_categories();
 		$data['beds_arrs'] = $this->no_of_bedrooms_model->get_all_no_of_beds(); 
-		$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();
+		$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list(); 
+		$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
 		 
 		$max_deal_id_val = $this->deals_model->get_max_deal_id();
 		$max_deal_id_val = $max_deal_id_val+1; 
@@ -2892,6 +2896,37 @@ class Deals extends CI_Controller{
 			} 	
 		}
 	}
+	
+	function get_property_dropzone_deal_documents_by_id($args1=''){  
+		$docs_result  = array();  
+		$db_docs_arrs = $this->deals_model->get_property_dropzone_deal_documents_by_id($args1); 
+		if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+			foreach($db_docs_arrs as $db_docs_arr){
+				$tempobj['name'] = $db_docs_arr->name;
+				$tempobj['size'] = $db_docs_arr->sizes;
+				$docs_result[] = $tempobj;
+			} 
+		}
+		header('Content-type: text/json');
+		header('Content-type: application/json');
+		echo json_encode($docs_result);
+	}
+	
+	function get_temp_post_property_dropzone_deal_documents(){  
+		$docs_result  = array();  
+		$db_docs_arrs = $this->deals_model->get_temp_post_property_dropzone_deal_documents(); 
+		if(isset($db_docs_arrs) && count($db_docs_arrs)>0){ 
+			foreach($db_docs_arrs as $db_docs_arr){
+				$tempobj['name'] = $db_docs_arr->name;
+				$tempobj['size'] = $db_docs_arr->sizes;
+				$docs_result[] = $tempobj;
+			} 
+		} 
+		
+		header('Content-type: text/json');
+		header('Content-type: application/json');
+		echo json_encode($docs_result);
+	}
 		 
 	function delete_temp_property_dropzone_agency_documents_files(){
 		if(isset($_POST["proprtyid"]) && (isset($_POST['flename']) && $_POST['flename']!='')){		
@@ -2910,6 +2945,39 @@ class Deals extends CI_Controller{
 			} 	  	
 		}
 	} 
+	
+	function delete_property_dropzone_deal_documents_files(){
+		if(isset($_POST["proprtyid"]) && (isset($_POST['flename']) && $_POST['flename']!='')){
+			$tmp_fle_name = trim($_POST['flename']);
+			$tmp_proprty_id = trim($_POST['proprtyid']); 
+			
+			if(strlen($tmp_fle_name)>0 && $tmp_proprty_id>0){ 
+				$dlt_res = $this->deals_model->delete_property_dropzone_deal_documents($tmp_fle_name,$tmp_proprty_id);
+				if($dlt_res){
+					unlink("downloads/property_deal_documents/".$tmp_fle_name);
+				}
+			} 	
+		}
+	} 
+	
+	function delete_temp_property_dropzone_deal_documents_files(){
+		if(isset($_POST["proprtyid"]) && (isset($_POST['flename']) && $_POST['flename']!='')){		
+			$tmp_ip_address= isset($_SESSION['Temp_Deal_Documents_IP_Address']) ? $_SESSION['Temp_Deal_Documents_IP_Address']:'';
+			$tmp_dt_time = isset($_SESSION['Temp_Deal_Documents_DATE_Times']) ? $_SESSION['Temp_Deal_Documents_DATE_Times']:'';	
+			$tmp_fle_name = trim($_POST['flename']);
+			$tmp_proprty_id = trim($_POST['proprtyid']); 
+				
+			if($tmp_proprty_id== -1 && (strlen($tmp_fle_name)>0 && strlen($tmp_ip_address)>0 && strlen($tmp_dt_time)>0)){
+			
+				$dlt_res = $this->deals_model->delete_temp_property_dropzone_deal_documents($tmp_fle_name,$tmp_proprty_id,$tmp_ip_address,$tmp_dt_time);
+				
+				if($dlt_res){
+					unlink("downloads/property_deal_documents/".$tmp_fle_name);
+				} 
+			} 	  	
+		}
+	} 
+	
 	/* deal agencydocuments drop zone functions ends here */ 
 	
 	

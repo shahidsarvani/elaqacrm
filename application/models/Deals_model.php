@@ -330,7 +330,36 @@ class Deals_model extends CI_Model {
 		$this->db->delete('properties_agency_documents_tbl'); 
 		return true;
 	} 
-	 
+	
+	function delete_property_dropzone_deal_documents($tmp_imgs,$tmp_proprtyid){
+		$this->db->where('name',$tmp_imgs);
+		$this->db->where('deal_id',$tmp_proprtyid);  
+		$this->db->delete('properties_deals_documents_tbl'); 
+		return true;
+	}  
+	
+	function delete_temp_property_dropzone_deal_documents($tmp_imgs,$tmp_proprtyid,$tmp_ips,$tmp_dts){
+		$this->db->where('name',$tmp_imgs);
+		$this->db->where('deal_id',$tmp_proprtyid);
+		$this->db->where('ip_address',$tmp_ips); 
+		$this->db->where('datatimes',$tmp_dts);   
+		$this->db->delete('properties_deals_documents_tbl'); 
+		return true;
+	}
+	
+	function get_temp_post_property_dropzone_deal_documents(){ 
+		$deal_id4 = -1; 	
+		$ip_address4 = $_SERVER['REMOTE_ADDR']; 
+		$datatimes4 = date('Y-m-d');
+			 
+		if(isset($_SESSION['Temp_Deal_Documents_IP_Address']) && isset($_SESSION['Temp_Deal_Documents_DATE_Times'])){
+			$ip_address4 = $_SESSION['Temp_Deal_Documents_IP_Address'];
+			$datatimes4 = $_SESSION['Temp_Deal_Documents_DATE_Times'];
+		} 
+			
+	$query = $this->db->get_where('properties_deals_documents_tbl',array('deal_id'=> $deal_id4,'ip_address'=> $ip_address4,'datatimes'=> $datatimes4));
+	return $query->result();
+	}  
 	 
 	 
 	 /* deals model ended */

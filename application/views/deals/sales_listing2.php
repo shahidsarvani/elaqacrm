@@ -20,7 +20,7 @@ if($view_res_nums){
 			$operate_url = 'deals/operate_deal/1/'.$record->id;
 			$operate_url = site_url($operate_url);
 			
-			$trash_url = 'properties/trash_deal/1/'.$record->id;
+			$trash_url = 'deals/trash_deal/1/'.$record->id;
 			$trash_url = site_url($trash_url);  
 			
 			$dtls_url = 'public_properties/property_detail/'.$record->property_id;
@@ -29,7 +29,7 @@ if($view_res_nums){
 			<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
 			 <td><?= $sr; ?></td>
 			<td> <!--<a href="<?php echo $dtls_url; ?>" target="_blank"><?= stripslashes($record->ref_no); ?></a>--> <?= stripslashes($record->ref_no); ?> </td>
-			<td><?= stripslashes($record->status); ?></td>
+			<td><?= stripslashes($record->status); ?></td> 
 			<td><?php echo stripslashes($record->owner_name); ?></td>
 			<td><?php echo stripslashes($record->cnt_name); ?></td> 
 			<td><?php echo stripslashes($record->sub_loc_name); ?></td>
@@ -46,38 +46,51 @@ if($view_res_nums){
 				echo stripslashes($usr_arr->name);
 			} 	 ?></td>
 			<td class="center"><?php echo date('d-M-Y',strtotime($record->est_deal_date)); ?> </td> 
-			<td class="center"> 
-			<div class="btn-group dropup">
-				<button type="button" class="mb-xs mt-xs mr-xs btn btn-primary dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
-				<ul class="dropdown-menu" role="menu"> 
-				<?php if(isset($this->properties_dealt_edit_module_access) && $this->properties_dealt_edit_module_access==1){ ?> <li> <a href="<?php echo $operate_url; ?>"><i class="fa fa-pencil"></i> Update </a> </li> <?php } if(isset($this->properties_dealt_view_module_access) && $this->properties_dealt_view_module_access==1){ ?><li> <a href="<?php echo $details_url; ?>"><i class="fa fa-search-plus"></i> Detail </a> </li> <?php } if(isset($this->properties_dealt_delete_module_access) && $this->properties_dealt_delete_module_access==1){ ?> <li> <a href="<?php echo $trash_url; ?>" title="Delete" onClick="return confirm('Do you want to delete this?');"><i class="fa fa-times"></i> Delete </a> </li><?php } ?> 
-				</ul>
-			</div> 
-			</td>  
-		   </tr>  
+			<td class="text-center">   
+				<ul class="icons-list">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+						<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
+					  <?php if($view_res_nums>0){ ?>   
+							<li><a href="<?php echo $details_url; ?>"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
+					   <?php } if($update_res_nums>0){ ?> 
+								<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+						<?php } 
+							if($trash_res_nums>0){ ?>  
+							   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+					  <?php } ?>  
+						</ul>
+					</li>
+				</ul>   
+			  </td>   
+		   </tr> 
 	<?php 
 		$sr++;
 		}  ?> 
-		   <tr>
-		   <td colspan="11">
-		   <div style="float:left;">  <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate" onChange="operate_deals_properties();">
-		  <option value="25"> Pages</option>
-		  <option value="25"> 25 </option>
-		  <option value="50"> 50 </option>
-		  <option value="100"> 100 </option> 
-		</select>  </div>
-			<div style="float:right;"> <?php echo $this->ajax_pagination->create_links(); ?>  </div> </td>  
-		  </tr> 
-	  <?php
+		<tr>
+			<td colspan="11">
+				<div style="float:left;"> 
+				<select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate" onChange="operate_deals_properties();">
+					  <option value="25"> Pages</option>
+					  <option value="25" <?php echo (isset($_SESSION['tmp_per_page_val']) && $_SESSION['tmp_per_page_val']==25) ? 'selected="selected"':''; ?>> 25 </option>
+					  <option value="50" <?php echo (isset($_SESSION['tmp_per_page_val']) && $_SESSION['tmp_per_page_val']==50) ? 'selected="selected"':''; ?>> 50 </option>
+					  <option value="100" <?php echo (isset($_SESSION['tmp_per_page_val']) && $_SESSION['tmp_per_page_val']==100) ? 'selected="selected"':''; ?>> 100 </option> 
+				</select>  </div>
+				<div style="float:right;"> <?php echo $this->ajax_pagination->create_links(); ?>  </div> 
+			</td>  
+		</tr> 
+	  <?php  
 	}else{ ?>	
 		 <tr>
 		   <td colspan="11" align="center">
-		   <div style="float:left;"> <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate" onChange="operate_deals_properties();">
-	  <option value="25"> Pages</option>
-	  <option value="25"> 25 </option>
-	  <option value="50"> 50 </option>
-	  <option value="100"> 100 </option> 
-	</select>  </div>
+			<div style="float:left;"> 
+				<select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate" onChange="operate_deals_properties();">
+					<option value="25"> Pages</option>
+					<option value="25"> 25 </option>
+					<option value="50"> 50 </option>
+					<option value="100"> 100 </option> 
+				</select>
+			</div>
 			<div>  <strong> No Record Found! </strong></div>  </td>  
 		  </tr> 
 	<?php } 

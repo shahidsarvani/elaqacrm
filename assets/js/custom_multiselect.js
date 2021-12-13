@@ -10,10 +10,39 @@
 * ---------------------------------------------------------------------------- */
 
 $(function() {
-
-
+	//$('.multi-select-search').attr('data-placeholder').val();
+	//$('selectedTextarea').attr('placeholder', 'Placeholder text');
     // Basic examples
     // ------------------------------
+	var str_val_temp = ""; 
+	var str2_val_temp = ""; 
+	if($('.multi-select-search').length >0){
+		$('.multi-select-search').multiselect({
+			nonSelectedText: $(this).attr('data-placeholder'),
+			enableClickableOptGroups: true,
+			enableCollapsibleOptGroups: true,
+			enableCaseInsensitiveFiltering: true,
+			includeSelectAllOption: false,
+			maxHeight: 260,
+			buttonWidth: '100%',
+			dropUp: true,  
+		});
+	}
+	
+	if($('.multi-select').length >0){
+		$('.multi-select').multiselect({
+			//nonSelectedText: 'Categories',
+			enableClickableOptGroups: true,
+			enableCollapsibleOptGroups: true,
+			enableCaseInsensitiveFiltering: true,
+			includeSelectAllOption: false,
+			maxHeight: 260,
+			buttonWidth: '100%',
+			dropUp: true,  
+		}); 
+	}
+	
+	
 	var str_val_temp = ""; 
 	var str2_val_temp = ""; 
 	$('#category_id').multiselect({

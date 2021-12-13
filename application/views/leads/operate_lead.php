@@ -3,12 +3,8 @@
 <head>
 <?php 
 	$this->load->view('widgets/meta_tags');
-	$chk_add_contact_permission =  $this->general_model->check_controller_method_permission_access('Contacts','add',$this->dbs_role_id,'1'); ?>
-	<script src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	$chk_add_contact_permission =  $this->general_model->check_controller_method_permission_access('Contacts','add',$this->dbs_role_id,'1'); ?> 
 	<script src="<?= asset_url();?>vendor/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-	
-	
-	
 </head>
 <body class="pace-done sidebar-xs">
 <!-- Main navbar -->
@@ -190,27 +186,7 @@
 								}).on('change', function(){
 									$('.datepicker').hide();
 									//operate_properties();
-							});
-							
-							//$('#enquiry_time').pickatime();
-							
-							//$('#enquiry_time').datetimepicker({
-								//format: "hh:mm:ss"
-								//}).on('change', function(){
-									//$('.datepicker').hide();
-									//operate_properties();
-							//});    
-							
-							 
-							
-							
-							
-							/*$('#to_date').datepicker({
-								format: "yyyy-mm-dd"
-								}).on('change', function(){
-								$('.datepicker').hide();
-								//operate_properties();
-							});  */
+							}); 
 						});
 					  </script>
 					  

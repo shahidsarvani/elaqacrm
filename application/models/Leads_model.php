@@ -573,6 +573,11 @@ class Leads_model extends CI_Model {
 	function get_lead_by_id($args1){ 
 		$query = $this->db->get_where('leads_tbl',array('id'=> $args1));
 		return $query->row();
+	} 
+	
+	function get_all_leads(){
+	   $query = $this->db->get('leads_tbl');
+	   return $query->result(); 
 	}  
 	 
 	function insert_lead_data($data){ 

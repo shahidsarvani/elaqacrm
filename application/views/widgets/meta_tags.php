@@ -51,3 +51,4 @@
 <!-- /theme JS files   datatable-button-init-custom  -->
 <script type="text/javascript" src="<?= asset_url(); ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/fields.js"></script>
+<script src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
