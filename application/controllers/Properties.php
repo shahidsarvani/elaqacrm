@@ -3459,7 +3459,7 @@ class Properties extends CI_Controller{
 						}else if(isset($args0) && $args0==6){   
 							redirect("properties/portal_properties_list");	
 						}else{ 
-							redirect("properties/properties_list");
+							redirect("properties/sales_listings");
 						}  	
 					} 
 				} 	 
@@ -3598,7 +3598,7 @@ class Properties extends CI_Controller{
 					}else if(isset($args0) && $args0==6){   
 						redirect("properties/portal_properties_list");	
 					}else{ 
-						redirect("properties/properties_list");
+						redirect("properties/sales_listings");
 					}  
 					
 					/*if($args0 == 3){
