@@ -695,8 +695,11 @@ class General_model extends CI_Model {
 		public function get_gen_contact_info_by_id($args1){ 
 			$query = $this->db->get_where('contacts_tbl',array('id'=> $args1)); //siteusers_tbl
 			return $query->row();
-		} 
+		}
 		
-		 		 
+		public function get_gen_owner_info_by_id($args1){ 
+			$query = $this->db->get_where('owners_tbl',array('id'=> $args1));
+			return $query->row();
+		}		 
 						
 	}  ?>

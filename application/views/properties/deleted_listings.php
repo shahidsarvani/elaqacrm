@@ -103,8 +103,8 @@ if($trash_res_nums>0){ ?>
 	function restore_selected_properties(){ 
 		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
 		if(conf_msg){
-			document.getElementById('datas_form').action = "<?= site_url('properties/restore_selected_properties');?>"; 	
-			document.getElementById('datas_form').submit();
+			document.getElementById('datas_list_forms').action = "<?= site_url('properties/restore_selected_properties');?>"; 	
+			document.getElementById('datas_list_forms').submit();
 		}else{
 			return false;	
 		}
@@ -161,7 +161,7 @@ if($trash_res_nums>0){ ?>
 		<div class="category-title">
             <span>Search</span>
             <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('properties/deleted_listings'); ?>';" data-action="reload"></a></li>
+                <li><a onClick="window.location='<?= site_url('properties/deleted_listings/'); ?>';" data-action="reload"></a></li>
                 <li><a href="#" data-action="collapse"></a></li>
             </ul>
         </div>
@@ -438,7 +438,7 @@ if($trash_res_nums>0){ ?>
         <div class="panel-body"> 
             <div class="row">
             <div class="col-md-12"> 
-                <div class="form-group mb-md">   
+                <div class="form-group">   
                   <div class="col-md-2">  
                    <div class="col-md-9">   
                       <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_properties();">

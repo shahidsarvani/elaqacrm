@@ -53,51 +53,56 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
       <!-- Page header -->
       <?php $this->load->view('widgets/content_header'); ?>
       <!-- /page header -->
-      <script>
-				function operate_rental_deals(){ 	 	  
-					$(document).ready(function(){
-							
-						var sel_per_page_val =0;			
-						var refer_no = document.getElementById("refer_no").value;
-						var unit_no = document.getElementById("unit_no").value;
-						var price = document.getElementById("price").value;
-						var to_price1 = document.getElementById("to_price").value; 
-						var est_deal_date_val = document.getElementById("est_deal_date").value;
-						 
-						var sel_per_page = document.getElementById("per_page");
-						var sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value;
+       <script>
+		function operate_rental_deals(){
+			$(document).ready(function(){
+				//refer_no unit_no  price  to_price  est_deal_date
+				//status   owner_ids  contact_ids  emirate_location_ids  assigned_to_ids	
+				var sel_per_page_val =0;			
+				var refer_no = document.getElementById("refer_no").value;
+				var unit_no = document.getElementById("unit_no").value;
+				var price = document.getElementById("price").value;
+				var to_price1 = document.getElementById("to_price").value; 
+				var est_deal_date_val = document.getElementById("est_deal_date").value;
+				
+				var sel_per_page_val = $("#per_page option:selected").val(); 
+				var selMulti = $.map($("#status option:selected"), function (el, i) { return $(el).val(); }); 
+				var sel_property_status_val = selMulti.join(",");
+				
+				var selMulti = $.map($("#owner_ids option:selected"), function (el, i) { return $(el).val(); }); 
+				var sel_owner_id_val = selMulti.join(",");
+				
+				var selMulti = $.map($("#contact_ids option:selected"), function (el, i) { return $(el).val(); }); 
+				var sel_contact_id_val = selMulti.join(",");
+				
+				var selMulti = $.map($("#emirate_location_ids option:selected"), function (el, i) { return $(el).val(); }); 
+				var sel_emirate_location_id_val = selMulti.join(",");
+				
+				var selMulti = $.map($("#assigned_to_ids option:selected"), function (el, i) { return $(el).val(); }); 
+				var sel_assigned_to_id_val = selMulti.join(",");  
+				
+				$.ajax({
+					method: "POST",
+					url: "<?php echo site_url('/deals/rental_listing2/'); ?>",
+					data: { page: 0, sel_per_page_val:sel_per_page_val, refer_no: refer_no, unit_no: unit_no, price: price, to_price: to_price1, sel_emirate_location_id_val: sel_emirate_location_id_val, sel_property_status_val: sel_property_status_val, sel_assigned_to_id_val: sel_assigned_to_id_val, sel_est_deal_date_val : est_deal_date_val, contact_id_val: sel_contact_id_val, owner_id_val: sel_owner_id_val },
+					beforeSend: function(){
+						$('.loading').show();    
+					},
+					success: function(data){
+						$('.loading').hide();
+						$('#dyns_list').html(data);
 						
-						var sel_status_val = document.getElementById("status");
-						var sel_property_status_val = sel_status_val.options[sel_status_val.selectedIndex].value;
-			
-						var sel_emirate_location_id_val = document.getElementById("emirate_location_id").value;
-						var sel_assigned_to_id_val = document.getElementById("assigned_to_id").value;
-						var sel_contact_id_val = document.getElementById("contact_id").value;
-						var sel_owner_id_val = document.getElementById("owner_id").value;
-						 
-						$.ajax({
-							method: "POST",
-							url: "<?php echo site_url('/deals/rental_listing2/'); ?>",
-							data: { page: 0, sel_per_page_val:sel_per_page_val, refer_no: refer_no, unit_no: unit_no, price: price, to_price: to_price1, sel_emirate_location_id_val: sel_emirate_location_id_val, sel_property_status_val: sel_property_status_val, sel_assigned_to_id_val: sel_assigned_to_id_val, sel_est_deal_date_val : est_deal_date_val, contact_id_val: sel_contact_id_val, owner_id_val: sel_owner_id_val },
-							beforeSend: function(){
-
-								$('.loading').show();    
-							},
-							success: function(data){
-								$('.loading').hide();
-								$('#dyns_list').html(data);
-								
-								//$( '[data-toggle=popover]' ).popover();
-								
-								//$('.simple-ajax-modal').magnificPopup({
-								//	type: 'ajax',
-								//	modal: true
-								//});
-							}
-						});
-					});
-				}
-				</script>
+						//$( '[data-toggle=popover]' ).popover();
+						
+						//$('.simple-ajax-modal').magnificPopup({
+						//	type: 'ajax',
+						//	modal: true
+						//});
+					}
+				});
+			});
+		}
+		</script>
       <!-- Content area -->
       <div class="content">
         <form name="datas_form" id="datas_form" action="" method="post">
@@ -113,7 +118,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
                 <div class="sidebar-category">
                   <div class="category-title"> <span>Search</span>
                     <ul class="icons-list">
-                      <li><a onClick="window.location='<?= site_url('deals/rental_listing'); ?>';" data-action="reload"></a></li>
+                      <li><a onClick="window.location='<?= site_url('deals/rental_listing/'); ?>';" data-action="reload"></a></li>
                       <li><a href="#" data-action="collapse"></a></li>
                     </ul>
                   </div>
@@ -129,10 +134,11 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
                       <div class="row">
                         <div class="col-xs-12">
                           <select name="status" id="status" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_rental_deals();">
-                            <option value="">Select </option>
-                            <option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
-                            <option value="Close" <?php if(isset($_POST['status']) && $_POST['status']=='Close'){ echo 'selected="selected"'; } ?>> Close </option>
-                            <option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option>
+                            <option value=""> Select Status </option>
+							<option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
+							<option value="Open" <?php if(isset($_POST['status']) && $_POST['status']=='Open'){ echo 'selected="selected"'; } ?>> Open </option>
+							<option value="Closed" <?php if(isset($_POST['status']) && $_POST['status']=='Closed'){ echo 'selected="selected"'; } ?>> Closed </option>
+							<option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option> 
                           </select>
                         </div>
                       </div>
@@ -140,7 +146,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
                     <div class="form-group">
                       <div class="row">
                         <div class="col-xs-12">
-                          <select name="owner_ids" id="owner_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_rental_deals();">
+                          <select name="owner_ids" id="owner_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_rental_deals();" data-placeholder="Select Owner">
                             <?php  
 		$owners_arrs = $this->general_model->get_gen_all_owners_list();
 		if(isset($owners_arrs) && count($owners_arrs)>0){
@@ -158,7 +164,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
                     <div class="form-group">
                       <div class="row">
                         <div class="col-xs-12">
-                          <select name="contact_ids" id="contact_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_rental_deals();">
+                          <select name="contact_ids" id="contact_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_rental_deals();" data-placeholder="Select Contact">
                             <?php  
 		if(isset($contact_arrs) && count($contact_arrs)>0){
 			foreach($contact_arrs as $contact_arr){ ?>
@@ -175,22 +181,22 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
                     <div class="form-group">
                       <div class="row">
                         <div class="col-xs-12">
-                          <select name="emirate_location_ids" id="emirate_location_ids" class="form-control input-sm mb-md" multiple="multiple" onChange="operate_rental_deals();">
-                            <?php  	
-$emirate_sub_location_arrs = $this->admin_model->get_all_emirate_sub_locations(); 
-if(isset($emirate_sub_location_arrs) && count($emirate_sub_location_arrs)>0){
-foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){
-
-$sel_1 = '';
-if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emirate_sub_location_arr->id){
-	$sel_1 = 'selected="selected"';
-} ?>
-                            <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>>
-                            <?= stripslashes($emirate_sub_location_arr->name); ?>
-                            </option>
-                            <?php 
-} 
-} ?>
+                          <select name="emirate_location_ids" id="emirate_location_ids" class="form-control multi-select-search" multiple="multiple" onChange="operate_rental_deals();" data-placeholder="Select Sub Location">
+						<?php  	
+						$emirate_sub_location_arrs = $this->admin_model->get_all_emirate_sub_locations(); 
+						if(isset($emirate_sub_location_arrs) && count($emirate_sub_location_arrs)>0){
+							foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){
+							
+								$sel_1 = '';
+								if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emirate_sub_location_arr->id){
+									$sel_1 = 'selected="selected"';
+								} ?>
+								<option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>>
+									<?= stripslashes($emirate_sub_location_arr->name); ?>
+								</option>
+							<?php 
+							} 
+						} ?>
                           </select>
                         </div>
                       </div>
@@ -215,7 +221,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
                     <div class="form-group">
                       <div class="row">
                         <div class="col-xs-12">
-                          <select name="assigned_to_ids" id="assigned_to_ids" class="multiselect_cls" multiple="multiple" onChange="operate_rental_deals();">
+                          <select name="assigned_to_ids" id="assigned_to_ids" class=" multi-select-search" multiple="multiple" onChange="operate_rental_deals();" data-placeholder="Select Agent"> 
                             <?php  
 			if(isset($user_arrs) && count($user_arrs)>0){
 				foreach($user_arrs as $user_arr){ ?>
@@ -272,7 +278,7 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
                     <div class="col-md-12">
                       <div class="form-group mb-md">
                         <div class="col-md-2">
-                          <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_rental_deals();">
+                          <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_rental_deals();">
                             <option value="25"> Pages</option>
                             <option value="25"> 25 </option>
                             <option value="50"> 50 </option>
@@ -300,122 +306,119 @@ if(isset($_POST['emirate_location_id']) && $_POST['emirate_location_id']==$emira
 				display:none !important;
 			 }
 		 </style>
-                  <script>  	  
+         <script>  	  
 			$(document).ready(function(){  
 				$('#est_deal_date').datepicker({
 				  format: "yyyy-mm-dd"
 					}).on('change', function(){
 						$('.datepicker').hide();
 						operate_rental_deals();
-				});
-				
-				
-				$('.multiselect_cls').multiselect();
+				}); 			
 			}); 
-		</script>
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Deal Ref # </th>
-                          <th>Status </th>
-                          <th>Seller</th>
-                          <th>Buyer</th>
-                          <th>Sub Location</th>
-                          <th>Unit No</th>
-                          <th>Deal Price</th>
-                          <th>Agent </th>
-                          <th class="center">Estimated Date</th>
-                          <th class="center">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="dyns_list">
-                        <?php    
-				if($view_res_nums >0){ 
-					$sr=1; 
-					if(isset($records) && count($records)>0){
-						foreach($records as $record){ 
-							$details_url = 'deals/deal_detail/'.$record->id;
-							$details_url = site_url($details_url); 
-							
-							$operate_url = 'deals/operate_deal/2/'.$record->id;
-							$operate_url = site_url($operate_url);
-							
-							$trash_url = 'deals/trash_deal/2/'.$record->id;
-							$trash_url = site_url($trash_url);  
-							
-							$dtls_url = 'public_properties/property_detail/'.$record->property_id;
-							$dtls_url = site_url($dtls_url); ?>
-                        <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
-                          <td><?= $sr; ?></td>
-                          <td><!--<a href="<?php echo $dtls_url; ?>" target="_blank"><?= stripslashes($record->
-                            ref_no); ?></a>-->
-                            <?= stripslashes($record->ref_no); ?>
-                          </td>
-                          <td><?= stripslashes($record->status); ?></td>
-                          <td><?php echo stripslashes($record->owner_name); ?></td>
-                          <td><?php echo stripslashes($record->cnt_name); ?></td>
-                          <td><?php echo stripslashes($record->sub_loc_name); ?></td>
-                          <td><?= stripslashes($record->unit_no); ?></td>
-                          <td><?php echo CRM_CURRENCY.' '.number_format($record->deal_price,0,".",","); ?></td>
-                          <td><?php 
-							if($record->agent1_id>0){
-								$usr_arr =  $this->general_model->get_user_info_by_id($record->agent1_id);
-								echo stripslashes($usr_arr->name)."<hr class=\"cstms-dash\">";
+		 </script>
+			  <div class="table-responsive">
+				<table class="table table-bordered table-striped table-hover">
+				  <thead>
+					<tr>
+					  <th>#</th>
+					  <th>Deal Ref # </th>
+					  <th>Status </th>
+					  <th>Seller</th>
+					  <th>Buyer</th>
+					  <th>Sub Location</th>
+					  <th>Unit No</th>
+					  <th>Deal Price</th>
+					  <th>Agent </th>
+					  <th class="center">Estimated Date</th>
+					  <th class="center">Action</th>
+					</tr>
+				  </thead>
+				  <tbody id="dyns_list">
+               	 <?php    
+					if($view_res_nums >0){ 
+						$sr=1; 
+						if(isset($records) && count($records)>0){
+							foreach($records as $record){ 
+								$details_url = 'deals/deal_detail/'.$record->id;
+								$details_url = site_url($details_url); 
+								
+								$operate_url = 'deals/operate_deal/2/'.$record->id;
+								$operate_url = site_url($operate_url);
+								
+								$trash_url = 'deals/trash_deal/2/'.$record->id;
+								$trash_url = site_url($trash_url);  
+								
+								$dtls_url = 'public_properties/property_detail/'.$record->property_id;
+								$dtls_url = site_url($dtls_url); ?>
+							<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
+							  <td><?= $sr; ?></td>
+							  <td><!--<a href="<?php echo $dtls_url; ?>" target="_blank"><?= stripslashes($record->
+								ref_no); ?></a>-->
+								<?= stripslashes($record->ref_no); ?>
+							  </td>
+							  <td><?= stripslashes($record->status); ?></td>
+							  <td><?php echo stripslashes($record->owner_name); ?></td>
+							  <td><?php echo stripslashes($record->cnt_name); ?></td>
+							  <td><?php echo stripslashes($record->sub_loc_name); ?></td>
+							  <td><?= stripslashes($record->unit_no); ?></td>
+							  <td><?php echo CRM_CURRENCY.' '.number_format($record->deal_price,0,".",","); ?></td>
+							  <td><?php 
+								if($record->agent1_id>0){
+									$usr_arr =  $this->general_model->get_user_info_by_id($record->agent1_id);
+									echo stripslashes($usr_arr->name)."<hr class=\"cstms-dash\">";
+								} 
+								
+								if($record->agent2_id>0){
+									$usr_arr =  $this->general_model->get_user_info_by_id($record->agent2_id);
+									echo stripslashes($usr_arr->name);
+								} 	 ?></td>
+							  <td class="center"><?php echo date('d-M-Y',strtotime($record->est_deal_date)); ?> </td>
+							  <td class="text-center"><ul class="icons-list">
+								  <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a>
+									<ul class="dropdown-menu dropdown-menu-right">
+									  <!-- icon-search4 -->
+									  <?php if($view_res_nums>0){ ?>
+									  <li><a href="<?php echo $details_url; ?>"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>
+									  <?php } if($update_res_nums>0){ ?>
+									  <li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+									  <?php } 
+												if($trash_res_nums>0){ ?>
+									  <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+									  <?php } ?>
+									</ul>
+								  </li>
+								</ul></td>
+							</tr>
+							<?php 
+							$sr++;
+							}  ?>
+							<tr>
+							  <td colspan="11"><div style="float:left;">
+								  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_rental_deals();">
+									<option value="25"> Pages</option>
+									<option value="25"> 25 </option>
+									<option value="50"> 50 </option>
+									<option value="100"> 100 </option>
+								  </select>
+								</div>
+								<div style="float:right;"> <?php echo $this->ajax_pagination->create_links(); ?> </div></td>
+							</tr>
+							<?php
+						}else{ ?>
+							<tr>
+							  <td colspan="11" align="center"><div style="float:left;">
+								  <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm  select2" onChange="operate_rental_deals();">
+									<option value="25"> Pages</option>
+									<option value="25"> 25 </option>
+									<option value="50"> 50 </option>
+									<option value="100"> 100 </option>
+								  </select>
+								</div>
+								<div> <strong> No Record Found! </strong> </div></td>
+							</tr>
+							<?php 
 							} 
-							
-							if($record->agent2_id>0){
-								$usr_arr =  $this->general_model->get_user_info_by_id($record->agent2_id);
-								echo stripslashes($usr_arr->name);
-							} 	 ?></td>
-                          <td class="center"><?php echo date('d-M-Y',strtotime($record->est_deal_date)); ?> </td>
-                          <td class="text-center"><ul class="icons-list">
-                              <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                  <!-- icon-search4 -->
-                                  <?php if($view_res_nums>0){ ?>
-                                  <li><a href="<?php echo $details_url; ?>"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>
-                                  <?php } if($update_res_nums>0){ ?>
-                                  <li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
-                                  <?php } 
-											if($trash_res_nums>0){ ?>
-                                  <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
-                                  <?php } ?>
-                                </ul>
-                              </li>
-                            </ul></td>
-                        </tr>
-                        <?php 
-						$sr++;
-						}  ?>
-                        <tr>
-                          <td colspan="11"><div style="float:left;">
-                              <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_rental_deals();">
-                                <option value="25"> Pages</option>
-                                <option value="25"> 25 </option>
-                                <option value="50"> 50 </option>
-                                <option value="100"> 100 </option>
-                              </select>
-                            </div>
-                            <div style="float:right;"> <?php echo $this->ajax_pagination->create_links(); ?> </div></td>
-                        </tr>
-                        <?php
-					}else{ ?>
-                        <tr>
-                          <td colspan="11" align="center"><div style="float:left;">
-                              <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md select2" onChange="operate_rental_deals();">
-                                <option value="25"> Pages</option>
-                                <option value="25"> 25 </option>
-                                <option value="50"> 50 </option>
-                                <option value="100"> 100 </option>
-                              </select>
-                            </div>
-                            <div> <strong> No Record Found! </strong> </div></td>
-                        </tr>
-                        <?php 
-						} 
-					}else{ ?>
+						}else{ ?>
                         <tr class="gradeX">
                           <td colspan="11" class="center"><strong> No Permission to access this area! </strong> </td>
                         </tr>

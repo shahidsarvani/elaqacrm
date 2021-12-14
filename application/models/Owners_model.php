@@ -16,7 +16,7 @@ class Owners_model extends CI_Model {
 			if(strlen($q_val)>0){
 				$whrs .=" AND ( name LIKE '%$q_val%' OR email LIKE '%$q_val%' OR phone_no LIKE '%$q_val%' OR mobile_no LIKE '%$q_val%' OR address LIKE '%$q_val%' ) ";
 			}
-		}  
+		}   
 		 
 		$limits ='';
 		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
@@ -26,8 +26,8 @@ class Owners_model extends CI_Model {
         }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
              $tot_limit =   $params['limit'];
 			$limits = " LIMIT $tot_limit ";
-		}   
-		
+		}
+		 
 		$query = $this->db->query("SELECT * FROM owners_tbl WHERE id >'0' $whrs ORDER BY created_on DESC $limits "); 
 		return $query->result(); 
 	}  

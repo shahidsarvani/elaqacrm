@@ -60,7 +60,8 @@ function get_property_list_emirate_sub_location(para1,url,dis){
   
 
 function get_property_emirate_location(para1,url,dis){  
-	objdiv=dis;
+	objdiv = dis; 
+	console.log( objdiv );
 	xmlhttp=GetXmlHttpObject();
 	if (xmlhttp==null){
 		alert ("Browser does not support HTTP Request");

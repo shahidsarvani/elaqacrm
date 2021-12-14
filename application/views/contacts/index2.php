@@ -30,14 +30,19 @@
           <td><?= stripslashes($record->company_name); ?></td>
           <td><?= date('d-M-Y H:i:s',strtotime($record->created_on)); ?></td> 
           <td class="text-center"> 
-            <ul class="icons-list">
-			   <?php if($update_res_nums>0){ ?> 
-                        <li class="text-primary-600"><a href="<?php echo $operate_url; ?>"><i class="icon-pencil7"></i></a></li> 
-                <?php } 
-                    if($trash_res_nums>0){ ?> 
-                        <li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li> 
-              <?php } ?> 
-                </ul>  
+		  	<ul class="icons-list">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+				<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
+			  <?php if($update_res_nums>0){ ?> 
+						<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+				<?php } 
+					if($trash_res_nums>0){ ?>  
+					   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+			  <?php } ?>  
+				</ul>
+			</li>
+		</ul> 		   
           </td> 
         </tr> 
 		<?php 

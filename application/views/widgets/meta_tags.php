@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/forms/styling/uniform.min.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/forms/selects/bootstrap_multiselect.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/ui/moment/moment.min.js"></script>
-<script type="text/javascript" src="<?= asset_url(); ?>js/plugins/pickers/daterangepicker.js"></script>
+<!--<script type="text/javascript" src="<?= asset_url(); ?>js/plugins/pickers/daterangepicker.js"></script>-->
  
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/tables/datatables/datatables.min.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/tables/datatables/extensions/buttons.min.js"></script>
@@ -38,17 +38,12 @@
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/notifications/bootbox.min.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/notifications/sweet_alert.min.js"></script>
 
-<script type="text/javascript" src="<?= asset_url(); ?>js/core/app.js"></script>
-
-<!--<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_basic.js"></script>-->
-<script type="text/javascript" src="<?= asset_url(); ?>js/pages/form_multiselect.js"></script>
- 
-<script type="text/javascript" src="<?= asset_url(); ?>js/operate_forms.js"></script>
- 
+<script type="text/javascript" src="<?= asset_url(); ?>js/core/app.js"></script> 
+<script type="text/javascript" src="<?= asset_url(); ?>js/pages/form_multiselect.js"></script> 
+<script type="text/javascript" src="<?= asset_url(); ?>js/operate_forms.js"></script> 
 <script type="text/javascript" src="<?= asset_url(); ?>js/pages/form_layouts.js"></script>  
- 
 <script type="text/javascript" src="<?= asset_url(); ?>js/pages/components_modals.js"></script>
-<!-- /theme JS files   datatable-button-init-custom  -->
+<!-- /theme JS files datatable-button-init-custom  -->
 <script type="text/javascript" src="<?= asset_url(); ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/fields.js"></script>
-<script src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script> 

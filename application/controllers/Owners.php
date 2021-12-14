@@ -63,7 +63,7 @@
 			$totalRec = count($this->owners_model->get_all_filter_owners($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/owners/index2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; //$this->perPage;
@@ -106,7 +106,7 @@
 				} 	  
 				
 			if(isset($_POST['q_val'])){
-				$q_val = $this->input->post('q_val'); 
+				$q_val = $this->input->post('q_val');   
 				if(strlen($q_val)>0){
 					$_SESSION['tmp_q_val'] = $q_val;
 					$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val)); 
@@ -130,7 +130,7 @@
 			$totalRec = count($this->owners_model->get_all_filter_owners($paras_arrs)); 
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/owners/index2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; //$this->perPage;

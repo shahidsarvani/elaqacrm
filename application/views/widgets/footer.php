@@ -10,15 +10,14 @@ $(document).ready(function(){
 		$('.select2-search').select2();
 	}
 	
-	if($('.picks-date').length >0){ 
+	if($('.picks-date').length >0){
 		$('.picks-date').datepicker({
-		  format: "yyyy-mm-dd"
-			}).on('change', function(){  
-				$('.datepicker').hide();
-				operate_sale_deals();
+		  format: "yyyy-mm-dd",
+		}).on('change', function(){
+			$('.datepicker').hide();
+				///operate_sale_deals();
 		}); 
-	}
-	
+	} 
 });
 </script>
 <div class="footer text-muted"> &copy; <?php echo date('Y'); ?>. <a href="#">ilaqa CRM</a> by <a href="http://www.digitalpoin8.com/" target="_blank">DigitalPoin8</a> </div>

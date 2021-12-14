@@ -100,11 +100,11 @@ if($trash_res_nums>0){ ?>
 		}); 
 	} 
 	
-	function restore_selected_properties(){ 
+	function restore_archived_selected_properties(){ 
 		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
 		if(conf_msg){
-			document.getElementById('datas_form').action = "<?= site_url('properties/restore_selected_properties');?>"; 	
-			document.getElementById('datas_form').submit();
+			document.getElementById('datas_list_forms').action = "<?= site_url('properties/restore_archived_selected_properties/');?>"; 	
+			document.getElementById('datas_list_forms').submit();
 		}else{
 			return false;	
 		}
@@ -161,7 +161,7 @@ if($trash_res_nums>0){ ?>
 		<div class="category-title">
             <span>Search</span>
             <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('properties/archived_listings'); ?>';" data-action="reload"></a></li>
+                <li><a onClick="window.location='<?= site_url('properties/archived_listings/'); ?>';" data-action="reload"></a></li>
                 <li><a href="#" data-action="collapse"></a></li>
             </ul>
         </div>
@@ -466,7 +466,7 @@ if($trash_res_nums>0){ ?>
 							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
 					<?php } ?> 
 					
-						<button type="button" name="submit_restore_properties" id="submit_restore_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Restore Selected" onClick="restore_selected_properties();"> <i class="glyphicon glyphicon-repeat"></i> Restore Selected </button>  
+						<button type="button" name="submit_restore_properties" id="submit_restore_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Restore Selected" onClick="restore_archived_selected_properties();"> <i class="glyphicon glyphicon-repeat"></i> Restore Selected </button>  
 					
                         </div>
                     </div> 

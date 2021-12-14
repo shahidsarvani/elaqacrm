@@ -129,7 +129,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 			<div class="category-title">
 				<span>Search</span>
 				<ul class="icons-list">
-					<li><a onClick="window.location='<?= site_url('deals/sales_listings'); ?>';" data-action="reload"></a></li>
+					<li><a onClick="window.location='<?= site_url('deals/sales_listing/'); ?>';" data-action="reload"></a></li>
 					<li><a href="#" data-action="collapse"></a></li>
 				</ul>
 			</div>
@@ -146,10 +146,11 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 				<div class="row">
 					<div class="col-xs-12">  
 					   <select name="status" id="status" class="form-control input-sm select2" onChange="operate_sale_deals();">
-						  <option value=""> Select Status </option>
-						  <option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
-							  <option value="Close" <?php if(isset($_POST['status']) && $_POST['status']=='Close'){ echo 'selected="selected"'; } ?>> Close </option>
-							  <option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option> 
+							<option value=""> Select Status </option>
+							<option value="Pending" <?php if(isset($_POST['status']) && $_POST['status']=='Pending'){ echo 'selected="selected"'; } ?>> Pending </option>
+							<option value="Open" <?php if(isset($_POST['status']) && $_POST['status']=='Open'){ echo 'selected="selected"'; } ?>> Open </option>
+							<option value="Closed" <?php if(isset($_POST['status']) && $_POST['status']=='Closed'){ echo 'selected="selected"'; } ?>> Closed </option>
+							<option value="Cancelled" <?php if(isset($_POST['status']) && $_POST['status']=='Cancelled'){ echo 'selected="selected"'; } ?>> Cancelled </option> 
 						</select>
 					</div>     
 				</div> 

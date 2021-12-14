@@ -98,8 +98,14 @@ class Deals_model extends CI_Model {
              $tot_limit =   $params['limit'];
 			$limits = " LIMIT $tot_limit ";
 		} 
-		 
-		$query = $this->db->query("SELECT d.*, s.name AS cnt_name, s.phone_no AS cnt_phone_no, ow.name AS owner_name, ow.phone_no AS owner_phone_no, sl.name AS sub_loc_name FROM properties_deals_tbl d LEFT JOIN siteusers_tbl s ON d.contact_id=s.id LEFT JOIN owners_tbl ow ON d.owner_id=ow.id LEFT JOIN emirate_sub_locations_tbl sl ON d.sub_location_id=sl.id WHERE d.id >'0' $whrs ORDER BY d.created_on DESC $limits ");  	
+		
+		/*echo "SELECT d.*, s.name AS cnt_name, s.phone_no AS cnt_phone_no, ow.name AS owner_name, ow.phone_no AS owner_phone_no, sl.name AS sub_loc_name FROM properties_deals_tbl d LEFT JOIN contacts_tbl s ON d.contact_id=s.id LEFT JOIN owners_tbl ow ON d.owner_id=ow.id LEFT JOIN emirate_sub_locations_tbl sl ON d.sub_location_id=sl.id WHERE d.id >'0' $whrs ORDER BY d.created_on DESC $limits ";
+		exit;*/
+		
+		/*echo "SELECT d.*, s.name AS cnt_name, s.phone_no AS cnt_phone_no, ow.name AS owner_name, ow.phone_no AS owner_phone_no, sl.name AS sub_loc_name FROM properties_deals_tbl d LEFT JOIN siteusers_tbl s ON d.contact_id=s.id LEFT JOIN owners_tbl ow ON d.owner_id=ow.id LEFT JOIN emirate_sub_locations_tbl sl ON d.sub_location_id=sl.id WHERE d.id >'0' $whrs ORDER BY d.created_on DESC $limits ";
+		exit;
+*/		 
+		$query = $this->db->query("SELECT d.*, s.name AS cnt_name, s.phone_no AS cnt_phone_no, ow.name AS owner_name, ow.phone_no AS owner_phone_no, sl.name AS sub_loc_name FROM properties_deals_tbl d LEFT JOIN contacts_tbl s ON d.contact_id=s.id LEFT JOIN owners_tbl ow ON d.owner_id=ow.id LEFT JOIN emirate_sub_locations_tbl sl ON d.sub_location_id=sl.id WHERE d.id >'0' $whrs ORDER BY d.created_on DESC $limits ");  	
 		return $query->result();   
 	} 
 	

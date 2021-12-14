@@ -58,13 +58,13 @@
 					var sel_per_page = document.getElementById("per_page");
 					sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value;
 					  
-					var s_val = document.getElementById("s_val").value;
-					s_val = s_val.trim();
+					var q_val = document.getElementById("q_val").value;
+					q_val = q_val.trim();
 					 
 					$.ajax({
 						method: "POST",
 						url: "<?php echo site_url('/contacts/index2/'); ?>",
-						data: { page: 0, sel_per_page_val:sel_per_page_val, s_val: s_val},
+						data: { page: 0, sel_per_page_val:sel_per_page_val, q_val: q_val},
 						beforeSend: function(){
 							$('.loading').show();
 						},
@@ -106,7 +106,7 @@
              
             	<div class="form-group mb-md">   
                   <div class="col-md-1">    
-                  <select name="per_page" id="per_page" class="form-control input-sm mb-md  select" onChange="operate_contacts_list();">
+                  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_contacts_list();">
                   <option value="25"> Pages</option>
                   <option value="25"> 25 </option>
                   <option value="50"> 50 </option>
@@ -115,7 +115,7 @@
                   </div> 
                   
                   <div class="col-md-3">  
-                  <input name="s_val" id="s_val" onKeyUp="operate_contacts_list();" placeholder="Search..." type="text" class="form-control input-sm mb-md">   
+                  <input name="q_val" id="q_val" onKeyUp="operate_contacts_list();" placeholder="Search..." type="text" class="form-control input-sm mb-md">   
             	  </div> 
                   <div class="col-md-3">   
                   </div>    
@@ -179,14 +179,19 @@
                           <td><?= stripslashes($record->company_name); ?></td>
                           <td><?= date('d-M-Y H:i:s',strtotime($record->created_on)); ?></td>
                           <td class="text-center"> 
-                             <ul class="icons-list">
-                           <?php if($update_res_nums>0){ ?> 
-                                	<li class="text-primary-600"><a href="<?php echo $operate_url; ?>"><i class="icon-pencil7"></i></a></li> 
-                         	<?php } 
-								if($trash_res_nums>0){ ?> 
-                               		<li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li> 
-                          <?php } ?> 
-                            </ul>  
+							<ul class="icons-list">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+									<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
+								  <?php if($update_res_nums>0){ ?> 
+											<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+									<?php } 
+										if($trash_res_nums>0){ ?>  
+										   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+								  <?php } ?>  
+									</ul>
+								</li>
+							</ul>   
                           </td> 
                         </tr>
                         <?php 
@@ -194,7 +199,7 @@
                         } ?> 
                        <tr>
                        <td colspan="8">
-                       <div style="float:left;">  <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select" onChange="operate_contacts_list();">
+                       <div style="float:left;">  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_contacts_list();">
                           <option value="25"> Pages</option>
                           <option value="25"> 25 </option>
                           <option value="50"> 50 </option>

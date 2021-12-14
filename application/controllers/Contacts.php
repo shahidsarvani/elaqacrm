@@ -62,7 +62,7 @@
 			$totalRec = count($this->contacts_model->get_all_filter_contacts($paras_arrs));
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/contacts/index2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; //$this->perPage;
@@ -129,7 +129,7 @@
 			$totalRec = count($this->contacts_model->get_all_filter_contacts($paras_arrs)); 
 			
 			//pagination configuration
-			$config['target']      = '#fetch_dya_list';
+			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/contacts/index2');
 			$config['total_rows']  = $totalRec;
 			$config['per_page']    = $show_pers_pg; //$this->perPage;

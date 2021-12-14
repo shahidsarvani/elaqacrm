@@ -106,8 +106,8 @@ if($trash_res_nums>0){ ?>
 	function operate_archived_properties(){ 
 		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
 		if(conf_msg){
-			document.getElementById('datas_form').action = "<?= site_url('properties/archived_selected_properties');?>"; 	
-			document.getElementById('datas_form').submit();
+			document.getElementById('datas_list_forms').action = "<?= site_url('properties/archived_selected_properties/');?>"; 	
+			document.getElementById('datas_list_forms').submit();
 		}else{
 			return false;	
 		}
@@ -164,7 +164,7 @@ if($trash_res_nums>0){ ?>
 		<div class="category-title">
             <span>Search</span>
             <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('properties/sales_listings'); ?>';" data-action="reload"></a></li>
+                <li><a onClick="window.location='<?= site_url('properties/sales_listings/'); ?>';" data-action="reload"></a></li>
                 <li><a href="#" data-action="collapse"></a></li>
             </ul>
         </div>

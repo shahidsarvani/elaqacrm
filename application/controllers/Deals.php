@@ -701,7 +701,7 @@ class Deals extends CI_Controller{
 	}
 
 
-	function operate_deal($args0='',$args1=''){ 
+	function operate_deal($args0='1', $args1=''){ 
 		if($this->login_vs_user_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
 			redirect('agent/operate_meetings_views');
 		}
@@ -777,14 +777,12 @@ class Deals extends CI_Controller{
 			$unit_no = $this->input->post("unit_no");  
 			$category_id = $this->input->post("category_id"); 
 			$no_of_beds_id = $this->input->post("no_of_beds_id");  
-			$emirate_id = $this->input->post("emirate_id"); 
-			$location_id = $this->input->post("location_id"); 
+			$emirate_id = $this->input->post("emirate_id");
+			$location_id = $this->input->post("location_id");
 			$sub_location_id = $this->input->post("sub_location_id");  
-			$contact_id1 = $this->input->post("contact_id1"); 
-			
+			$contact_id1 = $this->input->post("contact_id1");
 			//$renewal_date = $this->input->post("renewal_date"); 
-			//$set_reminder = $this->input->post("set_reminder"); 
-			
+			//$set_reminder = $this->input->post("set_reminder");
 			$renewal_date = isset($_POST['renewal_date']) ? $this->input->post("renewal_date") :'';	
 			$set_reminder = isset($_POST['set_reminder']) ? $this->input->post("set_reminder") :'';	 
 			$notes = $this->input->post("notes");
@@ -799,13 +797,15 @@ class Deals extends CI_Controller{
 				if($update_record_arr->property_id == $property_id) {
 					$is_unique_propertyid = '';
 				} 
-			} 
+			}  
 			
-			$this->form_validation->set_rules("property_id", "Property", "trim|required|xss_clean|greater_than[0]{$is_unique_propertyid}",array('greater_than' => 'Select Deal Property!','is_unique' => 'This Property Deal has been created already!'));
+			/*$this->form_validation->set_rules("property_id", "Property", "trim|required|xss_clean|greater_than[0]{$is_unique_propertyid}",array('greater_than' => 'Select Deal Property!','is_unique' => 'This Property Deal has been created already!'));*/
+			 
+			$this->form_validation->set_rules("property_id", "Property", "trim|required|xss_clean|greater_than[0]",array('greater_than' => 'Select Deal Property!','is_unique' => 'This Property Deal has been created already!'));
 			
 			$this->form_validation->set_rules("types", "Type", "trim|required|xss_clean");
 			 
-			$this->form_validation->set_rules('owner_id', 'Seller', 'trim|required|xss_clean|greater_than[0]',array('greater_than' => 'Select Deal Seller!'));
+			//$this->form_validation->set_rules('owner_id', 'Seller', 'trim|required|xss_clean|greater_than[0]',array('greater_than' => 'Select Deal Seller!'));
 			
 			$tmpusr_type = " Buyer ";
 			if(isset($args0) && $args0==1){
@@ -818,29 +818,27 @@ class Deals extends CI_Controller{
 			   	
 			$this->form_validation->set_rules("status", "Status", "trim|required|xss_clean");
 			$this->form_validation->set_rules("notes", "Notes", "trim|required|xss_clean");
-			
-			
-	if($this->form_validation->run() == FALSE){
-	// validation fail
-		$this->load->view('deals/operate_deal',$data);
-		 
-	}else if(isset($args1) && $args1!=''){      
 			 
-	  
-	$datas = array('lead_id' => $lead_id,'ref_no' => $ref_no,'types' => $types,'owner_id' => $owner_id,'contact_id' => $contact_id1,'property_id' => $property_id,'status' => $status,'deal_price' => $deal_price,'deposit' => $deposit,'commission' => $commission,'agent1_id' => $agent1_id,'agent1_commission_percentage' => $agent1_commission_percentage,'agent1_commission_value' => $agent1_commission_value,'agent2_id' => $agent2_id,'agent2_commission_percentage' => $agent2_commission_percentage,'agent2_commission_value' => $agent2_commission_value,'est_deal_date'=>$est_deal_date,'act_deal_date' => $act_deal_date,'unit_no' => $unit_no,'category_id' => $category_id,'no_of_beds_id' => $no_of_beds_id,'emirate_id'=>$emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'renewal_date' => $renewal_date,'set_reminder' => $set_reminder,'notes' => $notes); 
-	 	  		
-	$res = $this->deals_model->update_deal_data($args1,$datas); 
-	if(isset($res)){
-		$this->session->set_flashdata('success_msg','Record updated successfully!');
-	}else{
-		$this->session->set_flashdata('error_msg','Error: while updating record!');
-	} 
-	
-	if(isset($types) && $types==1){
-		redirect("deals/sales_listing/"); 
-	}else{ 
-		redirect("deals/rental_listing/");
-	}
+	if($this->form_validation->run() == FALSE){
+		// validation fail
+		$this->load->view('deals/operate_deal',$data);
+		
+	}else if(isset($args1) && $args1!=''){      
+		 
+		$datas = array('lead_id' => $lead_id,'ref_no' => $ref_no,'types' => $types,'owner_id' => $owner_id,'contact_id' => $contact_id1,'property_id' => $property_id,'status' => $status,'deal_price' => $deal_price,'deposit' => $deposit,'commission' => $commission,'agent1_id' => $agent1_id,'agent1_commission_percentage' => $agent1_commission_percentage,'agent1_commission_value' => $agent1_commission_value,'agent2_id' => $agent2_id,'agent2_commission_percentage' => $agent2_commission_percentage,'agent2_commission_value' => $agent2_commission_value,'est_deal_date'=>$est_deal_date,'act_deal_date' => $act_deal_date,'unit_no' => $unit_no,'category_id' => $category_id,'no_of_beds_id' => $no_of_beds_id,'emirate_id'=>$emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'renewal_date' => $renewal_date,'set_reminder' => $set_reminder,'notes' => $notes); 
+					
+		$res = $this->deals_model->update_deal_data($args1,$datas); 
+		if(isset($res)){
+			$this->session->set_flashdata('success_msg','Record updated successfully!');
+		}else{
+			$this->session->set_flashdata('error_msg','Error: while updating record!');
+		} 
+		
+		if(isset($types) && $types==1){
+			redirect("deals/sales_listing/"); 
+		}else{ 
+			redirect("deals/rental_listing/");
+		}
 			
 	}else{  
 		
@@ -936,6 +934,11 @@ class Deals extends CI_Controller{
 		}  
 		
 		if(isset($args1) && $args1 >0){
+		
+			$this->load->model('categories_model');
+			$this->load->model('no_of_bedrooms_model');
+			$this->load->model('properties_model');
+			$this->load->model('leads_model');
 		
 			$data['page_headings'] = 'Deal Detail';
 			$data['documents_arr1s'] = $this->deals_model->get_property_dropzone_sellerlandlord_documents_by_id($args1);

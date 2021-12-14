@@ -2910,8 +2910,14 @@ class Properties extends CI_Controller{
 			
 				$datetimes = date('Y-m-d H:i:s');
 				$datas = array('updated_on' => $datetimes,'is_deleted' => '0'); 
-				$this->properties_model->update_property_data($args1, $datas);  
-			}
+				$restore_status = $this->properties_model->update_property_data($args1, $datas);
+				
+				if($restore_status){
+					$this->session->set_flashdata('success_msg','Selected Item(s) Deleted successfully!');   
+				}else{ 
+					$this->session->set_flashdata('error_msg','Error: while deleting Item(s), please try again!'); 
+				} 
+			}   
 			
 			//$this->deleted_listings2();
 			
@@ -3018,25 +3024,22 @@ class Properties extends CI_Controller{
 		}
 	 } 
 	 
-	 
-	 
+	  
 	 // sales 0
 	 // rent 4
 	 // Archived 1
-	 // 
+	 // http://localhost/custom4/elaqacrm/index.php/properties/del_restore_aj/1/5 
 	function delete_property($args0='0', $args1=''){  
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 			if(isset($args1) && $args1!=''){ /*deleted*/ 
 				 /* sending email on delete property starts */ 
 				$property_dtl ='';   
-				$datetimes = date('Y-m-d H:i:s');
+				$datetimes = $created_on = date('Y-m-d H:i:s');
 				$datas = array('updated_on' => $datetimes,'is_deleted' => '1');		
 				$res0 = $this->properties_model->update_property_data($args1,$datas); 
-				if(isset($res0)){ 
-					
-					$created_on = date('Y-m-d H:i:s');		
-					$property_record_arr = $this->properties_model->get_property_by_id($args1);
+				if(isset($res0)){
+					/*$property_record_arr = $this->properties_model->get_property_by_id($args1);
 					if(isset($property_record_arr)){
 						$sel_db_portal_ids = $property_record_arr->show_on_portal_ids;
 						$tmps_db_portal_ids_arr = explode(',',$sel_db_portal_ids);
@@ -3050,58 +3053,41 @@ class Properties extends CI_Controller{
 								$this->properties_model->update_portal_property_datas($args1,'2',$datas333);
 							}
 						}  
-					}
+					}*/
 							
-						if(isset($args0) && $args0 ==6){
-							redirect("properties/portal_properties_list");
-						}else if(isset($args0) && $args0==5){   
-							redirect("properties/leads_properties_list");
-						}else if(isset($args0) && $args0==4){   
-							//redirect("properties/rent_listings");
-							$this->rent_listings2();
-						}else if(isset($args0) && $args0==3){
-							//redirect("properties/sales_listings");
-							$this->sales_listings2();
-						}else if(isset($args0) && $args0==2){
-							redirect("properties/dealt_properties_list");
-						}else if($args0==1){
-							redirect("properties/archived_listings");	
-						}else{ 
-							//redirect("properties/sales_listings");
-							$this->sales_listings2();
-						} 
-						
-					}else{
-						//redirect($this->agent->referrer());
-						
-						if(isset($args0) && $args0 ==6){
-							redirect("properties/portal_properties_list");
-						}else if(isset($args0) && $args0==5){   
-							redirect("properties/leads_properties_list");
-						}else if(isset($args0) && $args0==4){   
-							//redirect("properties/rent_listings");
-							$this->rent_listings2();
-						}else if(isset($args0) && $args0==3){
-							//redirect("properties/sales_listings");
-							$this->sales_listings2();
-						}else if(isset($args0) && $args0==2){
-							redirect("properties/dealt_properties_list");
-						}else if($args0==1){
-							redirect("properties/archived_listings");	
-						}else{ 
-							//redirect("properties/sales_listings");
-							$this->sales_listings2();
-						} 
-						
-					}
-				}else{
-					redirect($this->agent->referrer());
-				}
-		}else{
-			$datas['page_headings']="Invalid Access!";
-			$this->load->view('no_permission_page',$datas);
-		}
+					$this->session->set_flashdata('success_msg','Selected Item(s) Deleted successfully!');  
+				
+				}else{ 
+					$this->session->set_flashdata('error_msg','Error: while deleting Item(s), please try again!'); 
+				}  
+					
+				if(isset($args0) && $args0 ==6){
+					redirect("properties/portal_properties_list");
+				}else if(isset($args0) && $args0==5){   
+					redirect("properties/leads_properties_list");
+				}else if(isset($args0) && $args0==4){   
+					//redirect("properties/rent_listings");
+					$this->rent_listings2();
+				}else if(isset($args0) && $args0==3){
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				}else if(isset($args0) && $args0==2){
+					redirect("properties/dealt_properties_list");
+				}else if($args0==1){
+					redirect("properties/archived_listings");	
+				}else{ 
+					//redirect("properties/sales_listings");
+					$this->sales_listings2();
+				}  
+				
+			}else{
+				redirect($this->agent->referrer());
+			}
+	}else{
+		$datas['page_headings']="Invalid Access!";
+		$this->load->view('no_permission_page',$datas);
 	}
+}
 
 	
 	function delete_selected_properties(){  
@@ -3122,7 +3108,7 @@ class Properties extends CI_Controller{
 					if(isset($res0)){
 						$created_on = date('Y-m-d H:i:s');		
 						$property_record_arr = $this->properties_model->get_property_by_id($args1);
-						if(isset($property_record_arr) && count($property_record_arr)>0){
+						if($property_record_arr){
 							$sel_db_portal_ids = $property_record_arr->show_on_portal_ids;
 							$tmps_db_portal_ids_arr = explode(',',$sel_db_portal_ids);
 							if(isset($tmps_db_portal_ids_arr) && in_array("2", $tmps_db_portal_ids_arr)){
@@ -3188,7 +3174,120 @@ class Properties extends CI_Controller{
 			$this->load->view('no_permission_page',$datas);
 		}    
 	} 
- 
+ 	
+
+	function archived_selected_properties(){  
+		
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_role_id,'1');  
+		if($res_nums>0){   
+			if(isset($_POST['multi_action_check']) && count($_POST['multi_action_check'])>0){
+				$del_checks = $_POST['multi_action_check'];
+				$datetimes = date('Y-m-d H:i:s');
+				
+				foreach($del_checks as $args1){  
+					$datas = array('updated_on' => $datetimes, 'is_archived' => '1');
+					$this->properties_model->update_property_data($args1, $datas);  
+				}  
+				
+				$this->session->set_flashdata('success_msg','Selected Item(s) Archived successfully!');  
+				
+			}else{ 
+				$this->session->set_flashdata('error_msg','Error: while archiving Item(s), please try again!'); 
+			}  
+					
+		 	  
+			$args0 = (isset($_POST['args0'])) ? $_POST['args0'] : 0; 
+			if($args0 ==6){
+				redirect("properties/portal_properties_list");
+			}else if($args0==5){   
+				redirect("properties/leads_properties_list");
+			}else if($args0==4){   
+				redirect("properties/rent_listings/"); 
+			}else if($args0==3){
+				redirect("properties/sales_listings/");
+			}else if( $args0==2){
+				redirect("properties/dealt_properties_list");
+			}else if($args0==1){
+				redirect("properties/archived_listings");	
+			}else{ 
+				redirect("properties/sales_listings/");
+			}  
+			
+		}else{
+			$datas['page_headings']="Invalid Access!";
+			$this->load->view('no_permission_page',$datas);
+		}    
+	}
+	
+	function restore_archived_selected_properties(){  
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_role_id,'1');  
+		if($res_nums>0){   
+			if(isset($_POST['multi_action_check']) && count($_POST['multi_action_check'])>0){
+				$del_checks = $_POST['multi_action_check'];
+				$datetimes = date('Y-m-d H:i:s');
+				
+				foreach($del_checks as $args1){  
+					$datas = array('updated_on' => $datetimes, 'is_archived' => '0');
+					$this->properties_model->update_property_data($args1, $datas);  
+				}  
+				
+				$this->session->set_flashdata('success_msg','Selected Archived Item(s) restored successfully!');  
+				
+			}else{ 
+				$this->session->set_flashdata('error_msg','Error: while restoring archived Item(s), please try again!'); 
+			}  
+					
+		 	  
+			$args0 = (isset($_POST['args0'])) ? $_POST['args0'] : 0; 
+			if($args0 ==6){
+				redirect("properties/portal_properties_list");
+			}else if($args0==5){   
+				redirect("properties/leads_properties_list");
+			}else if($args0==4){   
+				redirect("properties/rent_listings/"); 
+			}else if($args0==3){
+				redirect("properties/sales_listings/");
+			}else if( $args0==2){
+				redirect("properties/dealt_properties_list");
+			}else if($args0==1){
+				redirect("properties/archived_listings");	
+			}else{ 
+				redirect("properties/sales_listings/");
+			}  
+			
+		}else{
+			$datas['page_headings']="Invalid Access!";
+			$this->load->view('no_permission_page',$datas);
+		}    
+	} 
+	
+	
+	function restore_selected_properties(){  
+		
+		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');  
+		if($res_nums>0){   
+			if(isset($_POST['multi_action_check']) && count($_POST['multi_action_check'])>0){
+				$del_checks = $_POST['multi_action_check'];
+				$datetimes = date('Y-m-d H:i:s');
+				
+				foreach($del_checks as $args1){	
+					$datas = array('updated_on' => $datetimes, 'is_deleted' => '0');
+					$this->properties_model->update_property_data($args1, $datas);  	
+				}
+				
+				$this->session->set_flashdata('success_msg','Selected Item(s) restored successfully!');	 	
+			}else{ 
+				$this->session->set_flashdata('error_msg','Error: while restoring Item(s), please try again!');  
+			}
+			 
+			redirect("properties/deleted_listings/");  		
+		 
+		}else{
+			$datas['page_headings']="Invalid Access!";
+			$this->load->view('no_permission_page',$datas);
+		}    
+	}
+	
 	 
 	 function add($args0='0'){  
 		
