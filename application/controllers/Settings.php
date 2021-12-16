@@ -34,10 +34,10 @@
 				redirect('login/');
 			}
 			
-			$datas["page_headings"] = "My Profile"; 
-			$vs_id = $this->session->userdata('us_id');   
+			$datas["page_headings"] = "My Profile";
+			$vs_id = $this->session->userdata('us_id');
 			$result = $this->users_model->get_user_by_id($vs_id);
-			if(count($result) > 0){  
+			if($result){
 				$datas['vs_name']= $result->name; 
 				$datas['vs_email']= $result->email; 
 				$datas['vs_phone_no']= $result->phone_no;
