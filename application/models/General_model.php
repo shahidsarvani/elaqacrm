@@ -713,6 +713,22 @@ class General_model extends CI_Model {
 		public function get_gen_owner_info_by_id($args1){ 
 			$query = $this->db->get_where('owners_tbl',array('id'=> $args1));
 			return $query->row();
-		}		 
+		}	
+		
+		public function get_gen_property_info_by_references($paras0){
+			$this->db->select("ref_no");
+			$this->db->from('properties_tbl'); 
+			$this->db->where("ref_no LIKE '%$paras0%' "); 
+			$query = $this->db->get();
+			return $query->result();
+		}
+		 
+		public function get_gen_property_info_by_ref($paras0){
+			$this->db->select("*");
+			$this->db->from('properties_tbl'); 
+			$this->db->where("ref_no LIKE '%$paras0%' "); 
+			$query = $this->db->get();
+			return $query->row();
+		}	 
 						
 	}  ?>
