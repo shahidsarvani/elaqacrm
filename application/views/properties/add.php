@@ -614,7 +614,7 @@
           </div>
           
           <div class="form-group">
-            <label class="col-md-3 control-label" for="price">Price <span class="reds"> *</span></label>
+            <label class="col-md-3 control-label" for="price">Price (<?php echo $conf_currency_symbol; ?>) <span class="reds"> *</span></label>
             <div class="col-md-9">
               <input name="price" id="price" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->price) : set_value('price'); ?>" data-error="#price1">
               <span id="price1" class="text-danger"><?php echo form_error('price'); ?></span> </div>
@@ -769,17 +769,19 @@
 				if(isset($args0) && $args0==1){
 					$cancel_url = site_url("properties/archived_listings");	
 				}else if(isset($args0) && $args0==2){
-					$cancel_url = site_url("properties/dealt_properties_list");
+					//$cancel_url = site_url("properties/dealt_properties_list");
+					$cancel_url = site_url("deals/sales_listing/");
 				}else if(isset($args0) && $args0==3){
 					$cancel_url = site_url("properties/sales_listings");
 				}else if(isset($args0) && $args0==4){   
 					$cancel_url = site_url("properties/rent_listings");
 				}else if(isset($args0) && $args0 ==5){ 
-					$cancel_url = site_url("properties/leads_properties_list");
+					//$cancel_url = site_url("properties/leads_properties_list");
+					$cancel_url = site_url("leads/index");  
 				}else if(isset($args0) && $args0==6){   
 					$cancel_url = site_url("properties/portal_properties_list");	
 				}else{ 
-					$cancel_url = site_url("properties/properties_list");
+					$cancel_url = site_url("properties/sales_listings");
 				} ?> 
               <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo $cancel_url; ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>  
             </div>

@@ -633,7 +633,7 @@
           </div>
           
           <div class="form-group">
-            <label class="col-md-3 control-label" for="price">Price <span class="reds"> *</span></label>
+            <label class="col-md-3 control-label" for="price">Price (<?php echo $conf_currency_symbol; ?>) <span class="reds"> *</span></label>
             <div class="col-md-9">
               <input name="price" id="price" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->price) : set_value('price'); ?>" data-error="#price1">
               <span id="price1" class="text-danger"><?php echo form_error('price'); ?></span> </div>

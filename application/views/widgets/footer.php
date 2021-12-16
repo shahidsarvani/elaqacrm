@@ -16,6 +16,12 @@ $(document).ready(function(){
 		$('.select2-search').select2();
 	}
 	
+	/*if($('.select2-hidden-accessible').length >0){ 
+		$('.select2-hidden-accessible').select2({
+			minimumResultsForSearch: Infinity
+		});
+	}*/
+	
 	if($('.picks-date').length >0){
 		$('.picks-date').datepicker({
 		  format: "yyyy-mm-dd",

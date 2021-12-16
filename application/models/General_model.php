@@ -384,8 +384,21 @@ class General_model extends CI_Model {
 		public function get_configuration(){ 
 			$query = $this->db->get_where('config_tbl',array('id'=> '1'));
 			return $query->row();
-		}  
+		} 
 		
+		 
+		public function get_gen_currency_symbol(){ 
+			$query = $this->db->get_where('config_tbl',array('id'=> '1'));
+			$sl_currency_id = $query->row()->currency_id;
+			
+			$query2 = $this->db->get_where('currencies_tbl', array('id' => $sl_currency_id));
+			$row2 = $query2->row();		
+			if($row2){
+				return $row2->symbol;
+			}else{
+				return '';
+			}
+		}  
 		
 		public function get_gen_colors($paras1){
 			$retrn_vals ='';

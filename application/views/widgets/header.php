@@ -67,7 +67,7 @@
 		} ?>
         
       <li class="dropdown dropdown-user"> <a class="dropdown-toggle" data-toggle="dropdown"> <img src="<?= $us_prof_img;?>" alt="<?php //echo $rw->name; ?>" class="img-circle img-sm" /> <span><?php //echo $rw->name; ?></span> <i class="caret"></i> </a>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right" style="position:inherit">
           <li><a href="<?php echo site_url('settings/my_profile'); ?>"><i class="icon-user-plus"></i> My Profile</a></li>
           <li><a href="<?php echo site_url('settings/change_password'); ?>"><i class="icon-coins"></i> Change Password</a></li>  
           <?php if($vs_id==1){ ?>

@@ -88,7 +88,33 @@
                         <input name="website" id="website" type="text" class="form-control" value="<?php echo (isset($_POST['website'])) ? set_value('website') : $vs_website; ?>" data-error="#website1"> <span id="website1" class="text-danger"><?php echo form_error('website'); ?></span> 
                       </div> 
                     </div> 
-                    
+					
+					<div class="form-group">
+                      <label class="col-md-2 control-label" for="currency_id"> Site Currency <span class="reds"> *</span></label>
+                      <div class="col-md-6"> 						
+						<select name="currency_id" id="currency_id" class="form-control select2" data-error="#currency_id1">  
+						<option value=""> Select Currency </option>
+							<?php 
+								if($currencies_arrs){
+									foreach($currencies_arrs as $currencies_arr){
+										$sel_1 = '';
+										if(isset($_POST['currency_id']) && $_POST['currency_id']==$currencies_arr->id){
+											$sel_1 = 'selected="selected"';
+										}else if(isset($vs_currency_id) && $vs_currency_id == $currencies_arr->id){
+											$sel_1 = 'selected="selected"';
+										} ?>
+										<option value="<?= $currencies_arr->id; ?>" <?php echo $sel_1; ?>>
+											<?= stripslashes($currencies_arr->name) .' ('. stripslashes($currencies_arr->symbol) .')'; ?>
+										</option>
+									<?php 
+									}
+								} ?>
+						  </select>
+						
+						<span id="currency_id1" class="text-danger"><?php echo form_error('currency_id'); ?></span> 
+                      </div> 
+                    </div>
+					
                     <div class="form-group">
                       <label class="col-md-2 control-label" for="image">Logo</label>
                       <div class="col-md-6">
@@ -173,6 +199,9 @@
                             required: true,
                             url: true 
                         }, 
+						currency_id: {
+                            required: true, 
+                        }, 
                         summary: {
                             required: true 
                         }, 
@@ -214,7 +243,10 @@
                         website: {
                             required: "This is required field",
                             url: "Please enter a valid URL Address!"  
-                        }, 
+                        },
+						currency_id: {
+                            required: "This is required field",
+                        },  
                         summary: {
                             required: "This is required field"  
                         }, 

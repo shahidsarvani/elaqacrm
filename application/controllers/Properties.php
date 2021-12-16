@@ -495,7 +495,7 @@ class Properties extends CI_Controller{
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Sales Listings"; 
-			 
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -1100,7 +1100,7 @@ class Properties extends CI_Controller{
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Rental Listings"; 
-			 
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -1715,7 +1715,7 @@ class Properties extends CI_Controller{
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Archived Listings"; 
-			 
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -2331,7 +2331,7 @@ class Properties extends CI_Controller{
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Deleted Listings"; 
-			 
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -3299,7 +3299,8 @@ class Properties extends CI_Controller{
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
-			$data['args0']  = $args0; 
+			$data['args0']  = $args0;
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
@@ -3483,7 +3484,8 @@ class Properties extends CI_Controller{
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
-			$data['args0'] = $args0;  
+			$data['args0'] = $args0;
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
@@ -3622,9 +3624,9 @@ class Properties extends CI_Controller{
 	 function property_detail($args1=''){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','view',$this->dbs_user_role_id,'1');
 		if($res_nums>0){
-			if($args1>0){ 
-			
+			if($args1>0){  
 				$data['page_headings'] = "Update Property";	
+				$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 				$vs_user_type_id = $this->session->userdata('us_role_id');
 				$vs_id = $this->session->userdata('us_id'); 
 				$data['args1'] = $args1; 

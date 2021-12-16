@@ -139,10 +139,12 @@
 				redirect('login/');
 			}
 			
-			$datas["page_headings"] = "Configuration"; 
-			$config_id = 1;   
+			$this->load->model('currencies_model');
+			$datas["page_headings"] = "Configuration";
+			$datas['currencies_arrs'] = $this->currencies_model->get_all_currencies();
+ 			$config_id = 1;   
 			$result = $this->users_model->get_config_by_id($config_id);
-			if(count($result) > 0){    
+			if($result){    
 				$datas['vs_company_name']= $result->company_name; 
 				$datas['vs_sale_inititals']= $result->sale_inititals; 
 				$datas['vs_rent_inititals']= $result->rent_inititals; 
@@ -154,7 +156,8 @@
 				$datas['vs_email']= $result->email;
 				$datas['vs_phone_no']= $result->phone_no;
 				$datas['vs_copyrights']= $result->copyrights; 
-				$datas['vs_image']= $result->image;   
+				$datas['vs_image']= $result->image;
+				$datas['vs_currency_id']= $result->currency_id;   
 			}
 			
 			if(isset($_POST) && !empty($_POST)){
@@ -171,7 +174,7 @@
 				$copyrights = $this->input->post("copyrights"); 
 				$sale_inititals = $this->input->post("sale_inititals"); 
 				$rent_inititals = $this->input->post("rent_inititals"); 
-				 
+				$currency_id = $this->input->post("currency_id"); 
 				  
 				$prf_img_error = ''; 		
 				$alw_typs = array('image/jpg','image/jpeg','image/png','image/gif');
@@ -206,6 +209,7 @@
 				$this->form_validation->set_rules("email","Email",'required|trim|xss_clean');
 				$this->form_validation->set_rules("phone_no","Phone No",'required|trim|xss_clean');
 				$this->form_validation->set_rules("copyrights","Copyrights",'required|trim|xss_clean');
+				$this->form_validation->set_rules("currency_id","Currency",'required|trim|xss_clean');
 				if($this->form_validation->run() == FALSE){
 					// validation fail 
 					$this->load->view('config',$datas);
@@ -218,8 +222,8 @@
 					/*if(isset($_SESSION['prof_img_error'])){
 						unset($_SESSION['prof_img_error']);
 					} */ 
-					$vs_id = 1;  
-					$data = array('company_name' => $company_name,'sale_inititals' => $sale_inititals,'rent_inititals' => $rent_inititals,'summary' => $summary,'disclaimer' => $disclaimer,'address_1' => $address_1,'address_2' => $address_2,'website' => $website,'email' => $email,'phone_no' => $phone_no,'copyrights' => $copyrights,'image' => $imagename); 
+					$vs_id = 1;   
+					$data = array('company_name' => $company_name,'sale_inititals' => $sale_inititals,'rent_inititals' => $rent_inititals,'summary' => $summary,'disclaimer' => $disclaimer,'address_1' => $address_1,'address_2' => $address_2,'website' => $website,'email' => $email,'phone_no' => $phone_no,'copyrights' => $copyrights,'image' => $imagename, 'currency_id' => $currency_id); 
 					$res = $this->users_model->update_config_data($vs_id,$data); 
 					if(isset($res)){
 						$this->session->set_flashdata('success_msg', 'Your Site Configuration has been updated successfully!');
@@ -249,7 +253,7 @@
 			$datas["page_heading"] = "Property Settings"; 
 			$config_id = 1;   
 			$result = $this->users_model->get_config_by_id($config_id);
-			if(count($result) > 0){    
+			if($result){    
 				$datas['vs_property_desc_heading']= $result->property_desc_heading; 
 				$datas['vs_property_desc_footer']= $result->property_desc_footer;  
 				$datas['vs_generic_sale_location_desc']= $result->generic_sale_location_desc; 

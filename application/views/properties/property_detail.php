@@ -145,7 +145,7 @@
               </div>
               
               <div class="form-group">
-                <label class="col-md-4 control-label" for="price">Price </label>
+                <label class="col-md-4 control-label" for="price">Price (<?php echo $conf_currency_symbol; ?>) </label>
                 <div class="col-md-8">
                     <?php echo stripslashes($record->price); ?> 
                 </div>

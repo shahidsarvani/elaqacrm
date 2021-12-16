@@ -526,7 +526,7 @@ if($trash_res_nums>0){ ?>
               <th width="13%">Category </th>
               <th width="13%">Assigned To </th>
               <th width="9%" class="text-center">Status</th>
-              <th width="9%" class="text-center">Price</th>
+              <th width="9%" class="text-center">Price (<?php echo $conf_currency_symbol; ?>)</th>
               <th width="12%" class="text-center">Created On</th>
               <th width="12%" class="text-center">Action</th>
             </tr>
