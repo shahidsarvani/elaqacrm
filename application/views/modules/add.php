@@ -53,7 +53,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label" for="parent_id">Parent Module </label>
         <div class="col-md-6">
-          <select name="parent_id" id="parent_id" class="form-control select"  data-error="#parent_id1">
+          <select name="parent_id" id="parent_id" class="form-control select2"  data-error="#parent_id1">
             <option value="0">Select Parent Module...</option>
 			<?php  	
             $par_modules_arrs = $this->admin_model->get_all_parent_modules('0'); 			  

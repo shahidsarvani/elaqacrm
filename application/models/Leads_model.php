@@ -551,6 +551,31 @@ class Leads_model extends CI_Model {
 		return $query->result();   
 	} 
 	
+	function get_all_cstm_popup_leads($params = array()){
+		$whrs = '';
+		if(array_key_exists("q_val",$params)){
+			$q_val = $params['q_val'];  
+			if(strlen($q_val)>0){
+				$whrs .= " AND ( l.ref_no LIKE '%$q_val%' OR l.enquiry_date LIKE '%$q_val%' OR l.enquiry_time LIKE '%$q_val%' OR l.lead_type LIKE '%$q_val%' OR l.lead_status LIKE '%$q_val%' OR l.notes LIKE '%$q_val%' ) "; 
+			}
+		}
+		 
+		$limits ='';
+		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+			$tot_limit =   $params['limit'];
+			$str_limit =   $params['start']; 			 
+			$limits = " LIMIT $str_limit, $tot_limit ";
+        }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
+             $tot_limit =   $params['limit'];
+			$limits = " LIMIT $tot_limit ";
+		}  
+		 
+		$query = $this->db->query("SELECT l.id, l.ref_no, l.enquiry_date, l.enquiry_time, l.lead_type, l.updated_on, c.name AS cnt_name, c.phone_no AS cnt_phone_no, a.name as agent_name, a.phone_no as agent_phone_no FROM leads_tbl l 
+		LEFT JOIN contacts_tbl c ON l.contact_id=c.id 
+		LEFT JOIN users_tbl a ON l.agent_id=a.id 
+		WHERE l.id >'0' $whrs ORDER BY l.updated_on DESC $limits");
+		return $query->result();   
+	} 
 			 
 	function get_deal_property_popup_detail($paras1){   
 		

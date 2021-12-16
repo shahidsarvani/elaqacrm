@@ -185,6 +185,71 @@ class Properties_model extends CI_Model {
 		}   /*  p.is_deleted='0' AND p.is_archived='0' */
 		return $query->result(); /* p.created_on DESC */
 	}
+	
+	
+	
+	
+	function get_all_cstm_popup_properties($params = array()){  
+		$vs_user_type_id= $this->session->userdata('us_role_id'); 
+		$temp_agents_ids = '';
+		if($vs_user_type_id==2){  
+			$vs_id = $this->session->userdata('us_id');
+			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
+			
+			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+				foreach($agnt_arrs as $agnt_arr){
+					$temp_agents_ids .= $agnt_arr->id.",";
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+			}	 
+		} 
+		 
+		$whrs ='';
+		$vs_id = $this->session->userdata('us_id');  
+		if($vs_user_type_id==3){ 
+			$whrs .=" AND p.assigned_to_id=$vs_id ";
+		}else if($vs_user_type_id==2){
+		
+			if($temp_agents_ids!=''){ 
+				$whrs .=" AND ( p.assigned_to_id='$vs_id' OR p.assigned_to_id IN ($temp_agents_ids) ) "; 
+			}else{ 
+				$whrs .=" AND p.assigned_to_id='$vs_id'  ";
+			} 
+		}  
+			
+		 
+		if(array_key_exists("q_val",$params)){
+			$q_val = $params['q_val'];
+			if(strlen($q_val)>0){
+				$whrs .= " AND ( p.title LIKE '%$q_val%' OR p.description LIKE '%$q_val%' OR p.ref_no LIKE '%$q_val%' OR price LIKE '%$q_val%' )";
+			}
+		}
+		
+		
+ 	 
+	
+	
+	/* property_type
+	 
+	category_id	no_of_beds_id	no_of_baths	emirate_id	location_id	sub_location_id	sub_location_area_id	property_address	youtube_video_link	property_ms_unit	plot_area	is_furnished	price	show_on_portal_ids	private_amenities_data	commercial_amenities_data	owner_id	property_status	source_of_listing	is_featured	next_available_date	feature_ids	no_of_views	location_latitude	location_longitude	created_on	is_new	is_deleted	is_archived	property_type	updated_on	ip_address	created_by */
+		 
+		
+		 		 
+		$limits ='';
+		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+			$tot_limit =   $params['limit'];
+			$str_limit =   $params['start']; 			 
+			$limits = " LIMIT $str_limit, $tot_limit ";
+        }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
+             $tot_limit =   $params['limit'];
+			$limits = " LIMIT $tot_limit ";
+		}   
+		
+		$query = $this->db->query("SELECT p.id, p.title as p_title, p.description as p_description, p.property_address, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, p.updated_on as updated_on, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.is_archived='0' AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
+		    /*  p.is_deleted='0' AND p.is_archived='0' */
+		return $query->result(); /* p.created_on DESC */
+	}
+
 		
 		
 		

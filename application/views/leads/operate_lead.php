@@ -260,18 +260,20 @@
                           <span id="source_of_listing1" class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
                       </div>
                     </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="col-md-3 control-label" for="no_of_views">Property View </label>
-                        <div class="col-md-8">
-                          <input name="no_of_views" id="no_of_views" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->no_of_views): set_value('no_of_views'); ?>">
-                          <span class="text-danger"><?php echo form_error('no_of_views'); ?></span> </div>
-                      </div>
-                       
-                        <div class="form-group"> 
-                          <label class="col-md-3 control-label" for="property_id_1">Property 1 </label>
-                          <div class="col-md-8"> 
-							<select name="property_id_1" id="property_id_1" class="form-control select2-search" data-error="#property_id_11">
+				<div class="col-lg-6">
+				
+				  <div class="form-group">
+					<label class="col-md-3 control-label" for="no_of_views">Property View </label>
+					<div class="col-md-8">
+					  <input name="no_of_views" id="no_of_views" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->no_of_views): set_value('no_of_views'); ?>">
+					  <span class="text-danger"><?php echo form_error('no_of_views'); ?></span> </div>
+				  </div>  
+						
+				<div class="form-group">
+					<label class="col-md-3 control-label" for="property_id_1"> Property 1 <span class="reds"> </span></label>
+					<div class="col-md-8">
+						 <span id="fetch_remote_property1">
+						   <select name="property_id_1" id="property_id_1" class="form-control select2-search" data-error="#property_id_11">
 							<option value="">Select Property 1...</option>
 							<?php  
 								if(isset($properties_arrs)){
@@ -290,91 +292,100 @@
 								<?php 
 									}
 								} ?>
-						 	</select>
-						  	<span id="property_id_11" class="text-danger"><?php echo form_error('property_id_1'); ?></span>  
-                          </div>
-                        </div>
- 
- 						<div class="form-group"> 
-                          <label class="col-md-3 control-label" for="property_id_2">Property 2 </label>
-                          <div class="col-md-8"> 
-							<select name="property_id_2" id="property_id_2" class="form-control select2-search" data-error="#property_id_21">
+							</select> 
+						 </span>
+						<a data-toggle="modal" data-target="#show_remote_property1_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add Property </a>   
+					   <span id="property_id_11" class="text-danger"><?php echo form_error('property_id_1'); ?></span> </div>
+				  </div> 
+						  
+						  
+						  
+				 <div class="form-group">
+					<label class="col-md-3 control-label" for="property_id_2"> Property 2 <span class="reds"> </span></label>
+					<div class="col-md-8">
+						 <span id="fetch_remote_property2">
+						   <select name="property_id_2" id="property_id_2" class="form-control select2-search" data-error="#property_id_21">
 							<option value="">Select Property 2...</option>
 							<?php  
 								if(isset($properties_arrs)){
 									foreach($properties_arrs as $properties_arr){
-									$sel_1 = '';
-									if(isset($_POST['property_id_2']) && $_POST['property_id_2']==$properties_arr->id){
-										$sel_1 = 'selected="selected"';
-									}else if(isset($record) && $record->property_id_2==$properties_arr->id){
-										$sel_1 = 'selected="selected"';
-									}
-									 
-									$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
-									
-									$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
-									<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
+										$sel_1 = '';
+										if(isset($_POST['property_id_2']) && $_POST['property_id_2']==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
+										}else if(isset($record) && $record->property_id_2==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
+										}
+										 
+										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
+										
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
 								} ?>
-						 	</select>
-						  	<span id="property_id_21" class="text-danger"><?php echo form_error('property_id_2'); ?></span>  
-                          </div>
-                        </div>
-						
-						<div class="form-group"> 
-                          <label class="col-md-3 control-label" for="property_id_3">Property 3 </label>
-                          <div class="col-md-8"> 
-							<select name="property_id_3" id="property_id_3" class="form-control select2-search" data-error="#property_id_31">
+							</select> 
+						 </span>
+						<a data-toggle="modal" data-target="#show_remote_property2_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add Property </a>   
+					   <span id="property_id_21" class="text-danger"><?php echo form_error('property_id_2'); ?></span> </div>
+				  </div>  
+				  
+				 <div class="form-group">
+					<label class="col-md-3 control-label" for="property_id_3"> Property 3 <span class="reds"> </span></label>
+					<div class="col-md-8">
+						 <span id="fetch_remote_property3">
+						   <select name="property_id_3" id="property_id_3" class="form-control select2-search" data-error="#property_id_31">
 							<option value="">Select Property 3...</option>
 							<?php  
 								if(isset($properties_arrs)){
 									foreach($properties_arrs as $properties_arr){
-									$sel_1 = '';
-									if(isset($_POST['property_id_3']) && $_POST['property_id_3']==$properties_arr->id){
-										$sel_1 = 'selected="selected"';
-									}else if(isset($record) && $record->property_id_3==$properties_arr->id){
-										$sel_1 = 'selected="selected"';
-									}
-									
-									$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
-									
-									$property_title3 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
-									<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title3; ?> </option>
+										$sel_1 = '';
+										if(isset($_POST['property_id_3']) && $_POST['property_id_3']==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
+										}else if(isset($record) && $record->property_id_3==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
+										}
+										 
+										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
+										
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
 								} ?>
-						 	</select>
-						  	<span id="property_id_31" class="text-danger"><?php echo form_error('property_id_3'); ?></span>  
-                          </div>
-                        </div>
-						
-						<div class="form-group"> 
-                          <label class="col-md-3 control-label" for="property_id_4">Property 4 </label>
-                          <div class="col-md-8"> 
-							<select name="property_id_4" id="property_id_4" class="form-control select2-search" data-error="#property_id_41">
-								<option value="">Select Property 4...</option>
-								<?php  
-									if(isset($properties_arrs)){
-										foreach($properties_arrs as $properties_arr){
-											$sel_1 = '';
-											if(isset($_POST['property_id_4']) && $_POST['property_id_4']==$properties_arr->id){
-												$sel_1 = 'selected="selected"';
-											}else if(isset($record) && $record->property_id_4==$properties_arr->id){
-												$sel_1 = 'selected="selected"';
-											}
-										 
-											$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
-										
-											$property_title4 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
-											<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title4; ?> </option>
-									<?php 
+							</select> 
+						 </span>
+						<a data-toggle="modal" data-target="#show_remote_property3_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add Property </a>   
+					   <span id="property_id_31" class="text-danger"><?php echo form_error('property_id_3'); ?></span> </div>
+				  </div>
+				  
+				 <div class="form-group">
+					<label class="col-md-3 control-label" for="property_id_4"> Property 4 <span class="reds"> </span></label>
+					<div class="col-md-8">
+						 <span id="fetch_remote_property4">
+						   <select name="property_id_4" id="property_id_4" class="form-control select2-search" data-error="#property_id_41">
+							<option value="">Select Property 4...</option>
+							<?php  
+								if(isset($properties_arrs)){
+									foreach($properties_arrs as $properties_arr){
+										$sel_1 = '';
+										if(isset($_POST['property_id_4']) && $_POST['property_id_4']==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
+										}else if(isset($record) && $record->property_id_4==$properties_arr->id){
+											$sel_1 = 'selected="selected"';
 										}
-									} ?>
-						 	</select>
-						  	<span id="property_id_41" class="text-danger"><?php echo form_error('property_id_4'); ?></span>  
-                          </div>
-                        </div>  
+										 
+										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
+										
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
+								<?php 
+									}
+								} ?>
+							</select> 
+						 </span>
+						<a data-toggle="modal" data-target="#show_remote_property4_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add Property </a>   
+					   <span id="property_id_41" class="text-danger"><?php echo form_error('property_id_4'); ?></span> </div>
+				  	 </div>  
 	  
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="reminds">Remind </label>
@@ -386,14 +397,14 @@
                           <span id="reminds1" class="text-danger"><?php echo form_error('reminds'); ?></span> </div>
                       </div>
                       <script>
-					function operate_remind_area(valss){
-						if(valss==1){ 
-							document.getElementById('remind_area').style.display='';
-						}else{
-							document.getElementById('remind_area').style.display='none';
+						function operate_remind_area(valss){
+							if(valss==1){ 
+								document.getElementById('remind_area').style.display='';
+							}else{
+								document.getElementById('remind_area').style.display='none';
+							} 
 						} 
-					} 
-				</script>
+					  </script>
                       <?php 
 						if((isset($_POST['reminds']) && $_POST['reminds']==1) || (isset($record) && $record->reminds==1)){ 
 							$remd_style ='style="display: ;"';
@@ -443,8 +454,150 @@
 				 <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo site_url('leads/index'); ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>
 				</div>
 			  </div>
-		</form> 		
-	<script type="text/javascript">	
+			</form> 
+		 
+		<div id="show_remote_property1_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Properties List</h5>
+					</div>
+			
+					<div class="modal-body"></div>
+			
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>	
+		
+		<div id="show_remote_property2_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Properties List</h5>
+					</div>
+			
+					<div class="modal-body"></div>
+			
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="show_remote_property3_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Properties List</h5>
+					</div>
+			
+					<div class="modal-body"></div>
+			
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="show_remote_property4_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Properties List</h5>
+					</div>
+			
+					<div class="modal-body"></div>
+			
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+			
+	<script type="text/javascript">	 
+		$(document).ready(function(){ 
+		<?php
+			$usr_popup_url_1 = 'properties/properties_popup_list/1/';
+			$usr_popup_url_1 = site_url($usr_popup_url_1);
+			
+			$usr_popup_url_2 = 'properties/properties_popup_list/2/';
+			$usr_popup_url_2 = site_url($usr_popup_url_2);
+			
+			$usr_popup_url_3 = 'properties/properties_popup_list/3/';
+			$usr_popup_url_3 = site_url($usr_popup_url_3);
+			
+			$usr_popup_url_4 = 'properties/properties_popup_list/4/';
+			$usr_popup_url_4 = site_url($usr_popup_url_4); ?> 
+			 
+			$('#show_remote_property1_modal').on('show.bs.modal', function() {
+				$(this).find('.modal-body').load('<?php echo $usr_popup_url_1; ?>', function() {
+		 
+					if($('.select2-search').length >0){
+						$('.select2-search').select2();
+					}
+				});
+			}); 
+			
+			$('#show_remote_property2_modal').on('show.bs.modal', function() {
+				$(this).find('.modal-body').load('<?php echo $usr_popup_url_2; ?>', function() {
+		 
+					if($('.select2-search').length >0){
+						$('.select2-search').select2();
+					}
+				});
+			}); 
+			
+			$('#show_remote_property3_modal').on('show.bs.modal', function() {
+				$(this).find('.modal-body').load('<?php echo $usr_popup_url_3; ?>', function() {
+		 
+					if($('.select2-search').length >0){
+						$('.select2-search').select2();
+					}
+				});
+			});  
+			
+			$('#show_remote_property4_modal').on('show.bs.modal', function() {
+				$(this).find('.modal-body').load('<?php echo $usr_popup_url_4; ?>', function() {
+		 
+					if($('.select2-search').length >0){
+						$('.select2-search').select2();
+					}
+				});
+			});
+				
+		}); 
+					
+		function clickeds_properties(sels_vals, sel_paras) {  
+			$(document).ready(function(){
+			<?php  
+				$tmp_usr_pth1 = '/properties/fetch_properties_list/';
+				$tmp_usr_pth1 = site_url($tmp_usr_pth1); ?> 
+				$.ajax({
+					url: '<?php echo $tmp_usr_pth1; ?>',
+					cache: false,
+					type: 'POST', 
+					data: { 'submits':1, sl_propertyid: sels_vals, paras1: sel_paras },
+					success: function (result, status, xhr){
+						$("#fetch_remote_property"+sel_paras).html(result);
+						
+						if($('.select2-search').length >0){ 
+							$('.select2-search').select2();
+						}
+					}
+				});    
+			}); 
+		} 
+			
 	//function operate_custom_validate(){	
 		$(document).ready(function(){
 			var validator = $('#datas_form').validate({

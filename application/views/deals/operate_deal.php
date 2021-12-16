@@ -57,35 +57,36 @@
 			} ?>
 		  <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url($form_act); ?>" class="form-horizontal form-bordered" enctype="multipart/form-data"> 
 		<div class="row">
-		  <div class="col-lg-6">  
-			<div class="form-group"> 
-			   <label class="col-md-3 control-label" for="property_id">Property <span class="reds">*</span> </label>
-				<div class="col-md-8"> 
-				 <select name="property_id" id="property_id" class="form-control select2-search" data-error="#property_id1">
-				<option value="">Select Property</option>
-				<?php  
-					if(isset($properties_arrs)){
-						foreach($properties_arrs as $properties_arr){
-						$sel_1 = '';
-						if(isset($_POST['property_id']) && $_POST['property_id']==$properties_arr->id){
-							$sel_1 = 'selected="selected"';
-						}else if(isset($record) && $record->property_id==$properties_arr->id){
-							$sel_1 = 'selected="selected"';
-						}
-						 
-						$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
-						
-						$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
-						
-						<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
-					<?php 
-						}
-					} ?>
-				</select>
-				<span id="property_id1" class="text-danger"><?php echo form_error('property_id'); ?></span> 
-				</div>    
-			</div>
-		
+		  <div class="col-lg-6"> 
+		  
+		  	<div class="form-group">
+				<label class="col-md-3 control-label" for="property_id"> Property <span class="reds"> *</span></label>
+				<div class="col-md-8">
+					 <span id="fetch_remote_property">
+					   <select name="property_id" id="property_id" class="form-control select2-search" data-error="#property_id1">
+						<option value="">Select Property...</option>
+						<?php  
+							if(isset($properties_arrs)){
+								foreach($properties_arrs as $properties_arr){
+								$sel_1 = '';
+								if(isset($_POST['property_id']) && $_POST['property_id']==$properties_arr->id){
+									$sel_1 = 'selected="selected"';
+								}else if(isset($record) && $record->property_id==$properties_arr->id){
+									$sel_1 = 'selected="selected"';
+								}
+								 
+								$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
+								
+								$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+								<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
+							<?php 
+								}
+							} ?>
+						</select> 
+					 </span>
+					<a data-toggle="modal" data-target="#show_remote_property_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add Property </a>   
+				   <span id="property_id1" class="text-danger"><?php echo form_error('property_id'); ?></span> </div>
+			  </div>  
 		  
 			<div class="form-group">
 			  <label class="col-md-3 control-label" for="ref_no"> Ref No. <span class="reds">*</span> </label>
@@ -98,55 +99,43 @@
 			<input type="hidden" name="types" id="types" value="<?php if(isset($record) && $record->types >0){ echo $record->types; }else if(isset($args0) && $args0 >0){ echo $args0; } ?>">
 			  
 			<input type="hidden" name="owner_id" id="owner_id" class="form-control populate" value="<?php if(isset($_POST['owner_id']) && $_POST['owner_id'] >0){ echo $_POST['owner_id']; }else if(isset($record) && $record->owner_id >0){ echo $record->owner_id; } ?>">
-			   
-						
-	   <div class="form-group">
 	   <?php
 			$cxt = '';
 			if(isset($args0) && $args0==2){ 
 				$cxt = 'Tenant'; 
 			}else{ 
 				$cxt = 'Buyer'; 
-			} 
-			
-			$ld_ref_no_title_1 = 'Select Lead...';  
-			$ld_cnt_name = "Select {$cxt} ";  
-			 
-			if(isset($_POST['lead_id'])){
-				$sel_lead_id = $_POST['lead_id'];
-			}else if(isset($record) && $record->lead_id >0) { 
-				$sel_lead_id = $record->lead_id;  
-			} ?>  
-			 
-			   <label class="col-md-3 control-label" for="contact_id1"><?php if(isset($args0) && $args0==2){ echo 'Tenant'; }else{ echo 'Buyer'; } ?>  <span class="reds">*</span> </label>
-				<div class="col-md-8">  
-					<select name="lead_id" id="lead_id" class="form-control select2-search" data-error="#lead_id1">
+			}  
+			$ld_cnt_name = "Select {$cxt} "; ?>  
+			  
+			<span class="text-danger" style="clear:both; float:left"><?php //echo form_error('contact_id1'); ?></span>
+			<input type="hidden" id="contact_id1" name="contact_id1" value="1">  
+		
+		<div class="form-group">
+			<label class="col-md-3 control-label" for="lead_id"> <?php if(isset($args0) && $args0==2){ echo 'Tenant'; }else{ echo 'Buyer'; } ?> <span class="reds"> *</span></label>
+			<div class="col-md-8">
+				 <span id="fetch_remote_leads" data-title="<?php echo $cxt; ?>">
+				   <select name="lead_id" id="lead_id" class="form-control select2-search" data-error="#lead_id1">
 					<option value=""> <?php echo $ld_cnt_name; ?> </option>
 					<?php  
 						if(isset($lead_arrs)){
 							foreach($lead_arrs as $lead_arr){
-								$sel_1 = '';
-								if(isset($_POST['lead_id']) && $_POST['lead_id']==$lead_arr->id){
-									$sel_1 = 'selected="selected"';
-								}else if(isset($record) && $record->lead_id==$lead_arr->id){
-									$sel_1 = 'selected="selected"';
-								} 
-								/*$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",",");*/ ?>
-								
-								<option value="<?= $lead_arr->id; ?>" <?php echo $sel_1; ?>> <?= $lead_arr->ref_no; ?> </option>
+							$sel_1 = '';
+							if(isset($_POST['lead_id']) && $_POST['lead_id']==$lead_arr->id){
+								$sel_1 = 'selected="selected"';
+							}else if(isset($record) && $record->lead_id==$lead_arr->id){
+								$sel_1 = 'selected="selected"';
+							}  ?>
+							<option value="<?= $lead_arr->id; ?>" <?php echo $sel_1; ?>> <?=  $lead_arr->ref_no; ?> </option>
 						<?php 
 							}
 						} ?>
-					</select>
-				
-					<span id="lead_id1" class="text-danger"><?php echo form_error('lead_id'); ?></span>  
-				</div>    
-			</div> 
-			
-			<span class="text-danger" style="clear:both; float:left"><?php //echo form_error('contact_id1'); ?></span>
-			<input type="hidden" id="contact_id1" name="contact_id1" value="1"> 
-			<!--<input type="hidden" id="contact_id1" name="contact_id1" value="<?php //echo $ld_cnt_id; ?>"> -->
-				
+					</select> 
+				 </span>
+				<a data-toggle="modal" data-target="#show_remote_lead_modal"><i class="glyphicon glyphicon-plus position-left"></i> Add <?php if(isset($args0) && $args0==2){ echo 'Tenant'; }else{ echo 'Buyer'; } ?> </a>   
+			   <span id="lead_id1" class="text-danger"><?php echo form_error('lead_id'); ?></span> </div>
+		  </div> 
+		  			  			
 			<div class="form-group">
 			  <label class="col-md-3 control-label" for="status">Status <span class="reds">*</span></label>
 			  <div class="col-md-8">  
@@ -609,32 +598,138 @@
         </div>
         <!-- /dashboard content -->
 		
-	<script>
-		function agent_commission_calculate(){  
-			var price_val = document.getElementById('deal_price').value;
-			price_val = price_val*1;
+		<div id="show_remote_property_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Properties List</h5>
+					</div>
 			
-			var commission1_per_val = document.getElementById('agent1_commission_percentage').value; 
-			commission1_per_val = commission1_per_val*1; 
-			if(commission1_per_val>0 && price_val>0){
-				var commission_per_calc_val = (price_val * commission1_per_val/100); 
-				commission_per_calc_val = commission_per_calc_val.toFixed(2) ;
-				document.getElementById('agent1_commission_value').value = commission_per_calc_val;
-			}else{
-				document.getElementById('agent1_commission_value').value = 0;
-			} 
+					<div class="modal-body"></div>
 			
-			var commission2_per_val = document.getElementById('agent2_commission_percentage').value; 
-			commission2_per_val = commission2_per_val*1;
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="show_remote_lead_modal" class="modal fade" data-backdrop="false"> 
+			<div class="modal-dialog modal-full">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h5 class="modal-title">Leads List</h5>
+					</div>
 			
-			if(commission2_per_val>0 && price_val>0){
-				var commission2_per_calc_val = (price_val * commission2_per_val/100); 
-				commission2_per_calc_val = commission2_per_calc_val.toFixed(2) ;
-				document.getElementById('agent2_commission_value').value = commission2_per_calc_val;
-			}else{
-				document.getElementById('agent2_commission_value').value = 0;
-			} 
-		}  
+					<div class="modal-body"></div>
+			
+					<div class="modal-footer"> <!-- id="close_users_modals" -->
+						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">	 
+			$(document).ready(function(){ 
+			<?php
+				$usr_popup_url_1 = 'properties/properties_popup_list/0/';
+				$usr_popup_url_1 = site_url($usr_popup_url_1);  ?> 
+				 
+				$('#show_remote_property_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $usr_popup_url_1; ?>', function() {
+			 
+						if($('.select2-search').length >0){
+							$('.select2-search').select2();
+						}
+					});
+				}); 
+				
+			<?php
+				$lead_popup_url_1 = 'leads/leads_popup_list/';
+				$lead_popup_url_1 = site_url($lead_popup_url_1);  ?> 
+				 
+				$('#show_remote_lead_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $lead_popup_url_1; ?>', function() {
+			 
+						if($('.select2-search').length >0){
+							$('.select2-search').select2();
+						}
+					});
+				}); 				
+			}); 
+					
+			function clickeds_properties(sels_vals) {  
+				$(document).ready(function(){
+				<?php  
+					$tmp_usr_pth1 = '/properties/fetch_properties_list/';
+					$tmp_usr_pth1 = site_url($tmp_usr_pth1); ?> 
+					$.ajax({
+						url: '<?php echo $tmp_usr_pth1; ?>',
+						cache: false,
+						type: 'POST', 
+						data: { 'submits':1, sl_propertyid: sels_vals, paras1: '0' },
+						success: function (result, status, xhr){ 
+							$("#fetch_remote_property").html(result);
+							
+							if($('.select2-search').length >0){ 
+								$('.select2-search').select2();
+							}
+						}
+					});    
+				}); 
+			}  
+			
+			function clickeds_leads(sels_vals) {  
+				$(document).ready(function(){ 
+				<?php  
+					$tmp_usr_pth1 = '/leads/fetch_leads_list/';
+					$tmp_usr_pth1 = site_url($tmp_usr_pth1); ?> 
+					$.ajax({
+						url: '<?php echo $tmp_usr_pth1; ?>',
+						cache: false,
+						type: 'POST', 
+						data: { 'submits':1, sl_leadid: sels_vals },
+						success: function (result, status, xhr){
+							var lead_tmp_title = $("#fetch_remote_leads").attr("data-title");
+						 	result = result.replace(/Select Lead/g, "Select " + lead_tmp_title); 
+							$("#fetch_remote_leads").html(result);
+							
+							if($('.select2-search').length >0){ 
+								$('.select2-search').select2();
+							}
+						}
+					});    
+				}); 
+			}  
+	 
+			function agent_commission_calculate(){  
+				var price_val = document.getElementById('deal_price').value;
+				price_val = price_val*1;
+				
+				var commission1_per_val = document.getElementById('agent1_commission_percentage').value; 
+				commission1_per_val = commission1_per_val*1; 
+				if(commission1_per_val>0 && price_val>0){
+					var commission_per_calc_val = (price_val * commission1_per_val/100); 
+					commission_per_calc_val = commission_per_calc_val.toFixed(2) ;
+					document.getElementById('agent1_commission_value').value = commission_per_calc_val;
+				}else{
+					document.getElementById('agent1_commission_value').value = 0;
+				} 
+				
+				var commission2_per_val = document.getElementById('agent2_commission_percentage').value; 
+				commission2_per_val = commission2_per_val*1;
+				
+				if(commission2_per_val>0 && price_val>0){
+					var commission2_per_calc_val = (price_val * commission2_per_val/100); 
+					commission2_per_calc_val = commission2_per_calc_val.toFixed(2) ;
+					document.getElementById('agent2_commission_value').value = commission2_per_calc_val;
+				}else{
+					document.getElementById('agent2_commission_value').value = 0;
+				} 
+			}  
 				
 		<?php 
 			/*properties/fetch_property_ref_no/';*/  

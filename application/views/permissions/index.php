@@ -244,7 +244,7 @@
                         } ?> 
                        <tr>
                        <td colspan="8">
-                       <div style="float:left;">  <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate select" onChange="operate_permission_list();">
+                       <div style="float:left;">  <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control input-sm mb-md populate select2" onChange="operate_permission_list();">
                           <option value="25"> Pages</option>
                           <option value="25"> 25 </option>
                           <option value="50"> 50 </option>

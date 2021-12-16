@@ -53,7 +53,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="module_id">Module(s) <span class="reds">*</span></label>
             <div class="col-md-6">   
-            <select name="module_id" id="module_id" class="form-control input-sm mb-md select" data-error="#module_id1">
+            <select name="module_id" id="module_id" class="form-control input-sm mb-md select2" data-error="#module_id1">
                 <option value="">Select Module...</option>
                 <?php  	
                 $par_modules_arrs = $this->admin_model->get_all_parent_modules('0'); 			  
@@ -93,7 +93,7 @@
       <div class="form-group">
         <label class="col-md-2 control-label" for="role_id">Role Name(s) <span class="reds">*</span></label>
         <div class="col-md-6">
-          <select name="role_id" id="role_id" class="form-control select" data-error="#role_id1">
+          <select name="role_id" id="role_id" class="form-control select2" data-error="#role_id1">
             <option value="">Select Role Name</option>
             <?php  
             if(isset($role_arrs) && count($role_arrs)>0){
@@ -120,7 +120,7 @@
         <label class="col-md-2 control-label" for="is_add_permission">Add Permission </label>
         <div class="col-md-1">
           <div class="checkbox">
-            <label for="is_add_permission"> Yes <input type="checkbox" name="is_add_permission" id="is_add_permission" value="1" <?php if((isset($_POST['is_add_permission']) && $_POST['is_add_permission']==1) || (isset($record) && $record->is_add_permission==1)){ echo 'checked="checked"'; } ?> class="styled">
+            <label for="is_add_permission"> <input type="checkbox" name="is_add_permission" id="is_add_permission" value="1" <?php if((isset($_POST['is_add_permission']) && $_POST['is_add_permission']==1) || (isset($record) && $record->is_add_permission==1)){ echo 'checked="checked"'; } ?> class="styled"> Yes ?
            </label>
           </div>
         </div>    

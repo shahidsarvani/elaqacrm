@@ -3640,6 +3640,136 @@ class Properties extends CI_Controller{
 		}
 	}  
 
+	  
+	 function fetch_properties_list(){
+		$this->load->model('properties_model'); //  $sl_propertyid='0', $paras1='1'
+		$data['sl_propertyid'] = isset($_POST['sl_propertyid']) ? $_POST['sl_propertyid'] : '0';
+		$data['paras1'] = isset($_POST['paras1']) ? $_POST['paras1'] : '1';
+		$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
+		$this->load->view('properties/fetch_properties_list',$data); 
+	 }
+	
+	function properties_popup_list($paras1='1'){  
+		
+		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_role_id,'1'); 
+		if($res_nums>0){ 
+			$data['paras1'] = $paras1;
+			$data['page_headings'] = "Properties Listings";	
+			
+			$paras_arrs = array();	  
+			
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					unset($_SESSION['tmp_per_page_val']);
+				}  
+			 
+			if($this->input->post('q_val')){
+				$q_val = $this->input->post('q_val'); 
+				$_SESSION['tmp_q_val'] = $q_val; 
+				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
+			}else if(isset($_SESSION['tmp_q_val'])){
+					unset($_SESSION['tmp_q_val']);
+				} 	
+			 
+			if(isset($_SESSION['tmp_per_page_val'])){
+				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+			}else{
+				$show_pers_pg = $this->perPage;
+			}
+			 
+			//total rows count
+			$totalRec = count($this->properties_model->get_all_cstm_popup_properties($paras_arrs));
+			 
+			//pagination configuration
+			$config['target']      = '#fetch_dyn_list';
+			$config['base_url']    = site_url('/properties/properties_popup_list2');
+			$config['total_rows']  = $totalRec;
+			$config['per_page']    = $show_pers_pg;
+			
+			$this->ajax_pagination->initialize($config); 
+			
+			$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
+			
+			$data['records'] = $this->properties_model->get_all_cstm_popup_properties($paras_arrs);
+			  
+			$this->load->view('properties/properties_popup_list',$data); 
+			  
+		}else{
+			$this->load->view('no_permission_access'); 
+		} 
+	}
+		
+	function properties_popup_list2(){  	
+		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_role_id,'1'); 
+		if($res_nums>0){ 
+			 
+			$paras_arrs = $data = array();	
+			$page = $this->input->post('page');
+			if(!$page){
+				$offset = 0;
+			}else{
+				$offset = $page;
+			} 
+			
+			$data['page'] = $page;
+			
+			$data['paras1'] = isset($_POST['paras1']) ? $_POST['paras1'] : '1';
+			 
+			/* permission checks */  
+	
+			if($this->input->post('sel_per_page_val')){
+				$per_page_val = $this->input->post('sel_per_page_val'); 
+				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				
+			}else if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];
+				} 
+			
+			if(isset($_POST['q_val'])){
+				$q_val = $this->input->post('q_val');  
+				if(strlen($q_val)>0){
+					$_SESSION['tmp_q_val'] = $q_val; 
+					$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
+				}else{
+					unset($_SESSION['tmp_q_val']);	
+				}
+			
+			}else if(isset($_SESSION['tmp_q_val'])){ ///
+				$q_val = $_SESSION['tmp_q_val']; 
+				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
+			}  
+				   
+			   
+			if(isset($_SESSION['tmp_per_page_val'])){
+				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+			}else{
+				$show_pers_pg = $this->perPage;
+			}   
+			   
+			//total rows count
+			$totalRec = count($this->properties_model->get_all_cstm_popup_properties($paras_arrs));
+			
+			//pagination configuration
+			$config['target']      = '#fetch_dyn_list';
+			$config['base_url']    = site_url('/properties/properties_popup_list2');
+			$config['total_rows']  = $totalRec;
+			$config['per_page']    = $show_pers_pg; // $this->perPage;
+			
+			$this->ajax_pagination->initialize($config); 
+			
+			$paras_arrs = array_merge($paras_arrs, array('start'=>$offset,'limit' => $show_pers_pg));
+			
+			$data['records'] = $this->properties_model->get_all_cstm_popup_properties($paras_arrs); 
+			
+			$this->load->view('properties/properties_popup_list2',$data); 
+		 
+		}else{
+			$this->load->view('no_permission_access'); 
+		} 
+	}  
 
 	 /* properties operations starts */
 	 

@@ -1,5 +1,11 @@
 <script>  
 $(document).ready(function(){ 
+	if($('.select').length >0){ 
+		$('.select').select2({
+			minimumResultsForSearch: Infinity
+		});
+	}
+	
 	if($('.select2').length >0){ 
 		$('.select2').select2({
 			minimumResultsForSearch: Infinity
