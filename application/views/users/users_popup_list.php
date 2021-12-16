@@ -32,12 +32,12 @@ function operate_users_list(){
         var sel_per_page_val =0;   
         var q_val = document.getElementById("q_val").value;  
         var sel_per_page = document.getElementById("per_page");
-        sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value; 
-           
+        sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value;  
+		   
         $.ajax({
             method: "POST",
             url: "<?php echo site_url('/users/users_popup_list2/'); ?>",
-            data: { page: 0, sel_per_page_val: sel_per_page_val, q_val: q_val },
+            data: { page: 0, sel_per_page_val: sel_per_page_val, q_val: q_val, sl_role_id: <?php echo (isset($sl_role_id) && $sl_role_id >0) ? $sl_role_id: '0'; ?>  },
             beforeSend: function(){
                 $('.loading').show();
             },

@@ -118,7 +118,7 @@
                       <?php 
 					if($this->login_vs_user_role_id != 3){ ?>
                       <div class="form-group">
-                        <label class="col-md-3 control-label" for="assigned_to_id">Agent <span class="reds">*</span></label>
+                        <label class="col-md-3 control-label" for="assigned_to_id">Assign To <span class="reds">*</span></label>
                         <div class="col-md-8">
                           <select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2" data-error="#assigned_to_id1">
                             <option value="">Select Agent </option>

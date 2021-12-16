@@ -22,7 +22,14 @@ class Users_model extends CI_Model {
 			if(strlen($q_val)>0){
 				$whrs .=" AND ( name LIKE '%$q_val%' OR email LIKE '%$q_val%' OR phone_no LIKE '%$q_val%' OR mobile_no LIKE '%$q_val%' OR address LIKE '%$q_val%' ) ";
 			}
-		}  
+		}
+		
+		if(array_key_exists("sl_role_id",$params)){
+			$sl_role_id = $params['sl_role_id']; 
+			if($sl_role_id >0){
+				$whrs .=" AND role_id='".$sl_role_id."' ";
+			}
+		}
 		 
 		$limits ='';
 		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 

@@ -63,7 +63,7 @@
 						  <hr class="cstms-dash">
 						  <div class="row show-grid">
 							<div class="col-md-12 mb-md mt-md">
-							<strong class="text-semibold "> Agent : </strong> <?php $arr2 = $this->general_model->get_user_info_by_id($record->agent_id);
+							<strong class="text-semibold "> Assigned To : </strong> <?php $arr2 = $this->general_model->get_user_info_by_id($record->agent_id);
 							if(isset($arr2)){
 								echo stripslashes($arr2->name);
 							}  ?> 

@@ -165,7 +165,7 @@ class Deals extends CI_Controller{
 			
 			$records = $data['records'] = $this->deals_model->get_all_cstm_deals_properties($paras_arrs);
 			
-			if($vs_user_type_id==2){ 
+			/*if($vs_user_type_id==2){ 
 				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
 			}else{
 				$arrs_field = array('user_type_id'=> '3'); 
@@ -173,7 +173,18 @@ class Deals extends CI_Controller{
 			 
 			//$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 			
-			$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned(); 
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned(); */ 
+			
+			if($vs_user_type_id==3){
+				$arrs_field = array('id' => $vs_id); 
+			}else if($vs_user_type_id==2){ 
+				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+			}else{
+				//$arrs_field = array('status'=> '1'); 
+				$arrs_field = array('role_id' => '3'); 
+			}
+			
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 			  
 			if(isset($_SESSION['Temp_Deal_Documents_DATE_Times'])){ 
 				unset($_SESSION['Temp_Deal_Documents_Files']);
@@ -503,7 +514,7 @@ class Deals extends CI_Controller{
 			
 			$records = $data['records'] = $this->deals_model->get_all_cstm_deals_properties($paras_arrs);
 			
-			if($vs_user_type_id==2){ 
+			/*if($vs_user_type_id==2){ 
 				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
 			}else{
 				$arrs_field = array('user_type_id'=> '3'); 
@@ -511,7 +522,19 @@ class Deals extends CI_Controller{
 			 
 			//$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 			
-			$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();*/
+			
+			
+			if($vs_user_type_id==3){
+				$arrs_field = array('id' => $vs_id); 
+			}else if($vs_user_type_id==2){ 
+				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+			}else{
+				//$arrs_field = array('status'=> '1'); 
+				$arrs_field = array('role_id' => '3'); 
+			}
+			
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 			
 			if(isset($_SESSION['Temp_Deal_Documents_DATE_Times'])){ 
 				unset($_SESSION['Temp_Deal_Documents_Files']);
@@ -715,9 +738,22 @@ class Deals extends CI_Controller{
 		  
 		$data['args0'] = $args0;   
 		/*get_gen_all_users_list();*/
-		$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();  
+		//$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();
+		$vs_id = $this->session->userdata('us_id'); 
+		$vs_user_type_id = $this->session->userdata('us_role_id');
 		
-		$data['emirate_arrs'] = $this->emirates_model->get_all_emirates();
+		if($vs_user_type_id==3){
+			$arrs_field = array('id' => $vs_id); 
+		}else if($vs_user_type_id==2){ 
+			$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+		}else{
+			//$arrs_field = array('status'=> '1'); 
+			$arrs_field = array('role_id' => '3'); 
+		}
+		
+		$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
+		 		
+ 		$data['emirate_arrs'] = $this->emirates_model->get_all_emirates();
 		$data['emirate_location_arrs'] = $this->emirates_location_model->fetch_emirate_locations('');
 		$data['emirate_sub_location_arrs']= $this->emirates_sub_location_model->fetch_emirate_sub_locations('');
 		

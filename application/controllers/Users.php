@@ -329,7 +329,7 @@
 		}   
 		
 	
-	function users_popup_list(){  
+	function users_popup_list($sl_role_id='0'){  
 		
 		$res_nums = $this->general_model->check_controller_method_permission_access('Users','add',$this->dbs_role_id,'1'); 
 		if($res_nums>0){ 
@@ -337,6 +337,12 @@
 			$data['page_headings']="Users Listings";	
 			
 			$paras_arrs = array();	  
+			if($sl_role_id >0){
+				$data['sl_role_id'] = $sl_role_id;
+				$paras_arrs = array_merge($paras_arrs, array("sl_role_id" => $sl_role_id));		
+			}else{
+				$data['sl_role_id'] = '0';
+			}
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -396,6 +402,14 @@
 			} 
 			
 			$data['page'] = $page;
+			
+			if(isset($_POST['sl_role_id']) && $_POST['sl_role_id']>0){
+				$sl_role_id = $_POST['sl_role_id'];
+				$data['sl_role_id'] = $sl_role_id;
+				$paras_arrs = array_merge($paras_arrs, array("sl_role_id" => $sl_role_id));		
+			}else{
+				$data['sl_role_id'] = '0';
+			}
 			
 			/* permission checks */  
 	

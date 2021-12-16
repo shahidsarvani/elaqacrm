@@ -55,7 +55,7 @@ function index($args_vals=''){ /* $temps_property_type='' */
 			$offset = 0;
 			$data['page'] = $page = 0;
 			/* permission checks */
-			$vs_user_type_id = $this->session->userdata('us_user_type_id');
+			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 				
 				if(isset($_POST['refer_no'])){
@@ -295,7 +295,7 @@ function index($args_vals=''){ /* $temps_property_type='' */
 		$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list(); 
 		$data['beds_arrs'] = $this->no_of_bedrooms_model->get_all_no_of_beds();
 		/* permission checks */
-		$vs_user_type_id = $this->session->userdata('us_user_type_id');
+		$vs_user_type_id = $this->session->userdata('us_role_id');
 		$vs_id = $this->session->userdata('us_id');
 		
 		$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
@@ -444,7 +444,7 @@ function index($args_vals=''){ /* $temps_property_type='' */
 		
 	    $records = $data['records'] = $this->leads_model->get_all_cstm_leads_properties($paras_arrs);
 		
-		$vs_user_type_id = $this->session->userdata('us_user_type_id');
+		$vs_user_type_id = $this->session->userdata('us_role_id');
 		$vs_id = $this->session->userdata('us_id');
 		
 		if($vs_user_type_id==3){ 
@@ -480,7 +480,7 @@ function index2($temps_property_type=''){
 		$data['page'] = $page;
 		
 		/* permission checks */
-		$vs_user_type_id = $this->session->userdata('us_user_type_id');
+		$vs_user_type_id = $this->session->userdata('us_role_id');
 		$vs_id = $this->session->userdata('us_id');
 		
 	
@@ -701,7 +701,7 @@ function index2($temps_property_type=''){
 			$data['page_headings'] = 'Add Lead';
 		}    
 		
-		$vs_user_type_id = $this->session->userdata('us_user_type_id');
+		$vs_user_type_id = $this->session->userdata('us_role_id');
 		$vs_id = $this->session->userdata('us_id');
 		  
 		if($vs_id >0 && (isset($args1) && $args1>0)){ 
@@ -716,7 +716,8 @@ function index2($temps_property_type=''){
 		}else if($vs_user_type_id==2){ 
 			$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
 		}else{
-			$arrs_field = array('status'=> '1'); 
+			//$arrs_field = array('status'=> '1'); 
+			$arrs_field = array('role_id' => '3'); 
 		}
 		$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 		/*$data['user_arrs'] = $this->general_model->get_gen_all_users_assigned();*/  

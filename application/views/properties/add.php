@@ -235,7 +235,7 @@
 						
 				$(function() { 
 				<?php
-					$usr_popup_url = 'users/users_popup_list';
+					$usr_popup_url = 'users/users_popup_list/3/';
 					$usr_popup_url = site_url($usr_popup_url); ?> 
 					 
 					$('#modal_remote_user').on('show.bs.modal', function() {

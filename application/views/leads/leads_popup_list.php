@@ -72,7 +72,7 @@
 		<thead>  
 			<tr>
 				<th width="6%" class="text-center"> # </th>
-				<th width="9%" class="text-center">111111111 Ref No.</th> 
+				<th width="9%" class="text-center"> Ref No.</th> 
 				<th width="12%"> Enquiry Date </th>
 				<th width="12%"> Enquiry Time </th>
 				<th width="9%"> Lead type</th>
