@@ -185,7 +185,7 @@
 		if($res_nums>0){ 
 		
 		$data['page_headings'] = 'Add Location';   
-		$data['locations_arrs'] = $this->locations_model->get_parent_chaild_locations('0');
+		$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');
 		
 		if(isset($_POST) && !empty($_POST)){
 		
@@ -240,7 +240,7 @@
 			$data['page_headings'] = 'Add Location';
 		}  
 		
-		$data['locations_arrs'] = $this->locations_model->get_parent_chaild_locations('0');
+		$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');
 		
 		if(isset($_POST) && !empty($_POST)){ 
 			// get form input
@@ -276,7 +276,29 @@
 			$this->load->view('no_permission_access'); 
 		 }
 	 }
-	
+	 
+	 
+		function fetch_sub_loations($paras1='', $paras2=''){
+			$ret_txt = '';
+			$loc_arrs = $this->locations_model->get_parent_child_locations($paras1);
+			
+			if($loc_arrs){
+				$fst_parentid = $loc_arrs[0]->parent_id;
+				$ret_txt .= '<div class="parent_location_box0" id="fetch_parent_location_box'.$paras2.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$paras1.'">Cities </label> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$paras2.'\', \''.$fst_parentid.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; /// 
+				$chk = 0;
+				foreach($loc_arrs as $loc_arr){   
+					$loc_parent_id = $loc_arr->parent_id+1;
+					
+					$ret_txt .= '<li><label for="parent_loc_id'.$loc_arr->id.'"> <input type="radio" name="parent_loc_id'.$loc_arr->parent_id.'" id="parent_loc_id'.$loc_arr->id.'" value="'.$loc_arr->id.'" data-item-id="'.$loc_arr->id.'" data-item-label="'.$loc_arr->name.'" data-item-parent-id="'.$loc_arr->parent_id.'" data-item-parent-inc-id="'.$loc_parent_id.'" class="chk_location_cls" onClick="operate_property_locations(\''.$loc_arr->id.'\',\''.$loc_parent_id.'\');" /> '.stripslashes($loc_arr->name).' </label> </li>';  
+					$chk++;	
+				}  
+			 	
+				$ret_txt .= '</ul> </div> </div>';
+			}
+			
+			echo $ret_txt;
+			die();
+		}
 	/* end of locations */
 	 
 	  

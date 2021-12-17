@@ -185,7 +185,7 @@
 					</tr>
 							
 			<?php  
-				$record2s = $this->locations_model->get_parent_chaild_locations($record1->id);
+				$record2s = $this->locations_model->get_parent_child_locations($record1->id);
 				if(isset($record2s)){
 					foreach($record2s as $record2){ 
 						$sr++;
@@ -229,7 +229,7 @@
 							</tr>
 							 
 						<?php     
-							$record3s = $this->locations_model->get_parent_chaild_locations($record2->id);
+							$record3s = $this->locations_model->get_parent_child_locations($record2->id);
 							if(isset($record3s)){
 								foreach($record3s as $record3){ 
 									$sr++;
@@ -272,7 +272,7 @@
 										</tr>
 										
 									<?php 
-										$record4s = $this->locations_model->get_parent_chaild_locations($record3->id);  
+										$record4s = $this->locations_model->get_parent_child_locations($record3->id);  
 										if(isset($record4s)){
 											foreach($record4s as $record4){ 
 												$sr++;
@@ -316,7 +316,7 @@
 													</tr> 
 													
 											<?php    
-												$record5s = $this->locations_model->get_parent_chaild_locations($record4->id);   
+												$record5s = $this->locations_model->get_parent_child_locations($record4->id);   
 												if(isset($record5s)){
 													foreach($record5s as $record5){ 
 														$sr++;
@@ -361,7 +361,7 @@
 															 
 															
 													<?php 
-														$record6s = $this->locations_model->get_parent_chaild_locations($record5->id);   
+														$record6s = $this->locations_model->get_parent_child_locations($record5->id);   
 														if(isset($record6s)){
 															foreach($record6s as $record6){ 
 																$sr++;

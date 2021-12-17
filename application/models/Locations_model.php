@@ -54,7 +54,7 @@ class Locations_model extends CI_Model {
 	   	return $query->result();
 	} 
 	
-	function get_parent_chaild_locations($parent_loc_id = '0'){
+	function get_parent_child_locations($parent_loc_id = '0'){
 		$query = $this->db->get_where('locations_tbl', array('parent_id' => $parent_loc_id)); 
 	   	return $query->result();
 	} 

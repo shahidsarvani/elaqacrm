@@ -3293,14 +3293,16 @@ class Properties extends CI_Controller{
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
-		
+			$this->load->model('locations_model'); 
 			$config_arrs = $this->general_model->get_configuration();
 			$conf_sale_inititals = stripslashes($config_arrs->sale_inititals);
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
 			$data['args0']  = $args0;
-			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+			$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');
+			
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
