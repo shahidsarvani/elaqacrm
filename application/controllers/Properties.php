@@ -3301,10 +3301,8 @@ class Properties extends CI_Controller{
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
 			$data['args0']  = $args0;
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
-			$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');
-			
-			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
-			 
+			$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');  
+			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/ 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
 			$max_property_id_val = $max_property_id_val+1; 
 			$max_property_id_val = str_pad($max_property_id_val, 4, '0', STR_PAD_LEFT); 
@@ -3389,7 +3387,42 @@ class Properties extends CI_Controller{
 					$res = $this->properties_model->insert_property_data($datas); 
 					if(isset($res)){
 						$last_property_id = $this->db->insert_id();
-							 
+						
+						/*  property_loation script starts */
+						if(isset($_POST["parent_loc_id"])){
+							$parent_loc_id1 = $_POST["parent_loc_id"]; 
+							//$this->properties_model->trash_property_loation_data($last_property_id);
+							
+							$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id1, 'updated_on' => $date_times));
+							
+							if(isset($_POST["parent_loc_id{$parent_loc_id1}"])){
+								$parent_loc_id2 = $_POST["parent_loc_id{$parent_loc_id1}"]; 
+								$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id2, 'updated_on' => $date_times));
+								 
+								if(isset($_POST["parent_loc_id{$parent_loc_id2}"])){
+									$parent_loc_id3 = $_POST["parent_loc_id{$parent_loc_id2}"]; 
+									$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id3, 'updated_on' => $date_times));
+									
+									if(isset($_POST["parent_loc_id{$parent_loc_id3}"])){
+										$parent_loc_id4 = $_POST["parent_loc_id{$parent_loc_id3}"];
+										$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id4, 'updated_on' => $date_times)); 
+										
+										if(isset($_POST["parent_loc_id{$parent_loc_id4}"])){
+											$parent_loc_id5 = $_POST["parent_loc_id{$parent_loc_id4}"];
+											$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id5, 'updated_on' => $date_times));
+											 
+											if(isset($_POST["parent_loc_id{$parent_loc_id5}"])){
+												$parent_loc_id6 = $_POST["parent_loc_id{$parent_loc_id5}"];
+												$this->properties_model->insert_property_loation_data(array('property_id' => $last_property_id, 'location_id' => $parent_loc_id6, 'updated_on' => $date_times));
+												
+											}	 
+										} 
+									}	 
+								} 
+							} 
+						} 
+						/* property_loation script ends */
+						 
 						/*  photo script starts */	
 						if(isset($_SESSION['Temp_Media_Images']) && count($_SESSION['Temp_Media_Images'])>0){
 							 /*$_FILES["images"] = $_SESSION['Temp_Media_Images'];*/
@@ -3481,13 +3514,16 @@ class Properties extends CI_Controller{
 		
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
+			$this->load->model('locations_model'); 
 			$config_arrs = $this->general_model->get_configuration();
 			$conf_sale_inititals = stripslashes($config_arrs->sale_inititals);
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
 			$data['conf_sale_inititals']  = $conf_sale_inititals; 
 			$data['conf_rent_inititals']  = $conf_rent_inititals;
 			$data['args0'] = $args0;
-			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+			$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');  
+			//$data['selected_locations_arrs'] = $this->properties_model->get_property_loations_by_property_id($args1);  
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/
 			 
 			$max_property_id_val = $this->properties_model->get_max_property_ref_no_val();
@@ -3576,7 +3612,45 @@ class Properties extends CI_Controller{
 					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'emirate_id' => $emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'ip_address' => $ip_address,'updated_on' => $date_times);   
 					
 					$res = $this->properties_model->update_property_data($args1,$datas); 
-					if(isset($res)){  
+					if(isset($res)){    
+						
+						/*  property_loation script starts */
+						if(isset($_POST["parent_loc_id"])){
+							$parent_loc_id1 = $_POST["parent_loc_id"];
+							$update_propertyid = $args1;
+							 
+							$this->properties_model->trash_property_loation_data($update_propertyid);
+							
+							$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id1, 'updated_on' => $date_times));
+							
+							if(isset($_POST["parent_loc_id{$parent_loc_id1}"])){
+								$parent_loc_id2 = $_POST["parent_loc_id{$parent_loc_id1}"]; 
+								$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id2, 'updated_on' => $date_times));
+								 
+								if(isset($_POST["parent_loc_id{$parent_loc_id2}"])){
+									$parent_loc_id3 = $_POST["parent_loc_id{$parent_loc_id2}"]; 
+									$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id3, 'updated_on' => $date_times));
+									
+									if(isset($_POST["parent_loc_id{$parent_loc_id3}"])){
+										$parent_loc_id4 = $_POST["parent_loc_id{$parent_loc_id3}"];
+										$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id4, 'updated_on' => $date_times)); 
+										
+										if(isset($_POST["parent_loc_id{$parent_loc_id4}"])){
+											$parent_loc_id5 = $_POST["parent_loc_id{$parent_loc_id4}"];
+											$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id5, 'updated_on' => $date_times));
+											 
+											if(isset($_POST["parent_loc_id{$parent_loc_id5}"])){
+												$parent_loc_id6 = $_POST["parent_loc_id{$parent_loc_id5}"];
+												$this->properties_model->insert_property_loation_data(array('property_id' => $update_propertyid, 'location_id' => $parent_loc_id6, 'updated_on' => $date_times));
+												
+											}	 
+										} 
+									}	 
+								} 
+							} 
+						} 
+						/* property_loation script ends */  
+
 						
 						$this->session->set_flashdata('success_msg','Record updated successfully!');
 					}else{

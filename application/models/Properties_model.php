@@ -822,7 +822,41 @@ class Properties_model extends CI_Model {
 	}
 	 
  	   
-
+	/* propeties locations data starts */
+	function get_property_loations_by_property_id($sl_propertyid){
+		$query = $this->db->query("SELECT * FROM properties_locations_tbl WHERE property_id='".$sl_propertyid."' "); 
+		return $query->result();
+	} 
+	
+	function chk_loation_by_property_id($sl_propertyid){
+		$query = $this->db->query("SELECT count(id) AS NUMS FROM properties_locations_tbl WHERE property_id='".$sl_propertyid."' "); 
+		return $query->row()->NUMS; 
+	}
+	
+	function chk_loation_by_property_location_ids($sl_locid, $sl_propertyid){
+		$query = $this->db->query("SELECT count(id) AS NUMS FROM properties_locations_tbl WHERE property_id='".$sl_propertyid."' AND location_id='".$sl_locid."' "); 
+		return $query->row()->NUMS; 
+	}
+	
+	
+   	function insert_property_loation_data($data){ 
+		return $this->db->insert('properties_locations_tbl', $data);
+	}
 	 
+    function update_property_loation_data($args1,$data){ 
+		if($args1>0){
+			$this->db->where('id',$args1);
+			return $this->db->update('properties_locations_tbl', $data);
+		}
+	}
+		 
+	function trash_property_loation_data($paras1){
+		if($paras1 >0){
+			$this->db->where('property_id', $paras1); 
+			$this->db->delete('properties_locations_tbl');
+		} 
+		return true;
+	} 
+	/* properties locations data ends */
 	
 }  ?>

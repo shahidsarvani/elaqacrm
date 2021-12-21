@@ -284,12 +284,15 @@
 			
 			if($loc_arrs){
 				$fst_parentid = $loc_arrs[0]->parent_id;
-				$ret_txt .= '<div class="parent_location_box0" id="fetch_parent_location_box'.$paras2.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$paras1.'">Cities </label> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$paras2.'\', \''.$fst_parentid.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; /// 
+				$searchable_elmnt = '#location_searcher'.$fst_parentid;
+				$sortable_elmnt = '.selectable'.$fst_parentid;
+				
+				$ret_txt .= '<div class="parent_location_box0" id="fetch_parent_location_box'.$paras2.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$paras1.'">Cities </label>  <span class="filter_cls"><input type="text" name="location_searcher'.$fst_parentid.'" id="location_searcher'.$fst_parentid.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$searchable_elmnt .'\', \''.$sortable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$paras2.'\', \''.$fst_parentid.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; /// 
 				$chk = 0;
 				foreach($loc_arrs as $loc_arr){   
 					$loc_parent_id = $loc_arr->parent_id+1;
 					
-					$ret_txt .= '<li><label for="parent_loc_id'.$loc_arr->id.'"> <input type="radio" name="parent_loc_id'.$loc_arr->parent_id.'" id="parent_loc_id'.$loc_arr->id.'" value="'.$loc_arr->id.'" data-item-id="'.$loc_arr->id.'" data-item-label="'.$loc_arr->name.'" data-item-parent-id="'.$loc_arr->parent_id.'" data-item-parent-inc-id="'.$loc_parent_id.'" class="chk_location_cls" onClick="operate_property_locations(\''.$loc_arr->id.'\',\''.$loc_parent_id.'\');" /> '.stripslashes($loc_arr->name).' </label> </li>';  
+					$ret_txt .= '<li class="selectable'.$fst_parentid.'"><label for="parent_loc_id'.$loc_arr->id.'"> <input type="radio" name="parent_loc_id'.$loc_arr->parent_id.'" id="parent_loc_id'.$loc_arr->id.'" value="'.$loc_arr->id.'" data-item-id="'.$loc_arr->id.'" data-item-label="'.$loc_arr->name.'" data-item-parent-id="'.$loc_arr->parent_id.'" data-item-parent-inc-id="'.$loc_parent_id.'" class="chk_location_cls" onClick="operate_property_locations(\''.$loc_arr->id.'\',\''.$loc_parent_id.'\');" /> '.stripslashes($loc_arr->name).' </label> </li>';  
 					$chk++;	
 				}  
 			 	
