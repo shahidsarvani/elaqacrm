@@ -128,10 +128,8 @@
 			<div class="col-md-6">
 			  <?php 
 				if(isset($record) && strlen($record->password)>0){
-					$pwd_val0 = $record->password; 
-					 $pwd_val = $this->general_model->decrypt_data($pwd_val0);
-					 $pattern = '/[^a-z0-9_<>\\s!@#$%^&*()+={}\\[\\]|\\/:;"\\\'?.,®-]/i';
-					 $pwd_val = preg_replace($pattern, '', $pwd_val); 
+					$pwd_val0 = $record->password;   
+					$pwd_val = $this->general_model->encrypt_data($pwd_val0);
 				}else{
 					$pwd_val = set_value('password');
 				} ?>
