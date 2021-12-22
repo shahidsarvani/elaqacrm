@@ -59,7 +59,7 @@
 		  <div class="form-group">
 			<label class="col-md-2 control-label" for="role_id">Role Name <span class="reds"> *</span></label>
         <div class="col-md-6">
-          <select name="role_id" id="role_id" class="form-control select" onChange="get_parent_area(this.value);" data-error="#role_id1">
+          <select name="role_id" id="role_id" class="form-control select2" onChange="get_parent_area(this.value);" data-error="#role_id1">
             <option value="">Select Role Name</option>
 			<?php  
             if(isset($role_arrs) && count($role_arrs)>0){
@@ -90,7 +90,7 @@
 		  <div id="operate_parent_area" class="form-group" <?php echo ((isset($_POST['role_id']) && $_POST['role_id']=='3') || (isset($record) && $record->role_id=='3')) ? '':'style="display:none;"'; ?>>
 			<label class="col-md-2 control-label" for="parent_id">Assigned to Manager <span class="reds"> *</span></label>
 			<div class="col-md-6">
-			  <select name="parent_id" id="parent_id" class="form-control select" data-error="#parent_id1">
+			  <select name="parent_id" id="parent_id" class="form-control select2" data-error="#parent_id1">
 				<option value="">Select Manager...</option>
 				<?php  
 				if(isset($manager_arrs) && count($manager_arrs)>0){
@@ -159,7 +159,7 @@
 		  <div class="form-group">
 			<label class="col-md-2 control-label" for="status">Account Status <span class="reds"> *</span></label>
 			<div class="col-md-6">
-			  <select name="status" id="status" class="form-control select">
+			  <select name="status" id="status" class="form-control select2">
 				<option value="1" <?php if(isset($_POST['status']) && $_POST['status']==1){ echo 'selected="selected"'; } ?>> Active </option>
 				<option value="0" <?php if(isset($_POST['status']) && $_POST['status']==0){ echo 'selected="selected"'; } ?>> Inactive </option>
 			  </select>
