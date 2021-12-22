@@ -35,8 +35,7 @@
 			$res_nums =  $this->general_model->check_controller_method_permission_access('Locations','index',$this->vs_usr_role_id,'1'); 
 			if($res_nums>0){
 			
-				$paras_arrs = array();	
-				$paras_arrs = array_merge($paras_arrs, array("parentid_val" => '0'));
+				$paras_arrs = array();	 
 				 
 				if($this->input->post('sel_per_page_val')){
 					$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -62,8 +61,9 @@
 				}
 				 
 				//total rows count
-				$totalRec = count($this->locations_model->get_all_filter_locations($paras_arrs));
-				
+				//$totalRec = count($this->locations_model->get_all_filter_locations($paras_arrs));
+				$totalRec = $this->locations_model->count_location_nums($paras_arrs);
+				 
 				//pagination configuration
 				$config['target']      = '#dyns_list';
 				$config['base_url']    = site_url('/locations/index2');
@@ -73,6 +73,8 @@
 				$this->ajax_pagination->initialize($config); 
 				
 				$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
+				
+				$paras_arrs = array_merge($paras_arrs, array("parentid_val" => '0'));
 				
 				$records = $data['records'] = $this->locations_model->get_all_filter_locations($paras_arrs);
 				 
@@ -86,8 +88,7 @@
 	 
 		function index2(){
 			$data['page_headings'] = "Locations List"; 
-			$paras_arrs = array();	
-			$paras_arrs = array_merge($paras_arrs, array("parentid_val" => '0'));
+			$paras_arrs = array();	 
 			$page = $this->input->post('page');
 			if(!$page){
 				$offset = 0;
@@ -127,8 +128,8 @@
 			}
 			 
 			//total rows count
-			$totalRec = count($this->locations_model->get_all_filter_locations($paras_arrs)); 
-			
+			///$totalRec = count($this->locations_model->get_all_filter_locations($paras_arrs)); 
+			$totalRec = $this->locations_model->count_location_nums($paras_arrs);
 			//pagination configuration
 			$config['target']      = '#dyns_list';
 			$config['base_url']    = site_url('/locations/index2');
@@ -138,6 +139,8 @@
 			$this->ajax_pagination->initialize($config); 
 			
 			$paras_arrs = array_merge($paras_arrs, array('start' => $offset, 'limit'=> $show_pers_pg));
+			
+			$paras_arrs = array_merge($paras_arrs, array("parentid_val" => '0'));
 			
 			$data['records'] = $this->locations_model->get_all_filter_locations($paras_arrs); 
 			 

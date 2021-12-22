@@ -42,8 +42,34 @@ class Locations_model extends CI_Model {
 		
 		$query = $this->db->query("SELECT * FROM locations_tbl WHERE id >'0' $whrs $limits "); 
 		return $query->result(); 
-	} 
-	
+	}
+	 
+	function count_location_nums($params = array()){ 
+		$whrs =''; 
+		if(array_key_exists("q_val",$params)){
+			$q_val = $params['q_val']; 
+			if(strlen($q_val)>0){
+				$whrs .=" AND ( name LIKE '%$q_val%' OR description LIKE '%$q_val%' ) ";
+			}
+		} 
+		
+		if(array_key_exists("status_val",$params)){
+			$status_val = $params['status_val']; 
+			if($status_val != ''){
+				$whrs .=" AND status='%$status_val%' ";
+			}
+		} 
+		
+		if(array_key_exists("parentid_val",$params)){
+			$parentid_val = $params['parentid_val']; 
+			if($parentid_val != ''){
+				$whrs .=" AND parent_id='$parentid_val' ";
+			}
+		}    
+		
+		$query = $this->db->query("SELECT count(id) as NUMS FROM locations_tbl WHERE id >'0' $whrs "); 
+		return $query->row()->NUMS; 
+	}
 	
 	function get_all_emirate_with_locations(){
 		$this->db->order_by("l.name", "asc"); 
