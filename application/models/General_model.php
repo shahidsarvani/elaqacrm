@@ -729,6 +729,23 @@ class General_model extends CI_Model {
 			$this->db->where("ref_no LIKE '%$paras0%' "); 
 			$query = $this->db->get();
 			return $query->row();
-		}	 
+		}
+		
+		
+		
+		public function get_gen_property_locations_list($prop_id){  
+			$ret_txt = '';
+			$query = $this->db->query("SELECT lc.name FROM properties_locations_tbl pl, locations_tbl lc WHERE pl.property_id='".$prop_id."' AND pl.location_id=lc.id ORDER BY pl.id ASC"); 
+			$recs = $query->result(); 
+			if($recs){
+				foreach($recs as $rec){
+					$ret_txt .= $rec->name.', '; 
+				}
+				
+				$ret_txt = rtrim($ret_txt, ', ');
+			}
+			
+			return $ret_txt ;
+		} 	 
 						
 	}  ?>

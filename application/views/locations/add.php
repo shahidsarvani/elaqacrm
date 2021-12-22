@@ -51,7 +51,7 @@ $this->load->view('widgets/meta_tags'); ?>
                 <?php $form_act = "locations/add"; ?>
                 <form name="datas_form" id="datas_form" method="post" action="<?php echo site_url($form_act); ?>" class="form-horizontal">
 				  <div class="form-group">
-                    <label class="col-md-2 control-label" for="parent_id">Parent Location(s)<span class="reds">*</span></label>
+                    <label class="col-md-2 control-label" for="parent_id">Parent Location(s)<span class="reds"> </span></label>
                     <div class="col-md-6">
                       <select name="parent_id" id="parent_id" class="form-control select2" data-error="#parent_id1">
                         <option value="0">Select Parent Location </option>

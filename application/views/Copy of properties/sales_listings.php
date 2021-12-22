@@ -44,9 +44,16 @@ if($trash_res_nums>0){ ?>
 			 
 			var category_id_vals = document.getElementById("category_ids").value;
 			category_id_vals = category_id_vals.trim(); 
+			 
+			var emirate_id_vals = document.getElementById("emirate_ids").value;
+			emirate_id_vals = emirate_id_vals.trim();
 			
-			var sl_location_id = $("#sl_location_id option:selected").val();
-			  
+			var location_id_vals = document.getElementById("location_ids").value;
+			location_id_vals = location_id_vals.trim(); 
+			
+			var sub_location_id_vals = document.getElementById("sub_location_ids").value;
+			sub_location_id_vals = sub_location_id_vals.trim(); 
+			
 			var portal_id_vals = document.getElementById("portal_ids").value;
 			portal_id_vals = portal_id_vals.trim(); 
 			
@@ -58,6 +65,8 @@ if($trash_res_nums>0){ ?>
 			
 			var property_status_vals = document.getElementById("m_property_status").value;
 			property_status_vals = property_status_vals.trim(); 
+			
+			//category_ids  emirate_ids location_ids sub_location_ids portal_ids assigned_to_ids owner_ids m_property_status  
 			 
 			var price = document.getElementById("price").value;
 			var to_price = document.getElementById("to_price").value;
@@ -67,9 +76,11 @@ if($trash_res_nums>0){ ?>
 			 
 			$.ajax({
 				method: "POST",
-				url: "<?php echo site_url('/properties/sales_listings2/'); ?>",  
+				url: "<?php echo site_url('/properties/sales_listings2/'); ?>", 
+				
+				//category_id_vals emirate_id_vals location_id_vals sub_location_id_vals portal_id_vals assigned_to_id_vals owner_id_vals property_status_vals 
 				 
-				data: { page: 0, sel_per_page_val:sel_per_page_val, s_val:s_val, category_id_vals:category_id_vals, sl_location_id: sl_location_id, portal_id_vals:portal_id_vals, assigned_to_id_vals:assigned_to_id_vals, owner_id_vals:owner_id_vals, property_status_vals:property_status_vals, price:price, to_price:to_price, from_date:from_date, to_date:to_date },
+				data: { page: 0, sel_per_page_val:sel_per_page_val, s_val:s_val, category_id_vals:category_id_vals, emirate_id_vals:emirate_id_vals, location_id_vals:location_id_vals, sub_location_id_vals:sub_location_id_vals, portal_id_vals:portal_id_vals, assigned_to_id_vals:assigned_to_id_vals, owner_id_vals:owner_id_vals, property_status_vals:property_status_vals, price:price, to_price:to_price, from_date:from_date, to_date:to_date },
 				beforeSend: function(){
 					$('.loading').show();
 				},
@@ -140,7 +151,10 @@ if($trash_res_nums>0){ ?>
     <div class="sidebar-detached">
     <div class="sidebar sidebar-default">
     <div class="sidebar-content">  
-       <input name="category_ids" id="category_ids" type="hidden" value=""> 
+       <input name="category_ids" id="category_ids" type="hidden" value="">
+       <input name="emirate_ids" id="emirate_ids" type="hidden" value=""> 
+       <input name="location_ids" id="location_ids" type="hidden" value=""> 
+       <input name="sub_location_ids" id="sub_location_ids" type="hidden" value="">
        <input name="portal_ids" id="portal_ids" type="hidden" value=""> 
        <input name="assigned_to_ids" id="assigned_to_ids" type="hidden" value=""> 
        <input name="owner_ids" id="owner_ids" type="hidden" value="">
@@ -184,97 +198,98 @@ if($trash_res_nums>0){ ?>
                   </select>
                 </div>     
             </div> 
-          </div>
-		   
-<div class="form-group"> 
-<div class="row">
-	<div class="col-xs-12">   
-	  <select name="sl_location_id" id="sl_location_id" class="form-control select2" onChange="operate_properties();"> 
-		<option value="0"> Select Location </option> 
-	<?php 		 
-		if(isset($location_arrs)){
-			foreach($location_arrs as $location_arr){ 
-				
-				$sel_1 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$location_arr->id) ? 'selected="selected"' : ''; ?>
-				
-				<option value="<?php echo $location_arr->id; ?>" <?php echo $sel_1; ?>> <?php echo stripslashes($location_arr->name); ?> </option> 			
-			<?php  
-				$record2s = $this->locations_model->get_parent_child_locations($location_arr->id);
-				if(isset($record2s)){
-					foreach($record2s as $record2){
-						$sel_2 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record2->id) ? 'selected="selected"' : ''; ?> 
-						<option value="<?php echo $record2->id; ?>" <?php echo $sel_2; ?>> - <?php echo stripslashes($record2->name); ?> </option>  
-						<?php     
-							$record3s = $this->locations_model->get_parent_child_locations($record2->id);
-							if(isset($record3s)){
-								foreach($record3s as $record3){
-									$sel_3 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record3->id) ? 'selected="selected"' : '';  ?> 
-									<option value="<?php echo $record3->id; ?>" <?php echo $sel_3; ?>> - - <?php echo  stripslashes($record3->name); ?> </option> 
-										
-									<?php 
-										$record4s = $this->locations_model->get_parent_child_locations($record3->id);  
-										if(isset($record4s)){
-											foreach($record4s as $record4){
-												$sel_4 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record4->id) ?	'selected="selected"' : '';  ?> 
-												<option value="<?php echo $record4->id; ?>" <?php echo $sel_4; ?>> - - -  <?php echo stripslashes($record4->name); ?> </option> 
-											
-											<?php    
-												$record5s = $this->locations_model->get_parent_child_locations($record4->id);   
-												if(isset($record5s)){
-													foreach($record5s as $record5){ 
-														$sel_5 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record5->id) ?	'selected="selected"' : '';  ?> 
-															<option value="<?php echo $record5->id; ?>" <?php echo $sel_5; ?>> - - - -  <?php echo stripslashes($record5->name); ?> </option>   	 
-															
-													<?php 
-														$record6s = $this->locations_model->get_parent_child_locations($record5->id);   
-														if(isset($record6s)){
-															foreach($record6s as $record6){
-																$sel_6 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record6->id) ?	'selected="selected"' : '';  ?>
-																<option value="<?php echo $record6->id; ?>" <?php echo $sel_6; ?>> - - - - - <?php echo stripslashes($record6->name); ?> </option>      
-															<?php 
-															}
-														} ?>  	
-																	  
-													<?php  
-													}
-												} ?> 	
-														  
-											<?php 
-											}
-										} ?>  	  
-									<?php 
-									}
-								} ?>  	  
-						<?php  
-						}
-					} ?>  	
-			<?php 
-				}  
-			} ?> 
-		  </select>
-				</div>     
-			</div> 
-		</div>    
-		
-		<div class="form-group"> 
-			<div class="row">
-				<div class="col-xs-12">  
-				 <select name="portal_id" id="portal_id" multiple="multiple" onChange="operate_properties();"> 
-					<?php   
-						$portal_arrs = $this->portals_model->get_all_portals();
-						$portal_nums = count($portal_arrs); 
-						if(isset($portal_arrs) && $portal_nums>0){  
-							foreach($portal_arrs as $portal_arr){ ?>  
-							 <option value="<?= $portal_arr->id; ?>">
-								<?= stripslashes($portal_arr->name); ?>
-							 </option> 
-							<?php  
-							}
-						} ?>
-					</select>
-				</div> 
-			</div>
-		</div>
+          </div> 
+         
+          
+         <input type="hidden" name="emirate_url" id="emirate_url" value="<?php echo site_url('properties/fetch_property_list_emirate_locations'); ?>">  
+         <input type="hidden" name="location_url" id="location_url" value="<?php echo site_url('properties/fetch_property_list_emirate_sub_locations'); ?>">  
+         
+        <div class="form-group">  
+            <div class="row">
+             <div class="col-xs-12">  
+              <select name="emirate_id" id="emirate_id" multiple="multiple">  
+                <?php  
+                    $emirate_arrs = $this->emirates_model->get_all_emirates();
+                    if(isset($emirate_arrs) && count($emirate_arrs)>0){
+                        foreach($emirate_arrs as $emirate_arr){ ?>
+                            <option value="<?= $emirate_arr->id; ?>">
+                            <?= stripslashes($emirate_arr->name); ?>
+                            </option>
+                   		 <?php 
+                            }
+                        } ?>
+                    </select> 
+                  </div> 
+                </div>
+            </div> 
+            
+            <div class="form-group">  
+                <div class="row">
+                 <div class="col-xs-12" id="fetch_emirate_locations">   
+                  <select name="location_id" id="location_id" multiple="multiple"> 
+                    <?php  
+                        $emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations('0');
+                        if(isset($emirate_location_arrs) && count($emirate_location_arrs)>0){
+                            foreach($emirate_location_arrs as $emirate_location_arr){
+                                $sel_1 = '';
+                                if(isset($_POST['location_id']) && $_POST['location_id']==$emirate_location_arr->id){
+                                    $sel_1 = 'selected="selected"';
+                                } ?>
+                                <option value="<?= $emirate_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_location_arr->name); ?> </option>
+                         <?php 
+                            }
+                        }  ?>
+                  </select>
+                  
+                  </div> 
+				</div>
+            </div>
+            
+        <div class="form-group">  
+            <div class="row">
+             <div class="col-xs-12" id="fetch_emirate_sub_locations">   
+              <select name="sub_location_id" id="sub_location_id" multiple="multiple" >    
+                <?php 
+                $tmps_location_id='';
+                if(isset($_POST['location_id']) && strlen($_POST['location_id'])>0){
+                    $tmps_location_id = $_POST['location_id'];
+                }  
+                $emirate_sub_location_arrs = $this->emirates_sub_location_model->fetch_emirate_sub_locations($tmps_location_id);
+                if(isset($emirate_sub_location_arrs) && is_array($emirate_sub_location_arrs)){
+                    foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
+                    $sel_1 = '';
+                    if(isset($_POST['sub_location_id']) && $_POST['sub_location_id']==$emirate_sub_location_arr->id){
+                        $sel_1 = 'selected="selected"';
+                    } ?>
+                      <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_sub_location_arr->name); ?> </option>
+                <?php 
+                    }
+                } 
+              ?>
+              </select> 
+              </div> 
+             </div>
+           </div>  
+            
+            <div class="form-group"> 
+            	<div class="row">
+                 	<div class="col-xs-12">  
+                  	 <select name="portal_id" id="portal_id" multiple="multiple" onChange="operate_properties();"> 
+                        <?php   
+                            $portal_arrs = $this->portals_model->get_all_portals();
+                            $portal_nums = count($portal_arrs); 
+                            if(isset($portal_arrs) && $portal_nums>0){  
+                                foreach($portal_arrs as $portal_arr){ ?>  
+                                 <option value="<?= $portal_arr->id; ?>">
+                                    <?= stripslashes($portal_arr->name); ?>
+                                 </option> 
+                                <?php  
+                                }
+                            } ?>
+                    	</select>
+                	</div> 
+				</div>
+            </div>
             
            <div class="form-group"> 
              <div class="row">

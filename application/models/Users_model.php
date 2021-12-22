@@ -52,7 +52,7 @@ class Users_model extends CI_Model {
 	} 
 
 	function get_user($email,$password){ 
-		$query = $this->db->get_where('users_tbl',array('email'=> $email,'password'=> $password));
+		$query = $this->db->get_where('users_tbl',array('email' => $email, 'password' => $password));
 		return $query->row();
 	}
 	

@@ -16,7 +16,8 @@
 				if($res_nums>0){
 					/* ok */
 				}else{
-					redirect('/');
+					//$this->load->view('no_permission_access'); 
+					//redirect('/');
 				} 
 				
 			}else{

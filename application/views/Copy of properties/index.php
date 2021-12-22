@@ -5,7 +5,6 @@
 <!-- Theme JS files --> 
 <script type="text/javascript" src="<?= asset_url(); ?>js/plugins/ui/prism.min.js"></script> 
 <script type="text/javascript" src="<?= asset_url(); ?>js/pages/sidebar_dual.js"></script>
-  
 <script src="<?= asset_url();?>vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <!-- /theme JS files -->
 <?php 
@@ -20,12 +19,10 @@ $trash_res_nums =  $this->general_model->check_controller_method_permission_acce
 if($add_res_nums>0 && $trash_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_add_del.js"></script>
 <?php 
-}else
-if($add_res_nums>0){ ?>
+}else if($add_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_add.js"></script>
 <?php  
-}else
-if($trash_res_nums>0){ ?>
+}else if($trash_res_nums>0){ ?>
 	<script type="text/javascript" src="<?= asset_url(); ?>js/pages/datatables_extension_buttons_init_custom_del.js"></script>
 <?php 
 }else{ ?>
@@ -44,9 +41,16 @@ if($trash_res_nums>0){ ?>
 			 
 			var category_id_vals = document.getElementById("category_ids").value;
 			category_id_vals = category_id_vals.trim(); 
+			 
+			var emirate_id_vals = document.getElementById("emirate_ids").value;
+			emirate_id_vals = emirate_id_vals.trim();
 			
-			var sl_location_id = $("#sl_location_id option:selected").val();
-			  
+			var location_id_vals = document.getElementById("location_ids").value;
+			location_id_vals = location_id_vals.trim(); 
+			
+			var sub_location_id_vals = document.getElementById("sub_location_ids").value;
+			sub_location_id_vals = sub_location_id_vals.trim(); 
+			
 			var portal_id_vals = document.getElementById("portal_ids").value;
 			portal_id_vals = portal_id_vals.trim(); 
 			
@@ -58,6 +62,8 @@ if($trash_res_nums>0){ ?>
 			
 			var property_status_vals = document.getElementById("m_property_status").value;
 			property_status_vals = property_status_vals.trim(); 
+			
+			//category_ids  emirate_ids location_ids sub_location_ids portal_ids assigned_to_ids owner_ids m_property_status  
 			 
 			var price = document.getElementById("price").value;
 			var to_price = document.getElementById("to_price").value;
@@ -67,9 +73,11 @@ if($trash_res_nums>0){ ?>
 			 
 			$.ajax({
 				method: "POST",
-				url: "<?php echo site_url('/properties/sales_listings2/'); ?>",  
+				url: "<?php echo site_url('/properties/index2/'); ?>", 
+				
+				//category_id_vals emirate_id_vals location_id_vals sub_location_id_vals portal_id_vals assigned_to_id_vals owner_id_vals property_status_vals 
 				 
-				data: { page: 0, sel_per_page_val:sel_per_page_val, s_val:s_val, category_id_vals:category_id_vals, sl_location_id: sl_location_id, portal_id_vals:portal_id_vals, assigned_to_id_vals:assigned_to_id_vals, owner_id_vals:owner_id_vals, property_status_vals:property_status_vals, price:price, to_price:to_price, from_date:from_date, to_date:to_date },
+				data: { page: 0, sel_per_page_val:sel_per_page_val, s_val:s_val, category_id_vals:category_id_vals, emirate_id_vals:emirate_id_vals, location_id_vals:location_id_vals, sub_location_id_vals:sub_location_id_vals, portal_id_vals:portal_id_vals, assigned_to_id_vals:assigned_to_id_vals, owner_id_vals:owner_id_vals, property_status_vals:property_status_vals, price:price, to_price:to_price, from_date:from_date, to_date:to_date },
 				beforeSend: function(){
 					$('.loading').show();
 				},
@@ -77,7 +85,7 @@ if($trash_res_nums>0){ ?>
 					$('.loading').hide();
 					$('#dyns_list').html(data);
 					
-					$('.select2').select2({
+					$('.select').select2({
 						minimumResultsForSearch: Infinity
 					});
 					
@@ -90,16 +98,6 @@ if($trash_res_nums>0){ ?>
 				}
 			});
 		}); 
-	}
-	
-	function operate_archived_properties(){ 
-		var conf_msg = confirm('Do you want to move the selected to archived properties ?');
-		if(conf_msg){
-			document.getElementById('datas_list_forms').action = "<?= site_url('properties/archived_selected_properties/');?>"; 	
-			document.getElementById('datas_list_forms').submit();
-		}else{
-			return false;	
-		}
 	} 
 </script>
 <script type="text/javascript" src="<?= asset_url(); ?>js/custom_multiselect.js"></script>    
@@ -140,7 +138,10 @@ if($trash_res_nums>0){ ?>
     <div class="sidebar-detached">
     <div class="sidebar sidebar-default">
     <div class="sidebar-content">  
-       <input name="category_ids" id="category_ids" type="hidden" value=""> 
+       <input name="category_ids" id="category_ids" type="hidden" value="">
+       <input name="emirate_ids" id="emirate_ids" type="hidden" value=""> 
+       <input name="location_ids" id="location_ids" type="hidden" value=""> 
+       <input name="sub_location_ids" id="sub_location_ids" type="hidden" value="">
        <input name="portal_ids" id="portal_ids" type="hidden" value=""> 
        <input name="assigned_to_ids" id="assigned_to_ids" type="hidden" value=""> 
        <input name="owner_ids" id="owner_ids" type="hidden" value="">
@@ -150,7 +151,7 @@ if($trash_res_nums>0){ ?>
 		<div class="category-title">
             <span>Search</span>
             <ul class="icons-list">
-                <li><a onClick="window.location='<?= site_url('properties/sales_listings/'); ?>';" data-action="reload"></a></li>
+                <li><a onClick="window.location='<?= site_url('properties/index'); ?>';" data-action="reload"></a></li>
                 <li><a href="#" data-action="collapse"></a></li>
             </ul>
         </div>
@@ -184,97 +185,98 @@ if($trash_res_nums>0){ ?>
                   </select>
                 </div>     
             </div> 
-          </div>
-		   
-<div class="form-group"> 
-<div class="row">
-	<div class="col-xs-12">   
-	  <select name="sl_location_id" id="sl_location_id" class="form-control select2" onChange="operate_properties();"> 
-		<option value="0"> Select Location </option> 
-	<?php 		 
-		if(isset($location_arrs)){
-			foreach($location_arrs as $location_arr){ 
-				
-				$sel_1 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$location_arr->id) ? 'selected="selected"' : ''; ?>
-				
-				<option value="<?php echo $location_arr->id; ?>" <?php echo $sel_1; ?>> <?php echo stripslashes($location_arr->name); ?> </option> 			
-			<?php  
-				$record2s = $this->locations_model->get_parent_child_locations($location_arr->id);
-				if(isset($record2s)){
-					foreach($record2s as $record2){
-						$sel_2 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record2->id) ? 'selected="selected"' : ''; ?> 
-						<option value="<?php echo $record2->id; ?>" <?php echo $sel_2; ?>> - <?php echo stripslashes($record2->name); ?> </option>  
-						<?php     
-							$record3s = $this->locations_model->get_parent_child_locations($record2->id);
-							if(isset($record3s)){
-								foreach($record3s as $record3){
-									$sel_3 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record3->id) ? 'selected="selected"' : '';  ?> 
-									<option value="<?php echo $record3->id; ?>" <?php echo $sel_3; ?>> - - <?php echo  stripslashes($record3->name); ?> </option> 
-										
-									<?php 
-										$record4s = $this->locations_model->get_parent_child_locations($record3->id);  
-										if(isset($record4s)){
-											foreach($record4s as $record4){
-												$sel_4 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record4->id) ?	'selected="selected"' : '';  ?> 
-												<option value="<?php echo $record4->id; ?>" <?php echo $sel_4; ?>> - - -  <?php echo stripslashes($record4->name); ?> </option> 
-											
-											<?php    
-												$record5s = $this->locations_model->get_parent_child_locations($record4->id);   
-												if(isset($record5s)){
-													foreach($record5s as $record5){ 
-														$sel_5 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record5->id) ?	'selected="selected"' : '';  ?> 
-															<option value="<?php echo $record5->id; ?>" <?php echo $sel_5; ?>> - - - -  <?php echo stripslashes($record5->name); ?> </option>   	 
-															
-													<?php 
-														$record6s = $this->locations_model->get_parent_child_locations($record5->id);   
-														if(isset($record6s)){
-															foreach($record6s as $record6){
-																$sel_6 = (isset($_POST['sl_location_id']) && $_POST['sl_location_id']==$record6->id) ?	'selected="selected"' : '';  ?>
-																<option value="<?php echo $record6->id; ?>" <?php echo $sel_6; ?>> - - - - - <?php echo stripslashes($record6->name); ?> </option>      
-															<?php 
-															}
-														} ?>  	
-																	  
-													<?php  
-													}
-												} ?> 	
-														  
-											<?php 
-											}
-										} ?>  	  
-									<?php 
-									}
-								} ?>  	  
-						<?php  
-						}
-					} ?>  	
-			<?php 
-				}  
-			} ?> 
-		  </select>
-				</div>     
-			</div> 
-		</div>    
-		
-		<div class="form-group"> 
-			<div class="row">
-				<div class="col-xs-12">  
-				 <select name="portal_id" id="portal_id" multiple="multiple" onChange="operate_properties();"> 
-					<?php   
-						$portal_arrs = $this->portals_model->get_all_portals();
-						$portal_nums = count($portal_arrs); 
-						if(isset($portal_arrs) && $portal_nums>0){  
-							foreach($portal_arrs as $portal_arr){ ?>  
-							 <option value="<?= $portal_arr->id; ?>">
-								<?= stripslashes($portal_arr->name); ?>
-							 </option> 
-							<?php  
-							}
-						} ?>
-					</select>
-				</div> 
-			</div>
-		</div>
+          </div> 
+         
+          
+         <input type="hidden" name="emirate_url" id="emirate_url" value="<?php echo site_url('properties/fetch_property_list_emirate_locations'); ?>">  
+         <input type="hidden" name="location_url" id="location_url" value="<?php echo site_url('properties/fetch_property_list_emirate_sub_locations'); ?>">  
+         
+        <div class="form-group">  
+            <div class="row">
+             <div class="col-xs-12">  
+              <select name="emirate_id" id="emirate_id" multiple="multiple">  
+                <?php  
+                    $emirate_arrs = $this->emirates_model->get_all_emirates();
+                    if(isset($emirate_arrs) && count($emirate_arrs)>0){
+                        foreach($emirate_arrs as $emirate_arr){ ?>
+                            <option value="<?= $emirate_arr->id; ?>">
+                            <?= stripslashes($emirate_arr->name); ?>
+                            </option>
+                   		 <?php 
+                            }
+                        } ?>
+                    </select> 
+                  </div> 
+                </div>
+            </div> 
+            
+            <div class="form-group">  
+                <div class="row">
+                 <div class="col-xs-12" id="fetch_emirate_locations">   
+                  <select name="location_id" id="location_id" multiple="multiple"> 
+                    <?php  
+                        $emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations('0');
+                        if(isset($emirate_location_arrs) && count($emirate_location_arrs)>0){
+                            foreach($emirate_location_arrs as $emirate_location_arr){
+                                $sel_1 = '';
+                                if(isset($_POST['location_id']) && $_POST['location_id']==$emirate_location_arr->id){
+                                    $sel_1 = 'selected="selected"';
+                                } ?>
+                                <option value="<?= $emirate_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_location_arr->name); ?> </option>
+                         <?php 
+                            }
+                        }  ?>
+                  </select>
+                  
+                  </div> 
+				</div>
+            </div>
+            
+        <div class="form-group">  
+            <div class="row">
+             <div class="col-xs-12" id="fetch_emirate_sub_locations">   
+              <select name="sub_location_id" id="sub_location_id" multiple="multiple" >    
+                <?php 
+                $tmps_location_id='';
+                if(isset($_POST['location_id']) && strlen($_POST['location_id'])>0){
+                    $tmps_location_id = $_POST['location_id'];
+                }  
+                $emirate_sub_location_arrs = $this->emirates_sub_location_model->fetch_emirate_sub_locations($tmps_location_id);
+                if(isset($emirate_sub_location_arrs) && is_array($emirate_sub_location_arrs)){
+                    foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
+                    $sel_1 = '';
+                    if(isset($_POST['sub_location_id']) && $_POST['sub_location_id']==$emirate_sub_location_arr->id){
+                        $sel_1 = 'selected="selected"';
+                    } ?>
+                      <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_sub_location_arr->name); ?> </option>
+                <?php 
+                    }
+                } 
+              ?>
+              </select> 
+              </div> 
+             </div>
+           </div>  
+            
+            <div class="form-group"> 
+            	<div class="row">
+                 	<div class="col-xs-12">  
+                  	 <select name="portal_id" id="portal_id" multiple="multiple" onChange="operate_properties();"> 
+                        <?php   
+                            $portal_arrs = $this->portals_model->get_all_portals();
+                            $portal_nums = count($portal_arrs); 
+                            if(isset($portal_arrs) && $portal_nums>0){  
+                                foreach($portal_arrs as $portal_arr){ ?>  
+                                 <option value="<?= $portal_arr->id; ?>">
+                                    <?= stripslashes($portal_arr->name); ?>
+                                 </option> 
+                                <?php  
+                                }
+                            } ?>
+                    	</select>
+                	</div> 
+				</div>
+            </div>
             
            <div class="form-group"> 
              <div class="row">
@@ -369,7 +371,8 @@ if($trash_res_nums>0){ ?>
         </div>
     </div>
     <!-- /filter -->
-		<script>  	  
+	<script>
+        //jQuery.noConflict()(function($){	 	  
             $(document).ready(function(){   
                 $('#from_date').datepicker({
                     format: "yyyy-mm-dd"
@@ -384,8 +387,11 @@ if($trash_res_nums>0){ ?>
                         $('.datepicker').hide();
                         operate_properties();
                 });  
-            }); 
+            });
+        //});
     	</script>
+								 
+
     	</div>
 	</div>
 </div>
@@ -418,17 +424,17 @@ if($trash_res_nums>0){ ?>
             </div>
         </div> 
         
-	<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add/3'); ?>">
-    <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
+		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('properties/add'); ?>">
+       <input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
        
-    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/delete_selected_properties'); ?>" method="post">   
+    <form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('properties/trash_multiple'); ?>" method="post">   
         <div class="panel-body"> 
             <div class="row">
             <div class="col-md-12"> 
                 <div class="form-group mb-md">   
                   <div class="col-md-2">  
                    <div class="col-md-9">   
-                      <select name="per_page" id="per_page" class="form-control input-sm mb-md select2" onChange="operate_properties();">
+                      <select name="per_page" id="per_page" class="form-control input-sm mb-md  select" onChange="operate_properties();">
                       <option value="25"> Pages</option>
                       <option value="25"> 25 </option>
                       <option value="50"> 50 </option>
@@ -437,30 +443,27 @@ if($trash_res_nums>0){ ?>
                     </div>
                      <div class="col-md-3">  </div>
                   </div> 
-                  <div class="col-md-10 pull-right"> 
-                    <div class="dt-buttons"> 
-						<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" href="<?= site_url('properties/sales_listings/export_excel'); ?>"> <span><i class="glyphicon glyphicon-file position-left"></i> Export </span></a>
-					
+                    <div class="col-md-3">   
+                    </div>    
+                    
+                    <div class="col-md-5 pull-right"> 
+                    <div class="dt-buttons">   
                      <?php if($trash_res_nums>0){ ?>
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      
                     <?php } if($add_res_nums>0){ ?> 
-                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('properties/add/3/'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
+                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('properties/add'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
                     <?php }
 						
 						if($add_res_nums==0 && $trash_res_nums==0){  ?>
 							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
 					<?php } ?>
-					
-					<button type="button" name="submit_archive_properties" id="submit_archive_properties" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" value="Archive Selected" onClick="operate_archived_properties();"> <i class="glyphicon glyphicon-repeat"></i> Archive Selected </button>
-					
-					
                         
                         </div>
                     </div> 
                 </div>
             </div>
-          </div>
+            </div>
               
      <style>
          #datatable-default_filter{
@@ -517,7 +520,7 @@ if($trash_res_nums>0){ ?>
               <th width="13%">Category </th>
               <th width="13%">Assigned To </th>
               <th width="9%" class="text-center">Status</th>
-              <th width="9%" class="text-center">Price (<?php echo $conf_currency_symbol; ?>)</th>
+              <th width="9%" class="text-center">Price</th>
               <th width="12%" class="text-center">Created On</th>
               <th width="12%" class="text-center">Action</th>
             </tr>
@@ -527,12 +530,11 @@ if($trash_res_nums>0){ ?>
         $sr=1; 
         if(isset($records) && count($records)>0){
             foreach($records as $record){ 
-                $operate_url = 'properties/update/3/'.$record->id;
+                $operate_url = 'properties/update/'.$record->id;
                 $operate_url = site_url($operate_url); 
                 
-                //$trash_url = 'properties/trash_aj/'.$record->id;
-                $trash_url = 'properties/delete_property/3/'.$record->id; 
-				$trash_url = site_url($trash_url); ?>
+                $trash_url = 'properties/trash_aj/'.$record->id;
+                $trash_url = site_url($trash_url); ?>
                 
                 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                   <td class="text-center">
@@ -567,22 +569,18 @@ if($trash_res_nums>0){ ?>
                   </td> 
                  <td class="text-center"><?php echo number_format($record->price,0,".",","); /*CRM_CURRENCY.' '.*/ ?></td>  
                   <td class="text-center"><?php echo date('d-M-Y',strtotime($record->created_on)); ?></td>   
-                  <td class="text-center">   
-					<ul class="icons-list">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
-							<ul class="dropdown-menu dropdown-menu-right"> <!-- icon-search4 --> 	 
-						  <?php if($view_res_nums>0){ ?>   
-								<li><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i> Detail</a> </li>  
-						   <?php } if($update_res_nums>0){ ?> 
-									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
-							<?php } 
-								if($trash_res_nums>0){ ?>  
-								   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
-						  <?php } ?>  
-							</ul>
-						</li>
-					</ul> 
+                  <td class="text-center">  
+                     <ul class="icons-list">
+                     <?php if($view_res_nums>0){ ?>  
+                      	<li class="text-primary-600"><a href="javascript:void(0);" onClick="return view_property('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"><i class="glyphicon glyphicon-search"></i></a></li>  
+                        
+                   <?php } if($update_res_nums>0){ ?> 
+                            <li class="text-primary-600"><a href="<?php echo $operate_url; ?>"><i class="icon-pencil7"></i></a></li> 
+                    <?php } 
+                        if($trash_res_nums>0){ ?>  
+                            <li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li>
+                  <?php } ?> 
+                    </ul>  
                   </td> 
                 </tr>
                 <?php 
@@ -590,7 +588,7 @@ if($trash_res_nums>0){ ?>
                 } ?> 
                <tr>
                <td colspan="9">
-               <div style="float:left;"> <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select2" onChange="operate_properties();">
+               <div style="float:left;"> <select name="per_page" id="per_page" class="form-control input-sm mb-md populate select" onChange="operate_properties();">
                   <option value="25"> Pages</option>
                   <option value="25"> 25 </option>
                   <option value="50"> 50 </option>
@@ -606,23 +604,23 @@ if($trash_res_nums>0){ ?>
                 <?php } ?>
               </tbody>
             </table> 
-   		 </div>     						 
-		<div class="loading" style="display: none;">
-			<div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div>
-			</div>   
-		</div>  
-		<input type="hidden" name="args0" id="args0" value="3" />
-      </form>
-	 </div>
-	<!-- /sidebars overview -->  
-   </div>
- </div>
- <!-- /detached content -->
+    </div>     						 
+<div class="loading" style="display: none;">
+    <div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div>
+    </div>   
+</div>  
+     </form>
+        </div>
+        <!-- /sidebars overview --> 
+
+    </div>
+</div>
+<!-- /detached content -->
 
 
-	<!-- Footer -->
-	<?php $this->load->view('widgets/footer'); ?>
-	<!-- /footer -->
+					<!-- Footer -->
+					<?php $this->load->view('widgets/footer'); ?>
+					<!-- /footer -->
 
 				</div>
 				<!-- /content area -->

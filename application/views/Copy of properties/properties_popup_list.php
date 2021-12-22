@@ -80,6 +80,7 @@ function operate_properties_list(){
 				<th width="6%" class="text-center"> # </th>
 				<th width="9%" class="text-center"> Ref No.</th> 
 				<th width="12%"> Title </th>
+				<th width="12%"> Sub Location </th>
 				<th width="9%"> No of Beds</th>
 				<th width="8%"> Price </th>
 				<th width="10%"> Property Status </th> 
@@ -98,6 +99,7 @@ function operate_properties_list(){
 					<td><input type="radio" name="sel_property_id_val" id="sel_property_id_val_<?= $sr; ?>" value="<?= $record->id; ?>" onclick="sels_chk_box_vals(this.value);"> </td>
 					<td><label for="sel_property_id_val_<?= $sr; ?>"><?= stripslashes($record->ref_no); ?></label></td> 
 					<td><?= stripslashes($record->p_title); ?></td>
+					<td><?= stripslashes($record->sub_loc_name); ?></td>
 					<td><?= stripslashes($record->bed_title); ?></td>
 					<td><?= stripslashes($record->price); ?></td>
 					<td><?= stripslashes($record->property_status); ?></td> 
@@ -110,13 +112,14 @@ function operate_properties_list(){
 				$sr++;
 				} ?>
 					 <tr class="gradeX"> 
-						<td colspan="10" class="center" style="text-align:center"> 
-							<?php echo $this->ajax_pagination->create_links(); ?>						</td>
+						<td colspan="11" class="center" style="text-align:center"> 
+							<?php echo $this->ajax_pagination->create_links(); ?> 
+						</td>
 					</tr>	
 				<?php 
 			}else{ ?>	
 				<tr class="gradeX"> 
-					<td colspan="10" class="center"> <strong> No Record Found! </strong> </td>
+					<td colspan="11" class="center"> <strong> No Record Found! </strong> </td>
 				</tr>
 			<?php } ?>  
 			</tbody>

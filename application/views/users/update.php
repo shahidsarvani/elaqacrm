@@ -129,7 +129,7 @@
 			  <?php 
 				if(isset($record) && strlen($record->password)>0){
 					$pwd_val0 = $record->password;   
-					$pwd_val = $this->general_model->encrypt_data($pwd_val0);
+					$pwd_val = $this->general_model->decrypt_data($pwd_val0);
 				}else{
 					$pwd_val = set_value('password');
 				} ?>

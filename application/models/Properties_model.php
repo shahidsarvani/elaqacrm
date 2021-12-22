@@ -77,12 +77,12 @@ class Properties_model extends CI_Model {
 			}  
         } 
 		
-		if(array_key_exists("emirate_location_id_val",$params)){
+		/*if(array_key_exists("emirate_location_id_val",$params)){
 			$emirate_location_id_val = $params['emirate_location_id_val'];  
 			if(strlen($emirate_location_id_val)>0){ 
 				$whrs .=" AND p.sub_location_id IN ($emirate_location_id_val) ";
 			}
-		}   
+		} */  
 		
 		if(array_key_exists("no_of_beds_id_val",$params)){
 			$no_of_beds_id_val = $params['no_of_beds_id_val'];  
@@ -173,15 +173,15 @@ class Properties_model extends CI_Model {
 		if(array_key_exists("pics_nos_val",$params)){
 			$pics_nos_val = $params['pics_nos_val'];  
 			if($pics_nos_val> -1){ 
-				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, COUNT(o.id) AS pics_nos FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN property_images_tbl o ON p.id=o.property_id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs GROUP BY p.id HAVING COUNT(o.id)='$pics_nos_val' ORDER BY p.id DESC $limits ");
+				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, COUNT(o.id) AS pics_nos FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN property_images_tbl o ON p.id=o.property_id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs GROUP BY p.id HAVING COUNT(o.id)='$pics_nos_val' ORDER BY p.id DESC $limits ");
 				
 				 
 			}else{
-				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits ");
+				$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits ");
 			}
 		}else{
 		
-			$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
+			$query = $this->db->query("SELECT p.id, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, u.name AS crt_usr_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
 		}   /*  p.is_deleted='0' AND p.is_archived='0' */
 		return $query->result(); /* p.created_on DESC */
 	}
@@ -245,7 +245,7 @@ class Properties_model extends CI_Model {
 			$limits = " LIMIT $tot_limit ";
 		}   
 		
-		$query = $this->db->query("SELECT p.id, p.title as p_title, p.description as p_description, p.property_address, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, p.updated_on as updated_on, u.name AS crt_usr_name, sl.name AS sub_loc_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.is_archived='0' AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
+		$query = $this->db->query("SELECT p.id, p.title as p_title, p.description as p_description, p.property_address, p.ref_no, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids AS show_on_portal_ids, p.updated_on as updated_on, u.name AS crt_usr_name, bd.title AS bed_title, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN no_of_bedrooms_tbl bd ON p.no_of_beds_id=bd.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.is_archived='0' AND property_status NOT IN (1,2) $whrs ORDER BY p.id DESC $limits "); 
 		    /*  p.is_deleted='0' AND p.is_archived='0' */
 		return $query->result(); /* p.created_on DESC */
 	}
@@ -548,7 +548,7 @@ class Properties_model extends CI_Model {
 	   $query = $this->db->get_where('users_tbl',array('parent_id'=> $mngrs_ids));
 	   return $query->result();
 	} 
-			
+			 
 	function get_all_cstm_properties($params = array()){ 
 	 
 		$vs_user_type_id= $this->session->userdata('us_role_id'); 
@@ -603,31 +603,17 @@ class Properties_model extends CI_Model {
 				//$whrs .=" AND FIND_IN_SET($category_id_vals, p.category_id) "; 
 				$whrs .= " AND p.category_id IN ($category_id_vals) ";
 			}
-		}   
+		}
 		
-		if(array_key_exists("emirate_id_vals",$params)){
-			$emirate_id_vals = $params['emirate_id_vals'];  
-			if(strlen($emirate_id_vals)>0){  
-				//$whrs .=" AND FIND_IN_SET($emirate_id_vals, p.emirate_id) ";  
-				$whrs .= " AND p.emirate_id IN ($emirate_id_vals) ";
+		$loc_join_query = $sel_query = '';
+		if(array_key_exists("sl_location_id",$params)){
+			$sl_location_id = $params['sl_location_id'];   
+			if($sl_location_id >0){ 
+				$whrs .= " AND lc.location_id=$sl_location_id ";
+				//$sel_query = " ,lc.name as location_name ";
+				$loc_join_query = " LEFT JOIN properties_locations_tbl lc ON p.id=lc.property_id ";
 			}
-		}  
-		 
-		if(array_key_exists("location_id_vals",$params)){
-			$location_id_vals = $params['location_id_vals'];  
-			if(strlen($location_id_vals)>0){ 
-				//$whrs .=" AND FIND_IN_SET($location_id_vals, p.location_id) "; 
-				$whrs .= " AND p.location_id IN ($location_id_vals) ";
-			}
-		} 
-		
-		if(array_key_exists("sub_location_id_vals",$params)){
-			$sub_location_id_vals = $params['sub_location_id_vals'];  
-			if(strlen($sub_location_id_vals)>0){ 
-				//$whrs .=" AND FIND_IN_SET($sub_location_id_vals, p.sub_location_id) "; 
-				$whrs .= " AND p.sub_location_id IN ($sub_location_id_vals) ";
-			}
-		}  	
+		}	
 		
 		if(array_key_exists("portal_id_vals",$params)){
 			$portal_id_vals = $params['portal_id_vals'];  
@@ -703,15 +689,15 @@ class Properties_model extends CI_Model {
         }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
              $tot_limit =   $params['limit'];
 			$limits = " LIMIT $tot_limit ";
-		}   
+		}  
 		   
-		$query = $this->db->query("SELECT p.id, p.ref_no, p.title, c.name AS cate_name, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids, p.price, u.name AS crt_usr_name, em.name AS em_name, em_lc.name AS em_lc_name, sl.name AS sub_loc_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, p.property_status AS property_status, p.created_on AS created_on FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN emirates_tbl em ON p.emirate_id=em.id LEFT JOIN emirate_locations_tbl em_lc ON p.location_id=em_lc.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id WHERE p.id>0 $whrs ORDER BY p.id DESC $limits "); 
+		$query = $this->db->query("SELECT p.id, p.ref_no, p.title, c.name AS cate_name, p.price, p.property_status, p.assigned_to_id, p.is_new, p.show_on_portal_ids, p.price, u.name AS crt_usr_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, p.property_status AS property_status, p.created_on AS created_on $sel_query FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id $loc_join_query WHERE p.id>0 $whrs ORDER BY p.id DESC $limits "); 
 		return $query->result(); 
 	} 
 	
 	function get_property_detail_by_id($paras1){   
 		if($paras1>0){  
-			$query = $this->db->query("SELECT p.*, c.name AS cate_name, u.name AS crt_usr_name, em.name AS em_name, em_lc.name AS em_lc_name, sl.name AS sub_loc_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, sr_lst.title AS sr_lst_title FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN emirates_tbl em ON p.emirate_id=em.id LEFT JOIN emirate_locations_tbl em_lc ON p.location_id=em_lc.id LEFT JOIN emirate_sub_locations_tbl sl ON p.sub_location_id=sl.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN source_of_listings_tbl sr_lst ON p.source_of_listing=sr_lst.id WHERE p.id=$paras1 "); 
+			$query = $this->db->query("SELECT p.*, c.name AS cate_name, u.name AS crt_usr_name, ow.name AS ownr_name, ow.phone_no AS ownr_phone_no, sr_lst.title AS sr_lst_title FROM properties_tbl p LEFT JOIN users_tbl u ON p.created_by=u.id LEFT JOIN categories_tbl c ON p.category_id=c.id LEFT JOIN owners_tbl ow ON p.owner_id=ow.id LEFT JOIN source_of_listings_tbl sr_lst ON p.source_of_listing=sr_lst.id WHERE p.id=$paras1 "); 
 			return $query->row();
 		} 
 	}

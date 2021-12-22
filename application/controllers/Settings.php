@@ -9,12 +9,12 @@
 			$this->load->model('general_model');
 			if(isset($vs_id) && (isset($vs_user_role_id) && $vs_user_role_id >=1)){
 				/* ok */
-				$res_nums = $this->general_model->check_controller_permission_access('Settings',$vs_user_role_id,'1');
+				/*$res_nums = $this->general_model->check_controller_permission_access('Settings',$vs_user_role_id,'1');
 				if($res_nums>0){
-					/* ok */
+					 //ok 
 				}else{
 					redirect('/');
-				}
+				}*/
 				
 			}else{
 				redirect('/');

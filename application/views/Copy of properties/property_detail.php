@@ -86,34 +86,25 @@
                 <?php if(isset($record) && $record->no_of_baths>0){ echo stripslashes($record->no_of_baths); } ?>  
                  </div>
               </div>
-               
-			  <div class="form-group">
-				<label class="col-md-4 control-label" for="is_furnished1">Is Furnished ?</label> 
-				<div class="col-md-8">  
-				<?php 
-					if(isset($record) && $record->is_furnished==1){
-						echo "Furnished";
-					}else if(isset($record) && $record->is_furnished==2){
-						echo "SemiFurnished";
-					}else if(isset($record) && $record->is_furnished==3){
-						echo "UnFurnished";
-					} ?>
-				 </div> 
-			  </div>
-			   
-			  <div class="form-group">
-				<label class="col-md-4 control-label" for="source_of_listing">Source of Listing </label>
-				<div class="col-md-8">
-					<?php echo stripslashes($record->sr_lst_title); ?>   
-				</div>
-			  </div>
-			  
-			   <div class="form-group">
-				<label class="col-md-4 control-label" for="location_id">Location(s) </label>
-				<div class="col-md-8">
-					<?php echo $this->general_model->get_gen_property_locations_list($record->id); ?>   
-				</div>
-			   </div>   
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="emirate_id">Emirates </label>
+                <div class="col-md-9">
+                  <?php echo stripslashes($record->em_name); ?>  
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="location_id">Locations </label>
+                <div class="col-md-9">  
+              		<?php echo stripslashes($record->em_lc_name); ?>  
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="sub_location_id">Sub Locations </label>
+                <div class="col-md-9"> 
+                 <?php echo stripslashes($record->sub_loc_name); ?> 
+                 </div>
+              </div> 
+                    
             </div>
             
             <div class="col-md-4">
@@ -185,7 +176,28 @@
                 .radio-inline {
                     padding-left:27px;	
                 } 
-              </style>  
+              </style>
+                    
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="is_furnished1">Is Furnished ?</label> 
+                    <div class="col-md-8">  
+                    <?php 
+                        if(isset($record) && $record->is_furnished==1){
+                            echo "Furnished";
+                        }else if(isset($record) && $record->is_furnished==2){
+                            echo "SemiFurnished";
+                        }else if(isset($record) && $record->is_furnished==3){
+                            echo "UnFurnished";
+                        } ?>
+                     </div> 
+                  </div>
+                   
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="source_of_listing">Source of Listing </label>
+                    <div class="col-md-8">
+                        <?php echo stripslashes($record->sr_lst_title); ?>   
+                    </div>
+                  </div>
             </div>
             
           </div>

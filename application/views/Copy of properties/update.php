@@ -251,7 +251,7 @@
 					
 				$(function() { 
 					<?php
-						$usr_popup_url = 'users/users_popup_list/3/';
+						$usr_popup_url = 'users/users_popup_list';
 						$usr_popup_url = site_url($usr_popup_url); ?> 
 						 
 						$('#modal_remote_user').on('show.bs.modal', function() {
@@ -494,7 +494,6 @@
 					  </select>
 					  <span id="no_of_beds_id1" class="text-danger"><?php echo form_error('no_of_beds_id'); ?></span> </div>
 				  </div>
-				  
 				  <div class="form-group">
 					<label class="col-md-3 control-label" for="no_of_baths">Bathrooms <span class="reds">*</span></label>
 					<div class="col-md-9">
@@ -515,46 +514,94 @@
 					  </select>
 					  <span id="no_of_baths1" class="text-danger"><?php echo form_error('no_of_baths'); ?></span> </div>
 				  </div>
-				  
 				  <div class="form-group">
-					<label class="col-md-3 control-label" for="is_furnished1">Is Furnished ?</label> 
-					<div class="col-md-9">  
-					<select name="is_furnished" id="is_furnished" class="form-control select2" data-error="#is_furnished1">
-						<option value="">Select Is Furnished </option>
-						<option value="1" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==1) || (isset($record) && $record->is_furnished==1)){ echo 'selected="selected"'; } ?>> Furnished </option> 
-						 <option value="2" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==2) || (isset($record) && $record->is_furnished==2)){ echo 'selected="selected"'; } ?>> SemiFurnished </option> 
-						<option value="3" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==3) || (isset($record) && $record->is_furnished==3)){ echo 'selected="selected"'; } ?>> UnFurnished </option>        
-					  </select>      
-					  <span id="is_furnished1" class="text-danger" style="clear:both; display:block;"><?php echo form_error('is_furnished'); ?></span> </div> 
-				  </div>
-				   
-				  <div class="form-group">
-					<label class="col-md-3 control-label" for="source_of_listing">Source of Listing </label>
+					<label class="col-md-3 control-label" for="emirate_id">Emirates <span class="reds">*</span></label>
 					<div class="col-md-9">
-					  <select name="source_of_listing" id="source_of_listing" class="form-control select2" data-error="#source_of_listing1">
-						<option value="">Select Source of Listing </option>
+					  <?php 
+							if(isset($_POST['emirate_id']) && $_POST['emirate_id']>0){
+								$sel_emirate_ids = $_POST['emirate_id'];
+							}else if(isset($record) && $record->emirate_id >0){
+								$sel_emirate_ids = $record->emirate_id;
+							}else{
+								$sel_emirate_ids = 3;
+							}  ?>
+		
+					  <select name="emirate_id" id="emirate_id" class="form-control select2" onChange="get_property_emirate_location(this.value,'<?php echo site_url('properties/fetch_emirate_locations'); ?>','fetch_emirate_locations');" data-error="#emirate_id1" >
+						<option value="">Select Emirate </option>
 						<?php  
-				if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){
-					foreach($source_of_listing_arrs as $source_of_listing_arr){
-						$sel_1 = '';
-						if(isset($_POST['source_of_listing']) && $_POST['source_of_listing']==$source_of_listing_arr->id){
-							$sel_1 = 'selected="selected"';
-						}else if(isset($record) && $record->source_of_listing==$source_of_listing_arr->id){
-							$sel_1 = 'selected="selected"';
-						} ?>
-						<option value="<?= $source_of_listing_arr->id; ?>" <?php echo $sel_1; ?>>
-						<?= stripslashes($source_of_listing_arr->title); ?>
+							if(isset($emirate_arrs) && count($emirate_arrs)>0){
+								foreach($emirate_arrs as $emirate_arr){
+								$sel_1 = '';
+								if(isset($sel_emirate_ids) && $sel_emirate_ids==$emirate_arr->id){
+									$sel_1 = 'selected="selected"';
+								} ?>
+						<option value="<?= $emirate_arr->id; ?>" <?php echo $sel_1; ?>>
+						<?= stripslashes($emirate_arr->name); ?>
 						</option>
 						<?php 
-					}
-				} ?>
-			  </select>
-			  <span id="source_of_listing1" class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
-			  </div>
-			  
-			  </div>
+								}
+							} ?>
+					  </select>
+					  <span id="emirate_id1" class="text-danger"><?php echo form_error('emirate_id'); ?></span> </div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-md-3 control-label" for="location_id">Locations <span class="reds">*</span></label>
+					<div class="col-md-9"> 
+					<span id="fetch_emirate_locations">
+					  <select name="location_id" id="location_id" class="form-control select2" onChange="get_property_emirate_sub_location(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_locations'); ?>','fetch_emirate_sub_locations');" data-error="#location_id1">
+						<option value="">Select Emirate Location </option>
+						<?php  
+							$emirate_location_arrs = $this->emirates_location_model->fetch_emirate_locations($sel_emirate_ids);
+							if(isset($emirate_location_arrs) && count($emirate_location_arrs)>0){
+								foreach($emirate_location_arrs as $emirate_location_arr){
+									$sel_1 = '';
+									if(isset($_POST['location_id']) && $_POST['location_id']==$emirate_location_arr->id){
+										$sel_1 = 'selected="selected"';
+									}else if(isset($record) && $record->location_id==$emirate_location_arr->id){
+										$sel_1 = 'selected="selected"';
+									}  ?>
+									<option value="<?= $emirate_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_location_arr->name); ?> </option>
+							 <?php 
+								}
+							}  ?>
+					  </select>
+					  </span> 
+					  <span id="location_id1" class="text-danger"><?php echo form_error('location_id'); ?></span> </div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-md-3 control-label" for="sub_location_id">Sub Locations <span class="reds">*</span></label>
+					<div class="col-md-9"> <span id="fetch_emirate_sub_locations">
+					  <select name="sub_location_id" id="sub_location_id" data-plugin-selectTwo class="form-control select2" onChange="get_property_emirate_sub_location_area(this.value,'<?php echo site_url('properties/fetch_property_emirate_sub_location_areas'); ?>','fetch_emirate_sub_location_areas');" data-error="#sub_location_id1">
+						<option value="">Select Emirate Sub Location </option>
+						<?php 
+						$tmps_location_id='';
+						if(isset($_POST['location_id']) && strlen($_POST['location_id'])>0){
+							$tmps_location_id = $_POST['location_id'];
+						}else if(isset($record->location_id) && $record->location_id>0){
+							$tmps_location_id = $record->location_id;
+						}
+						
+						$emirate_sub_location_arrs = $this->emirates_sub_location_model->fetch_emirate_sub_locations($tmps_location_id);
+						if(isset($emirate_sub_location_arrs) && is_array($emirate_sub_location_arrs)){
+							foreach($emirate_sub_location_arrs as $emirate_sub_location_arr){ 
+							$sel_1 = '';
+							if(isset($_POST['sub_location_id']) && $_POST['sub_location_id']==$emirate_sub_location_arr->id){
+								$sel_1 = 'selected="selected"';
+							}else if(isset($record) && $record->sub_location_id==$emirate_sub_location_arr->id){
+								$sel_1 = 'selected="selected"';
+							} ?>
+							  <option value="<?= $emirate_sub_location_arr->id; ?>" <?php echo $sel_1; ?>> <?= stripslashes($emirate_sub_location_arr->name); ?> </option>
+						<?php 
+							}
+						} 
+					  ?>
+					  </select>
+					  </span> <span id="sub_location_id1" class="text-danger"><?php echo form_error('sub_location_id'); ?></span> </div>
+				  </div> 
+						
+				</div>
 				
-			 <div class="col-md-4">
+			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="property_address">Address <span class="reds"> *</span></label>
 					<div class="col-md-9">
@@ -615,7 +662,43 @@
 				.radio-inline {
 					padding-left:27px;	
 				} 
-			  </style> 
+			  </style>
+					
+				  <div class="form-group">
+					<label class="col-md-3 control-label" for="is_furnished1">Is Furnished ?</label> 
+					<div class="col-md-9">  
+					<select name="is_furnished" id="is_furnished" class="form-control select2" data-error="#is_furnished1">
+						<option value="">Select Is Furnished </option>
+						<option value="1" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==1) || (isset($record) && $record->is_furnished==1)){ echo 'selected="selected"'; } ?>> Furnished </option> 
+						 <option value="2" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==2) || (isset($record) && $record->is_furnished==2)){ echo 'selected="selected"'; } ?>> SemiFurnished </option> 
+						<option value="3" <?php if((isset($_POST['is_furnished']) && $_POST['is_furnished']==3) || (isset($record) && $record->is_furnished==3)){ echo 'selected="selected"'; } ?>> UnFurnished </option>        
+					  </select>      
+					  <span id="is_furnished1" class="text-danger" style="clear:both; display:block;"><?php echo form_error('is_furnished'); ?></span> </div> 
+				  </div>
+				   
+				  <div class="form-group">
+					<label class="col-md-3 control-label" for="source_of_listing">Source of Listing </label>
+					<div class="col-md-9">
+					  <select name="source_of_listing" id="source_of_listing" class="form-control select2" data-error="#source_of_listing1">
+						<option value="">Select Source of Listing </option>
+						<?php  
+				if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){
+					foreach($source_of_listing_arrs as $source_of_listing_arr){
+						$sel_1 = '';
+						if(isset($_POST['source_of_listing']) && $_POST['source_of_listing']==$source_of_listing_arr->id){
+							$sel_1 = 'selected="selected"';
+						}else if(isset($record) && $record->source_of_listing==$source_of_listing_arr->id){
+							$sel_1 = 'selected="selected"';
+						} ?>
+						<option value="<?= $source_of_listing_arr->id; ?>" <?php echo $sel_1; ?>>
+						<?= stripslashes($source_of_listing_arr->title); ?>
+						</option>
+						<?php 
+					}
+				} ?>
+			  </select>
+			  <span id="source_of_listing1" class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
+			  </div>
 			</div>
 		  </div>
 		</div>
@@ -1333,7 +1416,16 @@
 			}, 
 			no_of_baths: {
 				required: true 
-			},
+			}, 
+			emirate_id: {
+				required: true 
+			}, 
+			location_id: {
+				required: true 
+			}, 
+			sub_location_id: {
+				required: true 
+			}, 
 			property_address: {
 				required: true 
 			}, 
@@ -1384,12 +1476,21 @@
 			no_of_baths: {
 				required: "This is required field" 
 			}, 
+			emirate_id: {
+				required: "This is required field" 
+			}, 
+			location_id: {
+				required: "This is required field" 
+			}, 
+			sub_location_id: {
+				required: "This is required field" 
+			}, 
 			property_address: {
 				required: "This is required field" 
 			}, 
 			plot_area: {
 				required: "This is required field" 
-			},
+			}, 
 			property_ms_unit: {
 				required: "This is required field" 
 			}, 

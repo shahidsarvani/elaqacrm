@@ -21,6 +21,7 @@ class Properties extends CI_Controller{
 			redirect('/');
 		}  
 		
+		$this->load->model('locations_model'); 
 		$this->load->model('properties_model'); 
 		$this->load->model('portals_model'); 
 		$this->load->model('categories_model'); 
@@ -54,7 +55,7 @@ class Properties extends CI_Controller{
 			$vs_id = $this->session->userdata('us_id');
 			
 			$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			$no_of_beds_id_val = $no_of_baths_val = '';
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -298,7 +299,7 @@ class Properties extends CI_Controller{
 		$vs_id = $this->session->userdata('us_id');
 		
 		/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
-		$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+		$no_of_beds_id_val = $no_of_baths_val = '';*/
 	
 		if($this->input->post('sel_per_page_val')){
 			$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -491,7 +492,7 @@ class Properties extends CI_Controller{
 	
 	function sales_listings($args_vals=''){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
-		if($res_nums>0){
+		if($res_nums>0){ 
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Sales Listings"; 
@@ -500,8 +501,10 @@ class Properties extends CI_Controller{
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 			
+		    $data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0'));
+ 
 			$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			$no_of_beds_id_val = $no_of_baths_val = '';
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -525,30 +528,14 @@ class Properties extends CI_Controller{
 				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
 			}else if(isset($_SESSION['tmp_category_id_vals'])){
 					unset($_SESSION['tmp_category_id_vals']);
-				}
+				} 
 				
-			if($this->input->post('emirate_id_vals')){
-				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
-					unset($_SESSION['tmp_emirate_id_vals']);
-				}
-				
-			if($this->input->post('location_id_vals')){
-				$location_id_vals = $this->input->post('location_id_vals'); 
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			}else if(isset($_SESSION['tmp_location_id_vals'])){
-					unset($_SESSION['tmp_location_id_vals']);
-				}  	
-				
-			if($this->input->post('sub_location_id_vals')){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
-					unset($_SESSION['tmp_sub_location_id_vals']);
+			if($this->input->post('sl_location_id')){
+				$sl_location_id = $this->input->post('sl_location_id'); 
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){
+					unset($_SESSION['tmp_sl_location_id']);
 				}
 				
 			if($this->input->post('portal_id_vals')){
@@ -648,7 +635,6 @@ class Properties extends CI_Controller{
 			
 			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 			//$data['category_arrs'] = $this->admin_model->get_all_categories();
-			 
 			
 			if(isset($args_vals) && $args_vals=="export_excel"){
 				$paras_arrs = $data = array();
@@ -709,16 +695,6 @@ class Properties extends CI_Controller{
 				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
 					$to_price_val = $_SESSION['tmp_to_price_val']; 
 					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
-				} 
-				 
-				if(isset($_POST['sel_emirate_location_id_val'])){
-					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
-					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
-					
-				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
-					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
 				}
 						 
 				$is_property_type = 1; 
@@ -772,6 +748,16 @@ class Properties extends CI_Controller{
 					$portal_id_val = $_SESSION['tmp_portal_id_val'];
 					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
 				}
+ 
+ 				if(isset($_POST['sl_location_id'])){
+					$sl_location_id = $this->input->post('sl_location_id');  
+					$_SESSION['tmp_sl_location_id'] = $sl_location_id;
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
+					
+				}else if(isset($_SESSION['tmp_sl_location_id'])){  
+					$sl_location_id = $_SESSION['tmp_sl_location_id'];
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+				} 				
 					 
 				$data['sel_property_type'] = $is_property_type;
 				
@@ -785,7 +771,7 @@ class Properties extends CI_Controller{
 						$temp_arr = array();  
 						
 						$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
-						$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+						//$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
 						$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
 						$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
 						$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
@@ -904,7 +890,7 @@ class Properties extends CI_Controller{
 		$vs_id = $this->session->userdata('us_id');
 		
 		/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val= $is_property_type='';
-		$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+		$no_of_beds_id_val = $no_of_baths_val = '';*/
 	
 		if($this->input->post('sel_per_page_val')){
 			$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -936,37 +922,17 @@ class Properties extends CI_Controller{
 		}else if(isset($_SESSION['tmp_category_id_vals'])){   
 			$category_id_vals = $_SESSION['tmp_category_id_vals']; 
 			$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
-		}  
-		
-		if(isset($_POST['emirate_id_vals'])){
-			$emirate_id_vals = $this->input->post('emirate_id_vals');  
-			$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
-			
-		}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
-			$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-		}  
-		
-		if(isset($_POST['location_id_vals'])){
-			$location_id_vals = $this->input->post('location_id_vals');  
-			$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
-			
-		}else if(isset($_SESSION['tmp_location_id_vals'])){  
-			$location_id_vals = $_SESSION['tmp_location_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
 		} 
-		 
-		if(isset($_POST['sub_location_id_vals'])){
-			$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
-			$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
+		
+		if(isset($_POST['sl_location_id'])){
+			$sl_location_id = $this->input->post('sl_location_id');  
+			$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+			$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
 			
-		}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
-			$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-		} 
+		}else if(isset($_SESSION['tmp_sl_location_id'])){  
+			$sl_location_id = $_SESSION['tmp_sl_location_id']; 
+			$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+		}
 		 
 		if(isset($_POST['portal_id_vals'])){
 			$portal_id_vals = $this->input->post('portal_id_vals');  
@@ -1101,12 +1067,13 @@ class Properties extends CI_Controller{
 			$paras_arrs = array();	
 			$data['page_headings'] = "Rental Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0'));
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 			
 			$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			$no_of_beds_id_val = $no_of_baths_val = '';
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -1132,30 +1099,14 @@ class Properties extends CI_Controller{
 					unset($_SESSION['tmp_category_id_vals']);
 				}
 				
-			if($this->input->post('emirate_id_vals')){
-				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
-					unset($_SESSION['tmp_emirate_id_vals']);
+			if($this->input->post('sl_location_id')){
+				$sl_location_id = $this->input->post('sl_location_id'); 
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){
+					unset($_SESSION['tmp_sl_location_id']);
 				}
-				
-			if($this->input->post('location_id_vals')){
-				$location_id_vals = $this->input->post('location_id_vals'); 
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			}else if(isset($_SESSION['tmp_location_id_vals'])){
-					unset($_SESSION['tmp_location_id_vals']);
-				}  	
-				
-			if($this->input->post('sub_location_id_vals')){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
-					unset($_SESSION['tmp_sub_location_id_vals']);
-				}
-				
+			 				
 			if($this->input->post('portal_id_vals')){
 				$portal_id_vals = $this->input->post('portal_id_vals'); 
 				$_SESSION['tmp_portal_id_vals'] = $portal_id_vals; 
@@ -1325,18 +1276,7 @@ class Properties extends CI_Controller{
 				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
 					$to_price_val = $_SESSION['tmp_to_price_val']; 
 					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
-				} 
-						
-				
-				if(isset($_POST['sel_emirate_location_id_val'])){
-					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
-					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
-					
-				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
-					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
-				}
+				}  
 						 
 				$is_property_type = 2; 
 				
@@ -1388,7 +1328,17 @@ class Properties extends CI_Controller{
 				}else if(isset($_SESSION['tmp_portal_id_val'])){ ///
 					$portal_id_val = $_SESSION['tmp_portal_id_val'];
 					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
-				}
+				} 
+				
+				if(isset($_POST['sl_location_id'])){
+					$sl_location_id = $this->input->post('sl_location_id');  
+					$_SESSION['tmp_sl_location_id'] = $sl_location_id;
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
+					
+				}else if(isset($_SESSION['tmp_sl_location_id'])){  
+					$sl_location_id = $_SESSION['tmp_sl_location_id'];
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+				}  
 					 
 				$data['sel_property_type'] = $is_property_type;
 				
@@ -1401,7 +1351,7 @@ class Properties extends CI_Controller{
 				$temp_arr = array();  
 				
 				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
-				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				//$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
 				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
 				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
 				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
@@ -1517,10 +1467,7 @@ class Properties extends CI_Controller{
 		
 		/* permission checks */
 		$vs_user_type_id = $this->session->userdata('us_role_id');
-		$vs_id = $this->session->userdata('us_id');
-		
-		/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
-		$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+		$vs_id = $this->session->userdata('us_id'); 
 	
 		if($this->input->post('sel_per_page_val')){
 			$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -1552,37 +1499,17 @@ class Properties extends CI_Controller{
 		}else if(isset($_SESSION['tmp_category_id_vals'])){   
 			$category_id_vals = $_SESSION['tmp_category_id_vals']; 
 			$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
-		}  
-		
-		if(isset($_POST['emirate_id_vals'])){
-			$emirate_id_vals = $this->input->post('emirate_id_vals');  
-			$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
-			
-		}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
-			$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-		}  
-		
-		if(isset($_POST['location_id_vals'])){
-			$location_id_vals = $this->input->post('location_id_vals');  
-			$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
-			
-		}else if(isset($_SESSION['tmp_location_id_vals'])){  
-			$location_id_vals = $_SESSION['tmp_location_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
 		} 
-		 
-		if(isset($_POST['sub_location_id_vals'])){
-			$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
-			$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-			$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
+		
+		if(isset($_POST['sl_location_id'])){
+			$sl_location_id = $this->input->post('sl_location_id');  
+			$_SESSION['tmp_sl_location_id'] = $sl_location_id;
+			$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
 			
-		}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
-			$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
-			$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-		} 
+		}else if(isset($_SESSION['tmp_sl_location_id'])){  
+			$sl_location_id = $_SESSION['tmp_sl_location_id'];
+			$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+		}  
 		 
 		if(isset($_POST['portal_id_vals'])){
 			$portal_id_vals = $this->input->post('portal_id_vals');  
@@ -1715,13 +1642,14 @@ class Properties extends CI_Controller{
 			$data = array();	
 			$paras_arrs = array();	
 			$data['page_headings'] = "Archived Listings"; 
-			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
+			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0')); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 			
 			$s_val = $category_id_val = $assigned_to_id_val = $is_featured_val = '';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			$no_of_beds_id_val = $no_of_baths_val = '';
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -1746,30 +1674,14 @@ class Properties extends CI_Controller{
 			}else if(isset($_SESSION['tmp_category_id_vals'])){
 					unset($_SESSION['tmp_category_id_vals']);
 				}
-				
-			if($this->input->post('emirate_id_vals')){
-				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
-					unset($_SESSION['tmp_emirate_id_vals']);
-				}
-				
-			if($this->input->post('location_id_vals')){
-				$location_id_vals = $this->input->post('location_id_vals'); 
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			}else if(isset($_SESSION['tmp_location_id_vals'])){
-					unset($_SESSION['tmp_location_id_vals']);
-				}  	
-				
-			if($this->input->post('sub_location_id_vals')){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
-					unset($_SESSION['tmp_sub_location_id_vals']);
-				}
+			
+			if($this->input->post('sl_location_id')){
+				$sl_location_id = $this->input->post('sl_location_id'); 
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){
+					unset($_SESSION['tmp_sl_location_id']);
+				}	 
 				
 			if($this->input->post('portal_id_vals')){
 				$portal_id_vals = $this->input->post('portal_id_vals'); 
@@ -1944,16 +1856,6 @@ class Properties extends CI_Controller{
 					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
 				}
 				
-				if(isset($_POST['sel_emirate_location_id_val'])){
-					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
-					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
-					
-				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
-					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
-				} 
-				
 				if(isset($_POST['sel_no_of_beds_id_val'])){
 					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
 					$_SESSION['tmp_no_of_beds_id_val'] = $no_of_beds_id_val; 
@@ -2003,6 +1905,16 @@ class Properties extends CI_Controller{
 					$portal_id_val = $_SESSION['tmp_portal_id_val'];
 					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
 				}
+				
+				if(isset($_POST['sl_location_id'])){
+					$sl_location_id = $this->input->post('sl_location_id');  
+					$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
+					
+				}else if(isset($_SESSION['tmp_sl_location_id'])){  
+					$sl_location_id = $_SESSION['tmp_sl_location_id']; 
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+				}
 			
 				/*$is_property_type = 2; 		 
 				$data['sel_property_type'] = $is_property_type; 
@@ -2016,7 +1928,7 @@ class Properties extends CI_Controller{
 				$temp_arr = array();  
 				
 				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
-				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				//$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
 				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
 				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
 				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
@@ -2135,7 +2047,7 @@ class Properties extends CI_Controller{
 			$vs_id = $this->session->userdata('us_id');
 			
 			/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+			$no_of_beds_id_val = $no_of_baths_val = '';*/
 		
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -2169,35 +2081,15 @@ class Properties extends CI_Controller{
 				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
 			}  
 			
-			if(isset($_POST['emirate_id_vals'])){
-				$emirate_id_vals = $this->input->post('emirate_id_vals');  
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
+			if(isset($_POST['sl_location_id'])){
+				$sl_location_id = $this->input->post('sl_location_id');  
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
 				
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
-				$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){  
+				$sl_location_id = $_SESSION['tmp_sl_location_id']; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
 			}  
-			
-			if(isset($_POST['location_id_vals'])){
-				$location_id_vals = $this->input->post('location_id_vals');  
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
-				
-			}else if(isset($_SESSION['tmp_location_id_vals'])){  
-				$location_id_vals = $_SESSION['tmp_location_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			} 
-			 
-			if(isset($_POST['sub_location_id_vals'])){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
-				
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
-				$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-			} 
 			 
 			if(isset($_POST['portal_id_vals'])){
 				$portal_id_vals = $this->input->post('portal_id_vals');  
@@ -2332,12 +2224,13 @@ class Properties extends CI_Controller{
 			$paras_arrs = array();	
 			$data['page_headings'] = "Deleted Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
+			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0'));
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
 			
 			$s_val = $category_id_val = $assigned_to_id_val = $is_featured_val = '';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';
+			$no_of_beds_id_val = $no_of_baths_val = '';
 			
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -2363,28 +2256,12 @@ class Properties extends CI_Controller{
 					unset($_SESSION['tmp_category_id_vals']);
 				}
 				
-			if($this->input->post('emirate_id_vals')){
-				$emirate_id_vals = $this->input->post('emirate_id_vals'); 
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){
-					unset($_SESSION['tmp_emirate_id_vals']);
-				}
-				
-			if($this->input->post('location_id_vals')){
-				$location_id_vals = $this->input->post('location_id_vals'); 
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			}else if(isset($_SESSION['tmp_location_id_vals'])){
-					unset($_SESSION['tmp_location_id_vals']);
-				}  	
-				
-			if($this->input->post('sub_location_id_vals')){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals'); 
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){
-					unset($_SESSION['tmp_sub_location_id_vals']);
+			 if($this->input->post('sl_location_id')){
+				$sl_location_id = $this->input->post('sl_location_id'); 
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){
+					unset($_SESSION['tmp_sl_location_id']);
 				}
 				
 			if($this->input->post('portal_id_vals')){
@@ -2560,17 +2437,7 @@ class Properties extends CI_Controller{
 				}else if(isset($_SESSION['tmp_to_price_val'])){ ///
 					$to_price_val = $_SESSION['tmp_to_price_val']; 
 					$paras_arrs = array_merge($paras_arrs, array("to_price_val" => $to_price_val));
-				}
-				
-				if(isset($_POST['sel_emirate_location_id_val'])){
-					$emirate_location_id_val = $this->input->post('sel_emirate_location_id_val');  
-					$_SESSION['tmp_emirate_location_id_val'] = $emirate_location_id_val; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val)); 
-					
-				}else if(isset($_SESSION['tmp_emirate_location_id_val'])){  ///
-					$emirate_location_id_val = $_SESSION['tmp_emirate_location_id_val']; 
-					$paras_arrs = array_merge($paras_arrs, array("emirate_location_id_val" => $emirate_location_id_val));
-				} 
+				}  
 				
 				if(isset($_POST['sel_no_of_beds_id_val'])){
 					$no_of_beds_id_val = $this->input->post('sel_no_of_beds_id_val'); 
@@ -2621,6 +2488,16 @@ class Properties extends CI_Controller{
 					$portal_id_val = $_SESSION['tmp_portal_id_val'];
 					$paras_arrs = array_merge($paras_arrs, array("portal_id_val" => $portal_id_val));
 				}
+				
+				if(isset($_POST['sl_location_id'])){
+					$sl_location_id = $this->input->post('sl_location_id');  
+					$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
+					
+				}else if(isset($_SESSION['tmp_sl_location_id'])){  
+					$sl_location_id = $_SESSION['tmp_sl_location_id']; 
+					$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
+				} 
 			
 				/*$is_property_type = 2; 		 
 				$data['sel_property_type'] = $is_property_type; 
@@ -2634,7 +2511,7 @@ class Properties extends CI_Controller{
 				$temp_arr = array();  
 				
 				$temp_arr['Ref No'] = stripslashes($export_data_arr->ref_no); 
-				$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
+				//$temp_arr['Sub Location'] = stripslashes($export_data_arr->sub_loc_name); 
 				$temp_arr['Bedrooms'] = stripslashes($export_data_arr->bed_title); 
 				$temp_arr['Owner'] = stripslashes($export_data_arr->ownr_name).' ( '.$export_data_arr->ownr_phone_no.' )';
 				$temp_arr['Price'] = number_format($export_data_arr->price,0,".",",");
@@ -2691,7 +2568,7 @@ class Properties extends CI_Controller{
 			$vs_id = $this->session->userdata('us_id');
 			
 			/*$s_val= $category_id_val = $assigned_to_id_val= $is_featured_val='';
-			$emirate_location_id_val = $no_of_beds_id_val = $no_of_baths_val = '';*/
+			$no_of_beds_id_val = $no_of_baths_val = '';*/
 		
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
@@ -2725,34 +2602,14 @@ class Properties extends CI_Controller{
 				$paras_arrs = array_merge($paras_arrs, array("category_id_vals" => $category_id_vals));
 			}  
 			
-			if(isset($_POST['emirate_id_vals'])){
-				$emirate_id_vals = $this->input->post('emirate_id_vals');  
-				$_SESSION['tmp_emirate_id_vals'] = $emirate_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals)); 
+			if(isset($_POST['sl_location_id'])){
+				$sl_location_id = $this->input->post('sl_location_id');  
+				$_SESSION['tmp_sl_location_id'] = $sl_location_id; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id)); 
 				
-			}else if(isset($_SESSION['tmp_emirate_id_vals'])){  
-				$emirate_id_vals = $_SESSION['tmp_emirate_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("emirate_id_vals" => $emirate_id_vals));
-			}  
-			
-			if(isset($_POST['location_id_vals'])){
-				$location_id_vals = $this->input->post('location_id_vals');  
-				$_SESSION['tmp_location_id_vals'] = $location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals)); 
-				
-			}else if(isset($_SESSION['tmp_location_id_vals'])){  
-				$location_id_vals = $_SESSION['tmp_location_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("location_id_vals" => $location_id_vals));
-			} 
-			 
-			if(isset($_POST['sub_location_id_vals'])){
-				$sub_location_id_vals = $this->input->post('sub_location_id_vals');  
-				$_SESSION['tmp_sub_location_id_vals'] = $sub_location_id_vals; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals)); 
-				
-			}else if(isset($_SESSION['tmp_sub_location_id_vals'])){ 
-				$sub_location_id_vals = $_SESSION['tmp_sub_location_id_vals']; 
-				$paras_arrs = array_merge($paras_arrs, array("sub_location_id_vals" => $sub_location_id_vals));
+			}else if(isset($_SESSION['tmp_sl_location_id'])){  
+				$sl_location_id = $_SESSION['tmp_sl_location_id']; 
+				$paras_arrs = array_merge($paras_arrs, array("sl_location_id" => $sl_location_id));
 			} 
 			 
 			if(isset($_POST['portal_id_vals'])){
@@ -3322,8 +3179,7 @@ class Properties extends CI_Controller{
 			}
 			
 			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field); 
-			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list(); 
-			$data['emirate_arrs'] = $this->emirates_model->get_all_emirates();
+			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();  
 			$data['source_of_listing_arrs'] = $this->source_of_listings_model->get_all_properties_source_of_listings();
 			
 			if(isset($_POST) && !empty($_POST)){ 
@@ -3341,10 +3197,7 @@ class Properties extends CI_Controller{
 				$assigned_to_id = $this->input->post("assigned_to_id");
 				$owner_id = $this->input->post("owner_id");
 				$no_of_beds_id = $this->input->post("no_of_beds_id");
-				$no_of_baths = $this->input->post("no_of_baths");
-				$emirate_id = $this->input->post("emirate_id");
-				$location_id = $this->input->post("location_id");
-				$sub_location_id = $this->input->post("sub_location_id");
+				$no_of_baths = $this->input->post("no_of_baths"); 
 				$property_address = $this->input->post("property_address");
 				$plot_area = $this->input->post("plot_area");
 				$property_ms_unit = $this->input->post("property_ms_unit");
@@ -3365,10 +3218,7 @@ class Properties extends CI_Controller{
 				$this->form_validation->set_rules("assigned_to_id", "Assigned To", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("owner_id", "Owners", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("no_of_beds_id", "Bedrooms", "trim|required|xss_clean");  
-				$this->form_validation->set_rules("no_of_baths", "Bathrooms", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("emirate_id", "Emirates", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("location_id", "Locations", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("sub_location_id", "Sub Locations", "trim|required|xss_clean"); 
+				$this->form_validation->set_rules("no_of_baths", "Bathrooms", "trim|required|xss_clean");  
 				$this->form_validation->set_rules("property_address", "Address", "trim|required|xss_clean");   
 				$this->form_validation->set_rules("plot_area", "Plot Area", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("property_ms_unit", "Measuring Unit", "trim|required|xss_clean"); 
@@ -3382,7 +3232,7 @@ class Properties extends CI_Controller{
 					$this->load->view('properties/add',$data);
 				}else{  
 				
-					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'ref_no' => $ref_no,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'emirate_id' => $emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'created_by' => $vs_id,'ip_address' => $ip_address,'created_on' => $date_times);   
+					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'ref_no' => $ref_no,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'created_by' => $vs_id,'ip_address' => $ip_address,'created_on' => $date_times);   
 					
 					$res = $this->properties_model->insert_property_data($datas); 
 					if(isset($res)){
@@ -3544,9 +3394,8 @@ class Properties extends CI_Controller{
 				$arrs_field = array('role_id'=> '3'); 
 			}
 			
-			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
-			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list(); 
-			$data['emirate_arrs'] = $this->emirates_model->get_all_emirates();
+			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field); 
+			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();
 			$data['source_of_listing_arrs'] = $this->source_of_listings_model->get_all_properties_source_of_listings();
 			
 			if($args1>0){ 
@@ -3570,9 +3419,6 @@ class Properties extends CI_Controller{
 				$owner_id = $this->input->post("owner_id");
 				$no_of_beds_id = $this->input->post("no_of_beds_id");
 				$no_of_baths = $this->input->post("no_of_baths");
-				$emirate_id = $this->input->post("emirate_id");
-				$location_id = $this->input->post("location_id");
-				$sub_location_id = $this->input->post("sub_location_id");
 				$property_address = $this->input->post("property_address");
 				$plot_area = $this->input->post("plot_area");
 				$property_ms_unit = $this->input->post("property_ms_unit");
@@ -3594,9 +3440,6 @@ class Properties extends CI_Controller{
 				$this->form_validation->set_rules("owner_id", "Owners", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("no_of_beds_id", "Bedrooms", "trim|required|xss_clean");  
 				$this->form_validation->set_rules("no_of_baths", "Bathrooms", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("emirate_id", "Emirates", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("location_id", "Locations", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("sub_location_id", "Sub Locations", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("property_address", "Address", "trim|required|xss_clean");   
 				$this->form_validation->set_rules("plot_area", "Plot Area", "trim|required|xss_clean"); 
 				$this->form_validation->set_rules("property_ms_unit", "Measuring Unit", "trim|required|xss_clean"); 
@@ -3609,11 +3452,10 @@ class Properties extends CI_Controller{
 					// validation fail
 					$this->load->view('properties/update',$data);
 				}else if($args1>0){ /*'ref_no' => $ref_no,*/ 
-					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'emirate_id' => $emirate_id,'location_id' => $location_id,'sub_location_id' => $sub_location_id,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'ip_address' => $ip_address,'updated_on' => $date_times);   
+					$datas = array('title' => $title,'description' => $description,'property_type' => $property_type,'category_id' => $category_id,'show_on_portal_ids' => $show_on_portal_ids_vals,'private_amenities_data' => $private_amenities_data,'commercial_amenities_data' => $commercial_amenities_data,'assigned_to_id' => $assigned_to_id,'owner_id' => $owner_id,'no_of_beds_id' => $no_of_beds_id,'no_of_baths' => $no_of_baths,'property_address' => $property_address,'plot_area' => $plot_area,'property_ms_unit' => $property_ms_unit,'price' => $price,'property_status' => $property_status,'youtube_video_link' => $youtube_video_link,'is_furnished' => $is_furnished,'source_of_listing' => $source_of_listing,'ip_address' => $ip_address,'updated_on' => $date_times);
 					
 					$res = $this->properties_model->update_property_data($args1,$datas); 
-					if(isset($res)){    
-						
+					if(isset($res)){   
 						/*  property_loation script starts */
 						if(isset($_POST["parent_loc_id"])){
 							$parent_loc_id1 = $_POST["parent_loc_id"];
