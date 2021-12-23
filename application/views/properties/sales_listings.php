@@ -10,9 +10,9 @@
 <!-- /theme JS files -->
 <?php 
 $view_res_nums =  $this->general_model->check_controller_method_permission_access('Properties','view',$this->dbs_role_id,'1'); 
- 
+  
 $add_res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_role_id,'1'); 	
-		
+	
 $update_res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_role_id,'1');   
 
 $trash_res_nums =  $this->general_model->check_controller_method_permission_access('Properties','trash',$this->dbs_role_id,'1');

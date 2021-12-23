@@ -38,7 +38,7 @@
 					 <a class="badge bg-teal-800 badge-pill align-self-center ml-auto" href="<?= site_url("properties/sales_listings/"); ?>">View Details</a>
 				</div>
 				<h3 class="no-margin"><?php echo $nos_of_sale_properties; ?></h3>
-				Total Properties Sale
+				Total Sale Properties
 				<!--<div class="text-muted text-size-small">489 avg</div>-->
 			  </div>
 			  <div class="container-fluid">
@@ -53,26 +53,12 @@
 					<a class="badge bg-pink-800 badge-pill align-self-center ml-auto" href="<?= site_url("properties/rent_listings/"); ?>">View Details</a> 
 				</div>
 				<h3 class="no-margin"> <?php echo $nos_of_rent_properties; ?> </h3>
-				Total Properties Rentals
+				Total Rentals Properties
 				<!--<div class="text-muted text-size-small">34.6% avg</div>-->
 			  </div>
 			  <div id="server-load"></div>
 			</div> 
 		  </div>
-		  <div class="col-lg-3">   
-			<div class="panel bg-blue-400">
-			  <div class="panel-body">
-				<div class="heading-elements"> 
-				  <a class="badge bg-blue-800 badge-pill align-self-center ml-auto" href="<?= site_url("properties/sales_listings/"); ?>">View Details</a>
-				</div>
-				<h3 class="no-margin"> <?php echo $nos_of_active_properties; ?> </h3>
-				Total Active Properties
-				<!--<div class="text-muted text-size-small">$37,578 avg</div>-->
-			  </div>
-			  <div id="today-revenue"></div>
-			</div> 
-		  </div>
-		  
 		  <div class="col-lg-3">  	 
 			<div class="panel bg-indigo-400">
 			  <div class="panel-body">
@@ -85,6 +71,20 @@
 			  <div id="today-revenue"></div>
 			</div> 
 		  </div>
+		  
+		  <div class="col-lg-3">   
+			<div class="panel bg-blue-400">
+			  <div class="panel-body">
+				<div class="heading-elements"> 
+				  <a class="badge bg-blue-800 badge-pill align-self-center ml-auto" href="<?= site_url("properties/sales_listings/"); ?>">View Details</a>
+				</div>
+				<h3 class="no-margin"> <?php echo $nos_of_active_properties; ?> </h3>
+				Total Active Properties
+				<!--<div class="text-muted text-size-small">$37,578 avg</div>-->
+			  </div>
+			  <div id="today-revenue"></div>
+			</div> 
+		  </div>  
 		</div>
 		<!-- /quick stats boxes -->  
         
@@ -97,7 +97,7 @@
                 <h6 class="panel-title">Recent Properties</h6>
                 <div class="heading-elements">
 					<ul class="icons-list">
-						<li><a onclick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li>
+						<li><a onClick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li>
 						<li><a href="#" data-action="collapse"></a></li>
 					</ul> 
 					<!--

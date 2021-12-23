@@ -27,41 +27,40 @@ class Dashboard extends CI_Controller{
 		$this->perPage = 25;
     }   
 	
-	function index(){
-		if($this->vs_user_role_id==1){ 
-			$datas = array();
-			$curr_date = date("Y-m-d");
-			$prev_date = strtotime(date("Y-m-d", strtotime($curr_date))." -1 day");
-			$prev_date = date("Y-m-d",$prev_date); 
-			$datas['prev_date']= $prev_date;
-			$datas['page_headings'] = "Dashboard";
-			$datas['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
-			
-			//total rows count
-			$totalRec = count($this->dashboard_model->get_all_recent_properties_list());
-			//pagination configuration
-			$config['target']      = '#properties_list';
-			$config['base_url']    = site_url('/dashboard/index2');
-			$config['total_rows']  = $totalRec;
-			$config['per_page']    = $this->perPage;
-			
-			$this->ajax_pagination->initialize($config);
-			
-			$datas['records'] = $this->dashboard_model->get_all_recent_properties_list(array('limit'=>$this->perPage)); 
-			
-			$datas['nos_of_sale_properties'] = $this->dashboard_model->get_total_sale_properties_nums();
-			$datas['nos_of_rent_properties']=$this->dashboard_model->get_total_rent_properties_nums();
-	
-			$datas['nos_of_active_properties'] = $this->dashboard_model->get_total_active_properties_nums();
-			$datas['nos_of_archived_properties']=$this->dashboard_model->get_total_archived_properties_nums(); 
-			
-			$this->load->view('dashboard/index',$datas);
-			
-		 }else if($this->vs_user_role_id==2){
-			redirect("manager/index");
-		 }else if($this->vs_user_role_id==3){
-			redirect("agent/index");
-		 }
+	function index(){ 
+		$datas = array();
+		$curr_date = date("Y-m-d");
+		$prev_date = strtotime(date("Y-m-d", strtotime($curr_date))." -1 day");
+		$prev_date = date("Y-m-d",$prev_date); 
+		$datas['prev_date']= $prev_date;
+		$datas['page_headings'] = "Dashboard";
+		$datas['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
+		 
+		/*if($this->vs_user_role_id==2){
+		
+		}else if($this->vs_user_role_id==3){ 
+		
+		}*/ 
+		
+		//total rows count
+		$totalRec = count($this->dashboard_model->get_all_recent_properties_list());
+		//pagination configuration
+		$config['target']      = '#properties_list';
+		$config['base_url']    = site_url('/dashboard/index2');
+		$config['total_rows']  = $totalRec;
+		$config['per_page']    = $this->perPage;
+		
+		$this->ajax_pagination->initialize($config);
+		
+		$datas['records'] = $this->dashboard_model->get_all_recent_properties_list(array('limit'=>$this->perPage)); 
+		
+		$datas['nos_of_sale_properties'] = $this->dashboard_model->get_total_sale_properties_nums();
+		$datas['nos_of_rent_properties']=$this->dashboard_model->get_total_rent_properties_nums();
+
+		$datas['nos_of_active_properties'] = $this->dashboard_model->get_total_active_properties_nums();
+		$datas['nos_of_archived_properties']=$this->dashboard_model->get_total_archived_properties_nums(); 
+		 
+		 $this->load->view('dashboard/index',$datas);
 	}
 	
 	

@@ -746,6 +746,12 @@ class General_model extends CI_Model {
 			}
 			
 			return $ret_txt ;
-		} 	 
+		} 	
+		
+		
+		function get_gen_all_manager_agents_list($mngrs_ids){ 
+		   $query = $this->db->get_where('users_tbl', array('parent_id'=> $mngrs_ids));
+		   return $query->result();
+		}  
 						
 	}  ?>

@@ -10,7 +10,7 @@ class Deals_model extends CI_Model {
 	/* properties photos starts */
 	function get_all_cstm_deals_properties($params = array()){  
 		
-		$vs_user_type_id= $this->session->userdata('us_user_type_id'); 
+		$vs_user_type_id= $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
 		 
 		$whrs ='';

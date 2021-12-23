@@ -211,10 +211,11 @@
 				// validation fail
 				$this->load->view('owners/add',$data);
 			}else{
-				 $vs_id = $this->session->userdata('us_id');
-				 $created_on = date('Y-m-d H:i:s');
-					  
-				$datas = array('name' => $name,'email' => $email,'company_name' => $company_name,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'address' => $address,'created_by' => $vs_id,'created_on' => $created_on); 
+				$vs_id = $this->session->userdata('us_id');
+				$created_on = date('Y-m-d H:i:s');
+				$assigned_to = isset($_POST['assigned_to']) ? $_POST['assigned_to'] : $vs_id;	  
+				
+				$datas = array('name' => $name,'email' => $email,'company_name' => $company_name,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'address' => $address,'created_by' => $vs_id, 'assigned_to' => $assigned_to,'created_on' => $created_on); 
 				$res = $this->owners_model->insert_owner_data($datas); 
 				if(isset($res)){
 					$this->session->set_flashdata('success_msg','Record inserted successfully!');

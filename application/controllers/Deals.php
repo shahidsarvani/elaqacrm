@@ -178,7 +178,7 @@ class Deals extends CI_Controller{
 			if($vs_user_type_id==3){
 				$arrs_field = array('id' => $vs_id); 
 			}else if($vs_user_type_id==2){ 
-				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+				$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
 			}else{
 				//$arrs_field = array('status'=> '1'); 
 				$arrs_field = array('role_id' => '3'); 
@@ -528,7 +528,7 @@ class Deals extends CI_Controller{
 			if($vs_user_type_id==3){
 				$arrs_field = array('id' => $vs_id); 
 			}else if($vs_user_type_id==2){ 
-				$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+				$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
 			}else{
 				//$arrs_field = array('status'=> '1'); 
 				$arrs_field = array('role_id' => '3'); 
@@ -745,7 +745,7 @@ class Deals extends CI_Controller{
 		if($vs_user_type_id==3){
 			$arrs_field = array('id' => $vs_id); 
 		}else if($vs_user_type_id==2){ 
-			$arrs_field = array('user_type_id'=> '3','parent_id'=> $vs_id); 
+			$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
 		}else{
 			//$arrs_field = array('status'=> '1'); 
 			$arrs_field = array('role_id' => '3'); 
