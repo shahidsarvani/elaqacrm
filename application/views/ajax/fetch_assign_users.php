@@ -1,8 +1,8 @@
- <select name="assigned_to_id" id="assigned_to_id" class="form-control select" data-error="#assigned_to_id1">
+ <select name="assigned_to_id" id="assigned_to_id" class="form-control select2" data-error="#assigned_to_id1">
  <option value="">Select Assigned To Name</option>
-<?php  
-	$user_arrs = $this->users_model->get_all_users(); 
-    if($user_arrs){
+<?php 
+	$user_arrs = $this->users_model->get_user_by_role_custom_data(array('role_id' => '3')); 
+    if(isset($user_arrs) && count($user_arrs)>0){
         foreach($user_arrs as $user_arr){
         $sel_1 = '';
         if(isset($sel_usrid) && $sel_usrid==$user_arr->id){

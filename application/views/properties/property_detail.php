@@ -356,7 +356,7 @@
               	<ul class="media-list chat-list content-group" id="fetch_properties_notes_list">    			<?php 
 					if(isset($record) && $record->id >0){
 						$nt_arrs = $this->properties_model->get_property_notes($record->id); 
-						if(isset($nt_arrs) && count($nt_arrs)>0){
+						if(isset($nt_arrs)){
 							foreach($nt_arrs as $nt_arr){ ?> 	  
 								<li class="media"> 
                                   <div class="media-left"> 

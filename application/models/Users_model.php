@@ -81,6 +81,11 @@ class Users_model extends CI_Model {
 		return $query->row();
 	}
 	
+	function get_user_by_role_custom_data($data_arr){ 
+		$query = $this->db->get_where('users_tbl',$data_arr);
+		return $query->result();
+	}
+	
 	function get_config_by_id($args1){ 
 		$query = $this->db->get_where('config_tbl',array('id'=> $args1));
 		return $query->row();

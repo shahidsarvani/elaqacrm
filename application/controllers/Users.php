@@ -510,6 +510,11 @@
 			$data['sel_usrid'] = $sel_usrid;
 			$this->load->view('ajax/fetch_users',$data); 
 		}
+		
+		function fetch_assign_users_list($sel_usrid=''){
+			$data['sel_usrid'] = $sel_usrid;
+			$this->load->view('ajax/fetch_assign_users',$data); 
+		}
 		 
 			
 		/* users functions ends */ 

@@ -593,7 +593,12 @@ class Leads_model extends CI_Model {
 		
 		$query = $this->db->query("SELECT p.*, c.name AS cate_name FROM properties_tbl p LEFT JOIN categories_tbl c ON p.category_id=c.id WHERE p.id=$paras1 ");  	
 		return $query->row();
-	} 
+	}
+	
+	function get_all_manager_agents_list($mngrs_ids){ 
+	   $query = $this->db->get_where('users_tbl',array('parent_id'=> $mngrs_ids));
+	   return $query->result();
+	}   
 	
 	function get_lead_by_id($args1){ 
 		$query = $this->db->get_where('leads_tbl',array('id'=> $args1));

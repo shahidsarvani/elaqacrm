@@ -13,9 +13,9 @@
     <!-- User menu -->
     <div class="sidebar-user">
       <div class="category-content">
-        <div class="media"> <a href="<?php echo site_url('settings/my_profile'); ?>" class="media-left"><img src="<?= $us_prof_img; ?>" class="img-circle img-sm" alt="<?php //echo $rw->name; ?>"></a>
-          <div class="media-body"> <span class="media-heading text-semibold"><?php //echo $rw->name; ?></span>
-            <div class="text-size-mini text-muted"> <i class="icon-pin text-size-small"></i> &nbsp;<?php //echo stripslashes($rw->address); ?> </div>
+        <div class="media"> <a href="<?php echo site_url('settings/my_profile'); ?>" class="media-left"><img src="<?= $us_prof_img; ?>" class="img-circle img-sm" alt="<?php echo $rw->name; ?>"></a>
+          <div class="media-body"> <span class="media-heading text-semibold"><?php echo $rw->name; ?></span>
+            <div class="text-size-mini text-muted"> <i class="icon-pin text-size-small"></i> &nbsp;<?php echo stripslashes($rw->address); ?> </div>
           </div> 
         </div>
       </div>

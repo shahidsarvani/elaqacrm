@@ -303,7 +303,7 @@
 					function clickeds_users(sels_vals) {  
 						$(document).ready(function(){
 						<?php  
-							$tmp_usr_pth1 = '/users/fetch_users_list/';
+							$tmp_usr_pth1 = '/users/fetch_assign_users_list/';
 							$tmp_usr_pth1 = site_url($tmp_usr_pth1);	?>
 							
 							$.ajax({
@@ -313,7 +313,7 @@
 								data: { 'submits':1 },
 								success: function (result,status,xhr) { 
 									document.getElementById("fetch_users").innerHTML = result; 
-									$('.select').select2({
+									$('.select2').select2({
 										minimumResultsForSearch: Infinity
 									}); 
 								}
