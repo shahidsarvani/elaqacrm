@@ -4,201 +4,697 @@
 <?php 
 	$this->load->view('widgets/meta_tags');  
 	
- 	$add_res_nums =  $this->general_model->check_controller_method_permission_access('Manager','add',$this->dbs_role_id,'1');
+ 	$add_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','add',$this->dbs_role_id,'1');
 	
-	$view_res_nums =  $this->general_model->check_controller_method_permission_access('Manager','view',$this->dbs_role_id,'1'); 
+	$view_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','view',$this->dbs_role_id,'1'); 
 	  
-	$update_res_nums =  $this->general_model->check_controller_method_permission_access('Manager','update',$this->dbs_role_id,'1');   
+	$update_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','update',$this->dbs_role_id,'1');   
 	
-	$trash_res_nums =  $this->general_model->check_controller_method_permission_access('Manager','trash',$this->dbs_role_id,'1'); ?>
+	$trash_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','trash',$this->dbs_role_id,'1'); ?>
 </head>
 <body class="sidebar-xs has-detached-left">
-
 <!-- Main navbar -->
 <?php $this->load->view('widgets/header'); ?>
-<!-- /main navbar --> 
-
+<!-- /main navbar -->
 <!-- Page container -->
-<div class="page-container"> 
-  
+<div class="page-container">
   <!-- Page content -->
-  <div class="page-content"> 
-    
+  <div class="page-content">
     <!-- Main sidebar -->
     <?php $this->load->view('widgets/left_sidebar'); ?>
-    <!-- /main sidebar --> 
-    
+    <!-- /main sidebar -->
     <!-- Main content -->
-    <div class="content-wrapper"> 
-      
+    <div class="content-wrapper">
       <!-- Page header -->
       <?php $this->load->view('widgets/content_header'); ?>
-      <!-- /page header --> 
-      
+      <!-- /page header -->
       <!-- Content area -->
-      <div class="content"> 
+      <div class="content">
         <!-- Dashboard content -->
-        <?php if($this->session->flashdata('success_msg')){ ?>    
-            	<div class="alert alert-success no-border">
-                	<button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
-                 <?php echo $this->session->flashdata('success_msg'); ?>
-             	</div> 
-		<?php } 
-			if($this->session->flashdata('error_msg')){ ?>  
-                <div class="alert alert-danger no-border">
-                	<button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
-                 <?php echo $this->session->flashdata('error_msg'); ?>
-                </div>    
-		<?php } ?> 
-        <script>
-        	function operate_agents_list(){  	  
-				$(document).ready(function(){ 
-					var sel_per_page_val =0;   
-					
-					var sel_per_page = document.getElementById("per_page");
-					sel_per_page_val = sel_per_page.options[sel_per_page.selectedIndex].value;
-					  
-					var q_val = document.getElementById("q_val").value;
-					q_val = q_val.trim();
-					 
-					$.ajax({
-						method: "POST",
-						url: "<?php echo site_url('/manager/agents_list2/'); ?>",
-						data: { page: 0, sel_per_page_val:sel_per_page_val, q_val: q_val},
-						beforeSend: function(){
-							$('.loading').show();
-						},
-						success: function(data){
-							$('.loading').hide();
-							$('#dyns_list').html(data);
-							
-							/*$( '[data-toggle=popover]' ).popover();
-							
-							$('.simple-ajax-modal').magnificPopup({
-								type: 'ajax',
-								modal: true
-							});*/
-						}
-					});
-				}); 
-			}
-    	</script>
-          
-        <div class="panel panel-flat">
-        <div class="panel-heading">
+        <?php if($this->session->flashdata('success_msg')){ ?>
+        <div class="alert alert-success no-border">
+          <button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
+          <?php echo $this->session->flashdata('success_msg'); ?> </div>
+        <?php } 
+			if($this->session->flashdata('error_msg')){ ?>
+        <div class="alert alert-danger no-border">
+          <button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
+          <?php echo $this->session->flashdata('error_msg'); ?> </div>
+        <?php } ?> 
+        <section class="panel panel-flat">
+          <div class="panel-heading">
             <h5 class="panel-title"><?php echo $page_headings; ?></h5>
             <div class="heading-elements">
-                <ul class="icons-list">
-                    <!--<li><a data-action="collapse"></a></li>-->
-                    <li><a data-action="reload" onClick="window.location.reload();" ></a></li>
-                    <!--<li><a data-action="close"></a></li>-->
-                </ul>
+              <ul class="icons-list">
+                <!--<li><a data-action="collapse"></a></li>-->
+                <li><a data-action="reload" onClick="window.location.reload();" ></a></li>
+                <!--<li><a data-action="close"></a></li>-->
+              </ul>
             </div>
-        </div>   
-      <div class="panel-body">   
-     
-		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('manager/add'); ?>">
-		<input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
-		
-		<form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('manager/trash_multiple'); ?>" method="post">
-        <div class="row" style="margin-bottom:8px;">
-            <div class="col-md-12"> 
-             
-            	<div class="form-group mb-md">   
-                  <div class="col-md-1">    
-                  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_agents_list();">
-                  <option value="25"> Pages</option>
-                  <option value="25"> 25 </option>
-                  <option value="50"> 50 </option>
-                  <option value="100"> 100 </option> 
-                </select> 
-                  </div> 
-                  
-                  <div class="col-md-3">  
-                  <input name="q_val" id="q_val" onKeyUp="operate_agents_list();" placeholder="Search..." type="text" class="form-control input-sm mb-md">   
-            	  </div> 
-                  <div class="col-md-3">   
-                  </div>    
-                    
-                  <div class="col-md-3 pull-right"> 
-                     
-                    </div> 
-                </div> 
-                
-            </div>
-        </div>
-		 
+          </div>
+          <?php $vs_user_type_id = $this->session->userdata('us_role_id'); ?>
+          <div class="panel-body">
+            <form name="datas_form" id="datas_form" action="" method="post">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-md">
+                    <?php  
+					if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
+						<div class="col-md-2">
+						  <select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2" onChange="operate_property_type_categories_reports();">
+							<option value="">Select Agent...</option>
+							<?php  
+							if(isset($user_arrs) && count($user_arrs)>0){
+								foreach($user_arrs as $user_arr){ ?>
+							<option value="<?= $user_arr->id; ?>" <?php echo (isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id) ? 'selected="selected"':''; ?>>
+							<?= stripslashes($user_arr->name); ?>
+							</option>
+							<?php 
+								}
+							} ?>
+						  </select>
+						</div>
+					<?php } ?>
+                    <div class="col-md-2">
+                      <select name="category_id" id="category_id" data-plugin-selectTwo class="form-control select2" onChange="operate_property_type_categories_reports();">
+                        <option value="">Select Category...</option>
+                        <?php  
+					if(isset($category_arrs) && count($category_arrs)>0){
+						foreach($category_arrs as $category_arr){ ?>
+                        <option value="<?= $category_arr->id; ?>" <?php echo (isset($_POST['category_id']) && $_POST['category_id']==$category_arr->id) ? 'selected="selected"':''; ?>>
+                        <?= stripslashes($category_arr->name); ?>
+                        </option>
+                        <?php 
+						}
+					} ?>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <select name="property_type" id="property_type" data-plugin-selectTwo class="form-control select2" onChange="operate_property_type_categories_reports();">
+                        <option value="">Select Property Type... </option>
+                        <option value="1" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='1') ? 'selected="selected"':''; ?>> Sale </option>
+                        <option value="2" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='2') ? 'selected="selected"':''; ?>> Rent </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="from_date" id="from_date" type="text" class="form-control input-sm" value="<?php echo set_value('from_date'); ?>" placeholder="From Date" style="text-align:center;">
+                    </div>
+                    <div class="col-md-2">
+                      <input name="to_date" id="to_date" type="text" class="form-control input-sm" value="<?php echo set_value('to_date'); ?>" placeholder="To Date"  style="text-align:center;">
+                    </div>
+                    <div class="col-md-2 pull-right"> <a class="mb-xs mr-xs btn btn-sm btn-primary" href="<?= site_url('reports/property_listing_report '); ?>" title="Clear Filters"> <i class="fa fa-refresh"></i> Clear</a> <a id="print_button1" href="javascript:void(0);" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-print"></i> &nbsp; Print </a> </div>
+                  </div>
+                </div>
+              </div>
+            </form>  
 		 <style>
 			 #datatable-default_filter{
 				display:none !important;
 			 }
-		 </style> 
-            <div class="table-responsive">
-			<table class="table table-bordered table-striped table-hover"> 
-              <thead>
-                <tr>
-                  <th width="6%">#</th>
-                  <th width="17%">Name</th>
-                  <th width="25%">Email</th>
-                  <th width="17%">Phone No </th>
-                  <th width="17%">Mobile No </th>  
-                </tr>
-              </thead>
-              <tbody id="dyns_list">
-                <?php  
-                    $sr=1; 
-                    if(isset($records) && count($records)>0){
-                        foreach($records as $record){  ?>
-                        <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
-                          <td> <?php echo $sr; ?> </td> 	
-                          <td><?= stripslashes($record->name); ?></td>
-                          <td><?= stripslashes($record->email); ?></td>
-                          <td><?= stripslashes($record->phone_no); ?></td>
-                          <td><?= stripslashes($record->mobile_no); ?></td>  
-                        </tr>
-                        <?php 
-                        $sr++;
-                        } ?> 
-                       <tr>
-                       <td colspan="5">
-                       <div style="float:left;">  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_agents_list();">
-                          <option value="25"> Pages</option>
-                          <option value="25"> 25 </option>
-                          <option value="50"> 50 </option>
-                          <option value="100"> 100 </option> 
-                        </select>  </div>
-                        <div style="float:right;">  <?php echo $this->ajax_pagination->create_links(); ?>  </div> </td>  
-                      </tr> 
+			 .table-responsive {
+				overflow-x:visible !important;
+			 }
+		 </style>
+            <hr class="cstms">
+            <br>
+            <div id="printing_area1">
+              <div class="row">
+                <div class="col-md-12">
+                  <section class="panel">
+                    <header class="panel-heading">
+                      <div class="panel-actions"> <a href="#" class="fa fa-caret-down"></a> </div>
+                      <h2 class="panel-title"><?php echo $page_headings; ?></h2>
+                      <p class="panel-subtitle">Pie Chart</p>
+                    </header>
+                    <div class="panel-body">
+                      <!-- Flot: Pie -->
+                      <div class="chart chart-md" id="flotPie"></div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <hr class="cstms">
+              <br>
+              <table class="table table-bordered table-striped mb-none" <?php echo (isset($records) && count($records)>0) ? 'id="datatable-default"':''; ?>>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th class="center">Number of Listings </th>
+                    <th class="center">Distribution of Listings </th>
+                  </tr>
+                </thead>
+                <tbody id="fetch_tbl_data">
+                  <?php  
+			if(isset($ress) && $ress->CNT_NUMS>0){ ?>
+                  <tr class="gradeX">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="center"><?php echo $total_nums = $ress->CNT_NUMS;   ?></td>
+                    <td class="center"><?php echo ($total_nums >0) ? '100.00%' : '00.00%'; ?></td>
+                  </tr>
                   <?php 
-                    }else{ ?>
-                <tr>
-                  <td colspan="5" align="center"><strong> No Record Found! </strong></td>
-                </tr>
-                <?php } ?>
-              </tbody>
-            </table> 
+			}
+			  
+			$sr=1; 
+			$frmt_arrs = '';
+			if(isset($records) && count($records)>0){
+				foreach($records as $record){ ?>
+                  <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
+                    <td><?= $sr; ?></td>
+                    <td><?php echo ($record->property_type==1) ? 'Sale' : 'Rent'; ?></td>
+                    <td><?php echo  $cate_name = stripslashes($record->cate_name); ?></td>
+                    <td class="center"><?= stripslashes($record->NUMS); ?></td>
+                    <td class="center"><?php  
+						$total_nums = $ress->CNT_NUMS;  
+						$curr_nums = $record->NUMS; 
+						
+						if($total_nums>0 && $curr_nums>0){
+							
+							$percet_nums = ($curr_nums/$total_nums)*100;
+							$percet_nums = number_format($percet_nums,2,".",",");
+							echo $percet_nums1 = $percet_nums.'%';
+							
+							$clr_code = $this->general_model->get_gen_colors($sr);
+							
+							$propty_typ = ($record->property_type==1) ? 'Sale' : 'Rent';
+							$cate_name = $propty_typ.' - '.$cate_name;
+							
+							$frmt_arrs .= "{ label: \" $cate_name \", data:[ [1, $percet_nums] ], color: \"$clr_code\" },";
+							
+							
+							
+						}else{
+							echo '0.00 %';
+						} ?></td>
+                  </tr>
+                  <?php 
+					$sr++;
+				}
+				
+				if(strlen($frmt_arrs ) >0){
+					$frmt_arrs = substr($frmt_arrs,0,-1);
+				}
+				
+			}else{ ?>
+                  <tr class="gradeX">
+                    <td colspan="5" class="center"><strong> No Record Found! </strong> </td>
+                  </tr>
+                  <?php 
+			} ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br>
+          <div class="panel-body">
+            <form name="datas_form2" id="datas_form2" action="" method="post">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-md">
+                    <?php  
+				if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
+                    <div class="col-md-2">
+                      <select name="assigned_to_id2" id="assigned_to_id2" data-plugin-selectTwo class="form-control select2" onChange="operate_property_source_categories_reports();">
+                        <option value="">Select Agent...</option>
+                        <?php  
+						if(isset($user_arrs) && count($user_arrs)>0){
+							foreach($user_arrs as $user_arr){ ?>
+                        <option value="<?= $user_arr->id; ?>" <?php echo (isset($_POST['assigned_to_id']) && $_POST['assigned_to_id']==$user_arr->id) ? 'selected="selected"':''; ?>>
+                        <?= stripslashes($user_arr->name); ?>
+                        </option>
+                        <?php 
+							}
+						} ?>
+                      </select>
+                    </div>
+                    <?php } ?>
+                    <div class="col-md-2">
+                      <select name="source_of_listing" id="source_of_listing" data-plugin-selectTwo class="form-control select2" onChange="operate_property_source_categories_reports();">
+                        <option value="">Select Source of Listing...</option>
+                        <?php  
+                $source_of_listing_arrs = $this->admin_model->get_all_properties_source_of_listings(); 
+                if(isset($source_of_listing_arrs) && count($source_of_listing_arrs)>0){
+                    foreach($source_of_listing_arrs as $source_of_listing_arr){
+                        $sel_1 = '';
+                        if(isset($_POST['source_of_listing']) && $_POST['source_of_listing']==$source_of_listing_arr->id){
+                            $sel_1 = 'selected="selected"';
+                        } ?>
+                        <option value="<?= $source_of_listing_arr->id; ?>" <?php echo $sel_1; ?>>
+                        <?= stripslashes($source_of_listing_arr->title); ?>
+                        </option>
+                        <?php 
+                    }
+                } ?>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <select name="property_type2" id="property_type2" data-plugin-selectTwo class="form-control select2" onChange="operate_property_source_categories_reports();">
+                        <option value="">Select Property Type... </option>
+                        <option value="1" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='1') ? 'selected="selected"':''; ?>> Sale </option>
+                        <option value="2" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='2') ? 'selected="selected"':''; ?>> Rent </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <input name="from_date2" id="from_date2" type="text" class="form-control input-sm" value="<?php echo set_value('from_date2'); ?>" placeholder="From Date" style="text-align:center;">
+                    </div>
+                    <div class="col-md-2">
+                      <input name="to_date2" id="to_date2" type="text" class="form-control input-sm" value="<?php echo set_value('to_date2'); ?>" placeholder="To Date"  style="text-align:center;">
+                    </div>
+                    <div class="col-md-2 pull-right"> <a class="mb-xs mr-xs btn btn-sm btn-primary" href="<?= site_url('reports/property_listing_report'); ?>" title="Clear Filters"> <i class="fa fa-refresh"></i> Clear</a> <a id="print_button2" href="javascript:void(0);" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-print"></i> &nbsp; Print </a> </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+			<style>
+				#datatable-default_filter{
+					display:none !important;
+				}
+				.table-responsive {
+					overflow-x:visible !important;
+				}
+			</style>
+		<hr class="cstms">
+		<br>
+		<div id="printing_area2">
+		  <div class="row">
+			<div class="col-md-12">
+			  <section class="panel">
+				<header class="panel-heading">
+				  <div class="panel-actions"> <a href="#" class="fa fa-caret-down"></a> </div>
+				  <h2 class="panel-title"><?php echo $page_sub_headings; ?></h2>
+				  <p class="panel-subtitle">Pie Chart</p>
+				</header>
+				<div class="panel-body">
+				  <div class="chart chart-md" id="flotPie2"> </div>
+				</div>
+			  </section>
 			</div>
-     	</form>
-     
-      </div>
-       <div class="loading" style="display: none;"><div class="content"><img src="<?php echo base_url().'assets/images/loading.gif'; ?>"/></div></div>
-        </form>
-        </div> 
-        <!-- end of content --> 
-        
+		  </div>
+		  <hr class="cstms">
+		  <br>
+		  <table class="table table-bordered table-striped mb-none" <?php echo (isset($record1s) && count($record1s)>0) ? 'id="datatable-default"':''; ?>>
+			<thead>
+			  <tr>
+				<th>#</th>
+				<th>Type</th>
+				<th>Source of Listing</th>
+				<th class="center">Number of Listings </th>
+				<th class="center">Distribution of Listings </th>
+			  </tr>
+			</thead>
+		<tbody id="fetch_tbl_data2">
+	<?php  
+		$total_nums = '';
+		if(isset($row1) && $row1->CNT_NUMS>0){ ?>
+		  <tr class="gradeX">
+			<td></td>
+			<td></td>
+			<td></td>
+			<td class="center"><?php echo $total_nums = $row1->CNT_NUMS;   ?></td>
+			<td class="center"><?php echo ($total_nums >0) ? '100.00%' : '00.00%'; ?></td>
+		  </tr>
+		  <?php 
+		 }
+          
+        $sr=1; 
+        $frmt_arrs2 = '';
+        if(isset($record1s) && count($record1s)>0){
+            foreach($record1s as $record1){ ?>
+                  <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
+                    <td><?= $sr; ?></td>
+                    <td><?php echo ($record1->property_type==1) ? 'Sale' : 'Rent'; ?></td>
+                    <td><?php echo  $s_title = stripslashes($record1->s_title); ?></td>
+                    <td class="center"><?= stripslashes($record1->NUMS); ?></td>
+                    <td class="center"><?php  
+                     
+                    $curr_nums = $record1->NUMS; 
+                    
+                    if($total_nums>0 && $curr_nums>0){
+                        
+                        $percet_nums = ($curr_nums/$total_nums)*100;
+                        $percet_nums = number_format($percet_nums,2,".",",");
+                        echo $percet_nums1 = $percet_nums.'%';
+                        
+                        $clr_code = $this->general_model->get_gen_colors($sr);
+                        
+                        $propty_typ = ($record1->property_type==1) ? 'Sale' : 'Rent';
+                        $s_title = $propty_typ.' - '.$s_title;
+                        
+                        $frmt_arrs2 .= "{ label: \" $s_title \", data:[ [1, $percet_nums] ], color: \"$clr_code\" },";
+                        
+                    }else{
+                        echo '0.00 %';
+                    } ?></td>
+                  </tr>
+                  <?php 
+                $sr++;
+            }
+            
+            if(strlen($frmt_arrs2) >0){
+                $frmt_arrs2 = substr($frmt_arrs2,0,-1);
+            }
+            
+        }else{ ?>
+			  <tr class="gradeX">
+				<td colspan="5" class="center"><strong> No Record Found! </strong> </td>
+			  </tr>
+	  <?php 
+		 } ?>
+		</tbody>
+	  </table>
+            </div>
+          </div>
+        </section>
+        <!-- end of content -->
         <!-- Footer -->
-        <?php $this->load->view('widgets/footer'); ?>
-        <!-- /footer --> 
-        
+	<?php  
+		$this->load->view('widgets/footer');
+		
+		$cstm_curr_page_name = $this->uri->segment(2); ?>
+		<script type="text/javascript"> 
+			var flotPieData = '';
+			var flotPieData3 = '';
+			<?php  
+				if(strlen($frmt_arrs )>0){ ?>
+					flotPieData = [<?php echo $frmt_arrs; ?>];  
+		  <?php }
+			if(strlen($frmt_arrs2 )>0){ ?>
+					flotPieData3 = [<?php echo $frmt_arrs2; ?>];  
+		  <?php } ?> 
+		</script>
+		
+<?php if($cstm_curr_page_name=="property_listing_report" && (strlen($frmt_arrs)>0 || strlen($frmt_arrs2)>0) ){ ?> 
+	<script src="<?= asset_url();?>vendor/jquery-appear/jquery.appear.js"></script>
+    <script src="<?= asset_url();?>vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
+    <script src="<?= asset_url();?>vendor/flot/jquery.flot.js"></script>
+    <script src="<?= asset_url();?>vendor/flot-tooltip/jquery.flot.tooltip.js?a=11"></script>
+    <script src="<?= asset_url();?>vendor/flot/jquery.flot.pie.js"></script>
+    <script src="<?= asset_url();?>vendor/flot/jquery.flot.categories.js"></script>
+    <script src="<?= asset_url();?>vendor/flot/jquery.flot.resize.js"></script>
+    <script src="<?= asset_url();?>vendor/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="<?= asset_url();?>vendor/raphael/raphael.js"></script>
+    <script src="<?= asset_url();?>vendor/morris/morris.js"></script>
+    <script src="<?= asset_url();?>vendor/gauge/gauge.js"></script>
+    <script src="<?= asset_url();?>vendor/snap-svg/snap.svg.js"></script>
+    <script src="<?= asset_url();?>vendor/liquid-meter/liquid.meter.js"></script> 
+	<script src="<?= asset_url();?>js/jquery.PrintArea.js"></script>  
+ <?php 
+} ?>   
+<script>
+ function operate_property_type_categories_reports(){
+	$(document).ready(function(){ 
+		var from_date = document.getElementById("from_date").value;
+		var to_date = document.getElementById("to_date").value; 
+			 
+		var sel_assigned = document.getElementById("assigned_to_id");
+		var sel_assigned_to_id = sel_assigned.options[sel_assigned.selectedIndex].value;
+		 
+		var sel_category = document.getElementById("category_id");
+		var sel_category_id = sel_category.options[sel_category.selectedIndex].value;
+			 
+		var sel_property_type = document.getElementById("property_type");
+		var sel_property_type_id = sel_property_type.options[sel_property_type.selectedIndex].value; 
+			
+			$.ajax({
+				method: "POST",
+				url: "<?php echo site_url('/reports/property_type_categories_report_tbl/'); ?>",
+				data: {  sel_assigned_to_val: sel_assigned_to_id, sel_category_val: sel_category_id, sel_property_type_val: sel_property_type_id, from_date: from_date, to_date: to_date },
+				beforeSend: function(){
+					$('.loading').show();
+				},
+				success: function(data){
+					$('.loading').hide();
+					$('#fetch_tbl_data').html(data);
+					  
+				}
+			}); 
+			
+			$.ajax({
+				method: "POST",
+				url: "<?php echo site_url('/reports/property_type_categories_report_chart/'); ?>",
+				data: {  sel_assigned_to_val: sel_assigned_to_id, sel_category_val: sel_category_id, sel_property_type_val: sel_property_type_id, from_date: from_date, to_date: to_date },
+				beforeSend: function(){
+					$('.loading').show();
+				},
+				success: function(restss){
+					$('.loading').hide();
+					 
+					$('#flotPie').html(''); 
+					 
+					var data = '';
+					var eventlist = JSON.stringify(restss); 
+					eventlist = JSON.parse(eventlist); 
+					data = eval(eventlist); 
+					  
+					var options = {
+						series: {
+							pie: {
+								show: true, 
+								label: {
+									 show: true,
+									 // Added custom formatter here...
+									 formatter: function(label,point){
+										 return(point.percent.toFixed(2) + '%');
+									 }
+								 } 
+							}
+						},
+						legend: {
+							show: true
+						},
+						grid: {
+							hoverable: true,
+							clickable: true
+						}
+					 };
+				
+					$.plot($("#flotPie"), data, options); 
+				}
+			});
+		}); 
+	} 
+
+function operate_property_source_categories_reports(){    
+	$(document).ready(function(){
+				 
+		var from_date2 = document.getElementById("from_date2").value;
+		var to_date2 = document.getElementById("to_date2").value; 
+			 
+		var sel_assigned2 = document.getElementById("assigned_to_id2");
+		var sel_assigned2_to_id = sel_assigned2.options[sel_assigned2.selectedIndex].value;
+		 
+		var sel_source_of_listing = document.getElementById("source_of_listing");
+		var sel_source_of_listing_id = sel_source_of_listing.options[sel_source_of_listing.selectedIndex].value;
+			 
+		var sel_property_type2 = document.getElementById("property_type2");
+		var sel_property_type2_id = sel_property_type2.options[sel_property_type2.selectedIndex].value; 
+			
+			$.ajax({
+				method: "POST",
+				url: "<?php echo site_url('/reports/property_type_categories_report_tbl2/'); ?>",
+				data: {  sel_assigned2_to_val: sel_assigned2_to_id, sel_source_of_listing_val: sel_source_of_listing_id, sel_property_type_val: sel_property_type2_id, from_date2: from_date2, to_date2: to_date2 },
+				beforeSend: function(){
+					$('.loading').show();
+				},
+				success: function(data){
+					$('.loading').hide();
+					$('#fetch_tbl_data2').html(data);
+					  
+				}
+			}); 
+			
+			$.ajax({
+				method: "POST",
+				url: "<?php echo site_url('/reports/property_type_categories_report_chart2/'); ?>",
+				data: { sel_assigned2_to_val: sel_assigned2_to_id, sel_source_of_listing_val: sel_source_of_listing_id, sel_property_type_val: sel_property_type2_id, from_date2: from_date2, to_date2: to_date2 },
+				beforeSend: function(){
+					$('.loading').show();
+				},
+				success: function(restss){
+					$('.loading').hide();
+					 
+					$('#flotPie2').html(''); 
+					  
+					var data = '';
+					var eventlist = JSON.stringify(restss); 
+					eventlist = JSON.parse(eventlist); 
+					data = eval(eventlist); 
+					  
+					var options = {
+						series: {
+							pie: {
+								show: true, 
+								label: {
+									 show: true,
+									 // Added custom formatter here...
+									 formatter: function(label,point){
+										 return(point.percent.toFixed(2) + '%');
+									 }
+								 } 
+							}
+						},
+						legend: {
+							show: true
+						},
+						grid: {
+							hoverable: true,
+							clickable: true
+						}
+					 };
+				
+					$.plot($("#flotPie2"), data, options); 
+					 
+				}
+			}); 
+			
+		}); 
+	}
+ 
+ 
+	$(document).ready(function(){
+		 var data = [<?php echo $frmt_arrs; ?>];
+			var options = {
+					series: {
+						pie: {
+							show: true, 
+							label: {
+								 show: true,
+								 // Added custom formatter here...
+								 formatter: function(label,point){
+									 return(point.percent.toFixed(2) + '%');
+								 }
+							 } 
+						}
+					},
+					legend: {
+						show: true
+					},
+					grid: {
+						hoverable: true,
+						clickable: true
+					}
+				 };
+		
+			$.plot($("#flotPie"), data, options);  
+		
+			$("#flotPie").bind("plothover", function(event, pos, obj){
+				if (!obj){return;}
+				percent = parseFloat(obj.series.percent).toFixed(2);
+		
+				var html = [];
+				html.push("<div style=\"flot:left;width:105px;height:20px;text-align:center;border:1px solid black;background-color:", obj.series.color, "\">",
+						  "<span style=\"font-weight:bold;color:white\">", obj.series.label, " (", percent, "%)</span>",
+						  "</div>");
+		
+				$("#showInteractive").html(html.join(''));        
+			});
+			$("#flotPie").bind("plotclick", function(event, pos, obj){
+				if (!obj){return;}
+				alert(obj.series.label + " ("+ percent+ "%)");
+			});
+			
+			function legendClicker(info) {
+			  // Do what you want
+			  alert("legend click / " + info);
+			}
+			
+			var data2 = [<?php echo $frmt_arrs2; ?>];
+			var options = {
+					series: {
+						pie: {
+							show: true, 
+							label: {
+								 show: true,
+								 // Added custom formatter here...
+								 formatter: function(label,point){
+									 return(point.percent.toFixed(2) + '%');
+								 }
+							 } 
+						}
+					},
+					legend: {
+						show: true
+					},
+					grid: {
+						hoverable: true,
+						clickable: true
+					}
+				 };
+			
+			$.plot($("#flotPie2"), data2, options);  
+			
+			$("#flotPie2").bind("plothover", function(event, pos, obj){
+				if (!obj){return;}
+				percent = parseFloat(obj.series.percent).toFixed(2);
+			
+				var html = [];
+				html.push("<div style=\"flot:left;width:105px;height:20px;text-align:center;border:1px solid black;background-color:", obj.series.color, "\">","<span style=\"font-weight:bold;color:white\">", obj.series.label, " (", percent, "%)</span>","</div>");
+			
+				$("#showInteractive").html(html.join(''));        
+			});
+			
+			$("#flotPie2").bind("plotclick", function(event, pos, obj){
+				if (!obj){return;}
+				alert(obj.series.label + " ("+ percent+ "%)");
+			});	 
+			
+		
+			$('#from_date').datepicker({
+				format: "yyyy-mm-dd"
+				}).on('change', function(){
+					$('.datepicker').hide();
+					operate_property_type_categories_reports();
+			}); 
+			
+			$('#to_date').datepicker({
+				format: "yyyy-mm-dd"
+				}).on('change', function(){
+					$('.datepicker').hide();
+					operate_property_type_categories_reports();
+			}); 
+			 
+			$('#from_date2').datepicker({
+				format: "yyyy-mm-dd"
+				}).on('change', function(){
+					$('.datepicker').hide();
+					operate_property_source_categories_reports();
+			}); 
+			
+			$('#to_date2').datepicker({
+				format: "yyyy-mm-dd"
+				}).on('change', function(){
+					$('.datepicker').hide();
+					operate_property_source_categories_reports();
+			}); 	
+		}); 
+	  	  
+		$(document).ready(function(){  
+			 $("#print_button1").click(function(){
+				var mode = 'iframe'; // popup
+				var close = mode == "popup";
+				var options = { mode : mode, popClose : false};
+				$("#printing_area1").printArea( options );
+			});
+			  
+			 $("#print_button2").click(function(){
+				var mode = 'iframe'; // popup
+				var close = mode == "popup";
+				var options = { mode : mode, popClose : false};
+				$("#printing_area2").printArea( options );
+			});
+		}); 
+	  </script> 
+		
+        <!-- /footer -->
       </div>
-      <!-- /content area --> 
-      
+      <!-- /content area -->
     </div>
-    <!-- /main content --> 
-    
+    <!-- /main content -->
   </div>
-  <!-- /page content --> 
-  
+  <!-- /page content -->
 </div>
 <!-- /page container -->
 </body>
