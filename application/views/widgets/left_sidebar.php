@@ -50,8 +50,14 @@
 						if(strlen($par_modules_arr->controller_name)>0){
 							$par_controller_name = $par_modules_arr->controller_name; 
 							$par_controller_name = strtolower($par_controller_name);  
-							$par_link_address = $par_controller_name.'/index/';  
-							$par_link_address = site_url("$par_link_address");
+							
+							if($par_modules_arr->name == "Logoff"){
+								$par_link_address = $par_controller_name.'/logoff/';  
+								$par_link_address = site_url("$par_link_address");
+							}else{
+								$par_link_address = $par_controller_name.'/index/';  
+								$par_link_address = site_url("$par_link_address");
+							} 
 						}else{
 							$par_link_address = "#";
 						} ?> 

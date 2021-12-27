@@ -731,8 +731,6 @@ class General_model extends CI_Model {
 			return $query->row();
 		}
 		
-		
-		
 		public function get_gen_property_locations_list($prop_id){  
 			$ret_txt = '';
 			$query = $this->db->query("SELECT lc.name FROM properties_locations_tbl pl, locations_tbl lc WHERE pl.property_id='".$prop_id."' AND pl.location_id=lc.id ORDER BY pl.id ASC"); 

@@ -65,7 +65,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
 						<ul class="dropdown-menu dropdown-menu-right">  	 
 					  <?php if($update_res_nums>0){ ?> 
-								<li><a href="<?php echo $detail_url; ?>" class="dropdown-item"><i class="icon-search4"></i> Detail</a> </li> <!-- <a class="simple-ajax-modal" href="<?php //echo $detail_url; ?>"><i class="fa fa-search-plus"></i> </a> -->
+								<li class="text-primary-600"><a href="javascript:void(0);" onClick="return view_task_detail('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_task_detail"><i class="icon-search4"></i> Detail</a></li>  
 						<?php }
 							if($update_res_nums>0){ ?> 
 								<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>

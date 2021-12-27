@@ -140,7 +140,7 @@
 			
 			$paras_arrs = array_merge($paras_arrs, array('start'=>$offset,'limit'=> $show_pers_pg));
 			
-			$data['records'] = $this->deals_model->get_all_tasks_to_do($paras_arrs); 
+			$data['records'] = $this->tasks_model->get_all_tasks_to_do($paras_arrs); 
 			
 			$this->load->view('tasks/index2',$data); 
 		 
@@ -316,7 +316,57 @@
 			$this->load->view('no_permission_access'); 
 		} 
 	} 
-	/* end of emirates */
+	
+	
+	function suggest_property_references($args1=''){ 
+		if($this->dbs_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
+			redirect('agent/operate_meetings_views');  
+		}
+		
+		if(isset($args1)){
+			$txt =''; 
+			$term = $args1 ; //$_GET['term'];
+			$property_ref_arrs = array();  
+			$rows_arrs = $this->general_model->get_gen_property_info_by_references($args1);
+			
+			if(isset($rows_arrs)){ 
+				foreach($rows_arrs as $value => $rows_arr){ 
+					$sug_ref_no = stripslashes($rows_arr->ref_no); 
+					$property_ref_arrs[] = array("label"=>"$sug_ref_no","value"=>"$sug_ref_no");
+				} 
+				
+				
+				$ret_result = array();
+				if(isset($property_ref_arrs) && count($property_ref_arrs)>0){
+					foreach($property_ref_arrs as $property_ref_arr) {
+						$propertyLabel = $property_ref_arr["label"];
+						if(strpos(strtoupper($propertyLabel), strtoupper($term))!==false){
+							array_push($ret_result, $property_ref_arr);
+						}
+					}
+				}
+				echo json_encode($ret_result); 
+			}  
+		}
+	}  
+	
+	
+		function get_property_by_ref($args1=''){ 
+			if($this->dbs_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
+				redirect('agent/operate_meetings_views');
+			}
+		
+			if(isset($args1)){ 
+				echo "<div class='well info'>";
+				$rows_arr = $this->general_model->get_gen_property_info_by_ref($args1);
+				if(isset($rows_arr)){
+					$cstm_property_type = ($rows_arr->property_type==1) ? 'Sale' : 'Rent';
+					echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price : </strong>".number_format($rows_arr->price,2,".",","); 
+				}
+				echo "</div>";  
+			}
+		}
+		
+		/* end of task */
 	 
-	}
-?>
+	} ?>

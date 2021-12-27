@@ -96,8 +96,49 @@
             </div>
         </div>   
       <div class="panel-body">   
+	  
+	  <script type="text/javascript"> 
+		function view_task_detail(paras1){  
+			if(paras1>0){			
+				$(document).ready(function(){    
+				<?php
+					$prpty_dtl_popup_url = 'tasks/task_detail/';
+					$prpty_dtl_popup_url = site_url($prpty_dtl_popup_url); ?> 
+					
+					var cstm_urls = "<?php echo $prpty_dtl_popup_url; ?>"+paras1;
+					
+					$('#modal_remote_task_detail').on('show.bs.modal', function() {
+						$(this).find('.modal-body').load(cstm_urls, function() {
+				 
+							$('.select').select2({
+								minimumResultsForSearch: Infinity
+							});
+						});
+					});   
+				});    
+			} 
+		}  
+   	 </script>
+    
+      
+      <div id="modal_remote_task_detail" class="modal fade" data-backdrop="false"> 
+            <div class="modal-dialog modal-full">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title">Task Detail</h5>
+                    </div>
+
+                    <div class="modal-body"></div>
+
+                    <div class="modal-footer">
+                        <button id="close_users_modals" type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
      
-		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('tasks/add'); ?>">
+		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('tasks/operate_task_to_do/'); ?>">
 		<input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
 		
 		<form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('tasks/trash_multiple'); ?>" method="post">
@@ -126,7 +167,7 @@
                      	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a> 
                      
                     <?php } if($add_res_nums>0){ ?> 
-                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('tasks/add'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
+                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('tasks/operate_task_to_do/'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
                     <?php }
 						
 						if($add_res_nums==0 && $trash_res_nums==0){  ?>
@@ -217,8 +258,8 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
 							<ul class="dropdown-menu dropdown-menu-right">  	 
-						  <?php if($update_res_nums>0){ ?> 
-									<li><a href="<?php echo $detail_url; ?>" class="dropdown-item"><i class="icon-search4"></i> Detail</a> </li> <!-- <a class="simple-ajax-modal" href="<?php //echo $detail_url; ?>"><i class="fa fa-search-plus"></i> </a> -->
+						  <?php if($view_res_nums>0){ ?>  
+									<li class="text-primary-600"><a href="javascript:void(0);" onClick="return view_task_detail('<?php echo $record->id; ?>');" data-toggle="modal" data-target="#modal_remote_task_detail"><i class="icon-search4"></i> Detail</a></li>   
 							<?php }
 								if($update_res_nums>0){ ?> 
 									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>

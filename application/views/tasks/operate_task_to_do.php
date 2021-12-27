@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <?php $this->load->view('widgets/meta_tags'); ?>
-<!--<link rel="stylesheet" href="<?= asset_url();?>stylesheets/jquery-ui.css">
-<script src="<?= asset_url();?>javascripts/jquery-ui.js"></script> -->
+<link rel="stylesheet" href="<?= asset_url();?>css/jquery-ui.css" />
+<script src="<?= asset_url();?>js/jquery-ui.js"></script> 
 </head>
-<body class="sidebar-xs pace-done">
+<body class="sidebar-xs pace-done"> 
 
 <!-- Main navbar -->
 <?php $this->load->view('widgets/header'); ?>
@@ -199,9 +199,7 @@
 										<button type="reset" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-refresh position-left"></i>Clear</button>  
 							  <?php } ?> &nbsp; <button type="button" class="btn border-slate text-slate-800 btn-flat" onClick="window.location='<?php echo site_url('tasks/index'); ?>';"><i class="glyphicon glyphicon-chevron-left position-left"></i>Cancel</button>  
 							</div>
-						  </div>
-						 
-					
+						  </div>   
 					  </div>
 					  <div class="col-md-4" id="fetch_property_data">
 					  <div class='well info'> 
@@ -225,95 +223,96 @@
 						 }	?>  
 						 </div>
 					  </div>
-				  </div> 
-				 
-				  </form>
+				  </div>  
+				 </form>
 				  
 		<script>
 			function operate_property_ref_suggestion(){ 
-				var sel_property_ref = document.getElementById("property_ref").value;	  
-				$("#property_ref").autocomplete({
-					source: "<?php echo site_url('tasks/suggest_property_references'); ?>/"+sel_property_ref,
-					minLength: 1,
-					select: function( event, ui ) {
-					   $("#property_ref").val( ui.item.value );
-					   return false;
-					},
-					close: function( event, ui ) {
-						var sel_auto_sug_val = $("#property_ref").val();  
-						get_property_by_ref(sel_auto_sug_val);
-						
-						/*return $(operate_else_one_zone_prices(sec_toloc,sec_toloc_url,sec_toloc_ar,<?php //echo $dbpromotion_status; ?>));*/
-					}  
-				}); 
-				/*$(".service_cls_7").autocomplete({
-					source: availableTags02
-				}); */ 
-				 
-			}  
-				 
-			function get_property_by_ref(sels_vals) {  
-				$.ajax({
-					url: '<?php echo site_url('tasks/get_property_by_ref'); ?>/'+sels_vals,
-					cache: false,
-					type: 'POST', 
-					data: { 'submits':1 },
-					success: function (result,status,xhr) { 
-						document.getElementById("fetch_property_data").innerHTML = result;  
-					}
-				}); 
-			}
-			 
-			$(document).ready(function(){ 
-				var validator = $('#datas_form').validate({
-				rules: {         
-					property_ref: {
-						required: true, 
-					},
-					lead_ref: {
-						required: true, 
-					},
-					title: {
-						required: true, 
-					},
-					due_date: {
-						required: true, 
-					},
-					due_timing: {
-						required: true, 
-					} 
-				},
-				messages: {
-					property_ref: {
-						required: "This is required field", 
-					},
-					lead_ref: {
-						required: "This is required field", 
-					},
-					title: {
-						required: "This is required field", 
-					},
-					due_date: {
-						required: "This is required field",
-					},
-					due_timing: {
-						required: "This is required field",
-					}  
-				},
-				errorPlacement: function(error, element) {
-				  var placement = $(element).data('error');
-				  if (placement) {
-					$(placement).append(error)
-				  } else {
-					error.insertAfter(element);
-				  }
-				},  
-				submitHandler: function(){ 
-					document.forms["datas_form"].submit();
+				$(document).ready(function(){ 
+					var sel_property_ref = document.getElementById("property_ref").value;	  
+					$("#property_ref").autocomplete({
+						source: "<?php echo site_url('tasks/suggest_property_references'); ?>/"+sel_property_ref,
+						minLength: 1,
+						select: function( event, ui ) {
+						   $("#property_ref").val( ui.item.value );
+						   return false;
+						},
+						close: function( event, ui ) {
+							var sel_auto_sug_val = $("#property_ref").val();  
+							get_property_by_ref(sel_auto_sug_val);
+							
+							/*return $(operate_else_one_zone_prices(sec_toloc,sec_toloc_url,sec_toloc_ar,<?php //echo $dbpromotion_status; ?>));*/
+							}  
+						}); 
+					/*$(".service_cls_7").autocomplete({
+						source: availableTags02
+					}); */ 
+					
+					});   
 				}  
-			  });
-			}); 
-    </script> 
+				 
+				function get_property_by_ref(sels_vals) {  
+					$.ajax({
+						url: '<?php echo site_url('tasks/get_property_by_ref'); ?>/'+sels_vals,
+						cache: false,
+						type: 'POST', 
+						data: { 'submits':1 },
+						success: function (result,status,xhr) { 
+							document.getElementById("fetch_property_data").innerHTML = result;  
+						}
+					}); 
+				}
+			 
+				$(document).ready(function(){ 
+					var validator = $('#datas_form').validate({
+					rules: {         
+						property_ref: {
+							required: true, 
+						},
+						lead_ref: {
+							required: true, 
+						},
+						title: {
+							required: true, 
+						},
+						due_date: {
+							required: true, 
+						},
+						due_timing: {
+							required: true, 
+						} 
+					},
+					messages: {
+						property_ref: {
+							required: "This is required field", 
+						},
+						lead_ref: {
+							required: "This is required field", 
+						},
+						title: {
+							required: "This is required field", 
+						},
+						due_date: {
+							required: "This is required field",
+						},
+						due_timing: {
+							required: "This is required field",
+						}  
+					},
+					errorPlacement: function(error, element) {
+					  var placement = $(element).data('error');
+					  if (placement) {
+						$(placement).append(error)
+					  } else {
+						error.insertAfter(element);
+					  }
+					},  
+					submitHandler: function(){ 
+						document.forms["datas_form"].submit();
+					}  
+				  });
+				}); 
+   			 </script> 
 
               </div>
             </div>
