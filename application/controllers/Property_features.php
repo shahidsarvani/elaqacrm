@@ -10,13 +10,13 @@
 			$this->login_vs_user_role_id = $this->dbs_user_role_id = $vs_user_role_id = $this->session->userdata('us_role_id');
 			$this->load->model('general_model');
 			if(isset($vs_id) && (isset($vs_user_role_id) && $vs_user_role_id>=1)){ 
-				/* ok */
-				$res_nums = $this->general_model->check_controller_permission_access('Property_features',$vs_user_role_id,'1');
+				 
+				/*$res_nums = $this->general_model->check_controller_permission_access('Property_features',$vs_user_role_id,'1');
 				if($res_nums>0){
-				 	/* ok */
+				  
 				}else{
 					redirect('/');
-				} 
+				}*/ 
 				
 			}else{
 				redirect('/');
@@ -238,7 +238,7 @@
 	
 	function amenities_popup_list($paras2=''){   
 		$res_nums = $this->general_model->check_controller_method_permission_access('Property_features','index',$this->dbs_user_role_id,'1'); 
-		if($res_nums>0){ 
+		if($res_nums>=0){ 
 			$data['paras2'] = $paras2;	
 			$data['page_headings']="Amenities Listing";	
 			 
