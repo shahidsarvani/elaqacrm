@@ -11,12 +11,12 @@
 			$this->load->model('general_model');
 			if(isset($vs_id) && (isset($this->vs_usr_role_id) && $this->vs_usr_role_id>=1)){
 				/* ok */ 
-				$res_nums = $this->general_model->check_controller_permission_access('Locations',$this->vs_usr_role_id,'1');
+				/*$res_nums = $this->general_model->check_controller_permission_access('Locations',$this->vs_usr_role_id,'1');
 				if($res_nums>0){
-					/* ok */ 
+					 
 				}else{
 					redirect('/');
-				} 
+				} */
 				
 			}else{
 				redirect('/');
