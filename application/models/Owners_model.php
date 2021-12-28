@@ -27,7 +27,7 @@ class Owners_model extends CI_Model {
              $tot_limit =   $params['limit'];
 			$limits = " LIMIT $tot_limit ";
 		}
-		 
+		  
 		$query = $this->db->query("SELECT * FROM owners_tbl WHERE id >'0' $whrs ORDER BY created_on DESC $limits "); 
 		return $query->result(); 
 	}  

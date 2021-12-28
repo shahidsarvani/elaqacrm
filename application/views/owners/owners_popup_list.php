@@ -212,7 +212,7 @@ function operate_owners_list(){
                 $('.loading').show();
             },
             success: function(data){
-                $('.loading').hide();
+                $('.loading').hide();  
                 $('#fetch_dyn_list').html(data); 
                 //$( '[data-toggle=popover]' ).popover(); 
             }

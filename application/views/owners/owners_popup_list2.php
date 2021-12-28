@@ -15,7 +15,7 @@
 	if(isset($page) && $page >0){
 		$sr = $page+1;
 	} 
-	if(isset($records) && count($records)>0){ 
+	if($records){ 
 		foreach($records as $record){ 
 			$operate_url = 'owners/edit/'.$record->id;
 			$operate_url = site_url($operate_url);

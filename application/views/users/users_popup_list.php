@@ -54,7 +54,7 @@ function operate_users_list(){
     <div class="row">
         <div class="form-group">
             <div class="col-md-2"> 
-            <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control select" onChange="operate_users_list();">
+            <select name="per_page" id="per_page" data-plugin-selectTwo class="form-control select2" onChange="operate_users_list();">
               <option value="25">Per Page</option>
               <option value="25"> 25 </option>
               <option value="50"> 50 </option>
