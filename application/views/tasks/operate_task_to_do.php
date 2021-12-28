@@ -4,6 +4,10 @@
 <?php $this->load->view('widgets/meta_tags'); ?>
 <link rel="stylesheet" href="<?= asset_url();?>css/jquery-ui.css" />
 <script src="<?= asset_url();?>js/jquery-ui.js"></script> 
+
+<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.js"></script>
+<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.date.js"></script>
+<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.time.js"></script>
 </head>
 <body class="sidebar-xs pace-done"> 
 
@@ -134,7 +138,7 @@
 						<div class="form-group">
 					  <label class="col-md-2 control-label" for="due_timing">Due Timing <span class="reds"> *</span> </label>
 						<div class="col-md-9"> 
-						<input class="form-control" placeholder="Adjust Timings" id="due_timing" name="due_timing" data-plugin-timepicker value="<?php echo (isset($record) && $record->due_timing!='') ? $record->due_timing : set_value('due_timing'); ?>">
+						<input class="form-control pickatime" placeholder="Adjust Timings" id="due_timing" name="due_timing" data-plugin-timepicker value="<?php echo (isset($record) && $record->due_timing!='') ? $record->due_timing : set_value('due_timing'); ?>">
 						<span class="text-danger"><?php echo form_error('due_timing'); ?></span> 
 						</div>
 					</div>
