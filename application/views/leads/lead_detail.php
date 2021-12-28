@@ -246,7 +246,7 @@
 							   <div class="row show-grid">
 								<div class="col-md-12 mb-md mt-md">
 								<strong class="text-semibold "> Price : </strong> 
-								<?php echo (isset($prop_arr1) && $prop_arr1->price!='') ? CRM_CURRENCY.' '.number_format($prop_arr1->price,0,".",",") :''; ?>
+								<?php echo (isset($prop_arr1) && $prop_arr1->price!='') ? $conf_currency_symbol.' '.number_format($prop_arr1->price,0,".",",") :''; ?>
 								</div>
 							  </div>
 							   
@@ -350,7 +350,7 @@
 					   <div class="row show-grid">
 						<div class="col-md-12 mb-md mt-md">
 						<strong class="text-semibold "> Price : </strong> 
-						<?php echo (isset($prop_arr2) && $prop_arr2->price!='') ? CRM_CURRENCY.' '.number_format($prop_arr2->price,0,".",",") :''; ?>
+						<?php echo (isset($prop_arr2) && $prop_arr2->price!='') ? $conf_currency_symbol.' '.number_format($prop_arr2->price,0,".",",") :''; ?>
 						</div>
 					  </div>
 					   
@@ -452,7 +452,7 @@
 					   <div class="row show-grid">
 						<div class="col-md-12 mb-md mt-md">
 						<strong class="text-semibold "> Price : </strong> 
-						<?php echo (isset($prop_arr3) && $prop_arr3->price!='') ? CRM_CURRENCY.' '.number_format($prop_arr3->price,0,".",",") :''; ?>
+						<?php echo (isset($prop_arr3) && $prop_arr3->price!='') ? $conf_currency_symbol.' '.number_format($prop_arr3->price,0,".",",") :''; ?>
 						</div>
 					  </div>
 					   
@@ -556,7 +556,7 @@
 					   <div class="row show-grid">
 						<div class="col-md-12 mb-md mt-md">
 						<strong class="text-semibold "> Price : </strong> 
-						<?php echo (isset($prop_arr4) && $prop_arr4->price!='') ? CRM_CURRENCY.' '.number_format($prop_arr4->price,0,".",",") :''; ?>
+						<?php echo (isset($prop_arr4) && $prop_arr4->price!='') ? $conf_currency_symbol.' '.number_format($prop_arr4->price,0,".",",") :''; ?>
 						</div>
 					  </div>
 					   

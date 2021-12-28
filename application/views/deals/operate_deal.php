@@ -77,7 +77,7 @@
 								 
 								$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 								
-								$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+								$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 								<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 							<?php 
 								}
@@ -156,7 +156,7 @@
 				  <span id="fetch_property_deal_price">
 				  <input name="deal_price" id="deal_price" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->deal_price): set_value('deal_price'); ?>" onKeyUp="price_commission_calculate();" onBlur="price_commission_calculate();">
 				  </span>
-				  <span class="input-group-addon">AED</span> <span class="text-danger"><?php echo form_error('deal_price'); ?></span> </div>
+				  <span class="input-group-addon"><?php echo $conf_currency_symbol; ?></span> <span class="text-danger"><?php echo form_error('deal_price'); ?></span> </div>
 				</div>
 			</div>   
 			   <?php 
@@ -208,7 +208,7 @@
 					<div class="col-md-8">
 					<div class="input-group">
 					  <input name="deposit" id="deposit" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->deposit): set_value('deposit'); ?>" onKeyUp="deposit_commission_calculate();" onBlur="deposit_commission_calculate();">
-					  <span class="input-group-addon">AED</span> 
+					  <span class="input-group-addon"><?php echo $conf_currency_symbol; ?></span> 
 					  <span class="text-danger"><?php echo form_error('deposit'); ?></span> </div>
 					</div>
 					</div>
@@ -217,7 +217,7 @@
 					<div class="col-md-8">
 					<div class="input-group">
 					  <input name="commission" id="commission" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->commission): set_value('commission'); ?>" onKeyUp="deposit_commission_calculate();" onBlur="deposit_commission_calculate();">
-					  <span class="input-group-addon">AED</span> <span class="text-danger"><?php echo form_error('commission'); ?></span> </div>
+					  <span class="input-group-addon"><?php echo $conf_currency_symbol; ?></span> <span class="text-danger"><?php echo form_error('commission'); ?></span> </div>
 					</div>
 					</div>
 					<div class="form-group">

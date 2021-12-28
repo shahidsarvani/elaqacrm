@@ -102,7 +102,9 @@
                     <div class="col-md-2">
                       <input name="to_date" id="to_date" type="text" class="form-control input-sm" value="<?php echo set_value('to_date'); ?>" placeholder="To Date"  style="text-align:center;">
                     </div>
-                    <div class="col-md-2 pull-right"> <a class="mb-xs mr-xs btn btn-sm btn-primary" href="<?= site_url('reports/property_listing_report '); ?>" title="Clear Filters"> <i class="fa fa-refresh"></i> Clear</a> <a id="print_button1" href="javascript:void(0);" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-print"></i> &nbsp; Print </a> </div>
+                    <div class="col-md-2 pull-right"> 
+					<a class="btn border-slate text-slate-800 btn-flat" href="<?= site_url('reports/property_listing_report '); ?>" title="Clear Filters"> <i class="glyphicon glyphicon-refresh position-left"></i> Clear </a> 
+					<a id="print_button1" href="javascript:void(0);" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-print position-left"></i> &nbsp; Print </a> </div>
                   </div>
                 </div>
               </div>
@@ -263,7 +265,9 @@
                     <div class="col-md-2">
                       <input name="to_date2" id="to_date2" type="text" class="form-control input-sm" value="<?php echo set_value('to_date2'); ?>" placeholder="To Date"  style="text-align:center;">
                     </div>
-                    <div class="col-md-2 pull-right"> <a class="mb-xs mr-xs btn btn-sm btn-primary" href="<?= site_url('reports/property_listing_report'); ?>" title="Clear Filters"> <i class="fa fa-refresh"></i> Clear</a> <a id="print_button2" href="javascript:void(0);" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-print"></i> &nbsp; Print </a> </div>
+                    <div class="col-md-2 pull-right">  
+					<a class="btn border-slate text-slate-800 btn-flat" href="<?= site_url('reports/property_listing_report'); ?>" title="Clear Filters"> <i class="glyphicon glyphicon-refresh position-left"></i> Clear</a> 
+					<a id="print_button2" href="javascript:void(0);" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-print position-left"></i> &nbsp; Print </a> </div>
                   </div>
                 </div>
               </div>

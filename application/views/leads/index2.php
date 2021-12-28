@@ -74,7 +74,7 @@
 						echo stripslashes($arr_bd->title);
 					}
 				 } ?> </td> 
-				<td> <?php echo (isset($record) && $record->price!='') ? CRM_CURRENCY.' '.number_format($record->price,0,".",",") :''; ?> </td>
+				<td> <?php echo (isset($record) && $record->price!='') ? number_format($record->price,0,".",",") :''; ?> </td>
 				<td><?php  
 				 if(isset($record->enquiry_date) && $record->enquiry_date!='0000-00-00'){
 					echo  date('d-M-Y',strtotime($record->enquiry_date));

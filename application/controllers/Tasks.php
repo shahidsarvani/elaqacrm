@@ -192,7 +192,7 @@
 		$this->load->model('admin_model');
 		$created_on = $updated_on = date('Y-m-d H:i:s'); 
 		$tmp_assignid = $this->session->userdata('us_id'); 
-		
+		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 		if(isset($args1) && $args1!=''){ 
 			$data['args1'] = $args1;
 			$record_arr = $this->tasks_model->get_tasks_to_do_by_id($args1);
@@ -248,7 +248,7 @@
 					$this->session->set_flashdata('error_msg','Error: while updating record!');
 				}
 				
-					redirect("tasks/tasks");
+					redirect("tasks/index");
 			}else{ 
 				$datas = array('title' => $title,'lead_ref' => $lead_ref,'property_ref' => $property_ref,'assigned_to' => $assigned_to,'due_date' => $due_date,'due_timing' => $due_timing,'status' => $status,'created_by' => $created_by,'created_on' => $created_on); 
 				$res = $this->tasks_model->insert_tasks_to_do_data($datas); 
@@ -261,7 +261,7 @@
 					$mail_to = $temp_usrs_arr->email;
 					$mail_to_name = $temp_usrs_arr->name;
 					$tmp_user_type_id = $temp_usrs_arr->user_type_id;
-					$details_url = 'tasks/tasks';
+					$details_url = 'tasks/index';
 					$details_url = site_url($details_url); 
 					
 					$usrrole_name = '';
@@ -291,7 +291,7 @@
 					$this->session->set_flashdata('error_msg','Error: while inserting record!');
 				} 
 				
-				redirect("tasks/tasks");
+				redirect("tasks/index");
 			} 	 
 			
 		}else{
@@ -360,8 +360,9 @@
 				echo "<div class='well info'>";
 				$rows_arr = $this->general_model->get_gen_property_info_by_ref($args1);
 				if(isset($rows_arr)){
+					$conf_currency_symbol = $this->general_model->get_gen_currency_symbol();
 					$cstm_property_type = ($rows_arr->property_type==1) ? 'Sale' : 'Rent';
-					echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price : </strong>".number_format($rows_arr->price,2,".",","); 
+					echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price (".$conf_currency_symbol."): </strong>".number_format($rows_arr->price,2,".",","); 
 				}
 				echo "</div>";  
 			}

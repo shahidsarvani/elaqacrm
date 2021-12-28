@@ -11,7 +11,7 @@
 					 
 					$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 					
-					$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+					$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 					<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 			<?php 
 				}
@@ -32,7 +32,7 @@
 				 
 				$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 				
-				$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+				$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 				<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 		<?php 
 			}

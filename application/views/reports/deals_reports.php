@@ -102,9 +102,9 @@
 						   <input name="to_date" id="to_date" type="text" class="form-control" value="<?php echo (isset($to_date) && strlen($to_date)>0) ? $to_date: ''; ?>" style="text-align:center;" placeholder="To Date..."> 
 						</div>
 						
-						<div class="col-md-2 pull-right"> 
-							<a class="mb-xs mr-xs btn btn-sm btn-primary" href="<?= site_url('reports/deals_reports'); ?>" title="Clear Filters"> <i class="fa fa-refresh"></i> Clear</a>  
-							 <a id="print_button2" href="javascript:void(0);" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-print"></i> &nbsp; Print </a>
+						<div class="col-md-2 pull-right">  
+							 <a class="btn border-slate text-slate-800 btn-flat" href="<?= site_url('reports/deals_reports '); ?>" title="Clear Filters"> <i class="glyphicon glyphicon-refresh position-left"></i> Clear </a> 
+							<a id="print_button2" href="javascript:void(0);" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-print position-left"></i> &nbsp; Print </a>
 						</div> 
 						</div>
 					</div>
@@ -147,7 +147,7 @@
 				<th width="15%">Status</th>
 				<th width="20%" class="center">Number of Deals </th>
 				<th width="20%" class="center">Distribution of Deals </th>
-				<th width="20%" class="center">Budget</th>
+				<th width="20%" class="center">Budget (<?php echo $conf_currency_symbol; ?>)</th>
 				</tr>
 			</thead>
 			<tbody id="fetch_tbl_data">   
@@ -157,7 +157,7 @@
 					<td colspan="3"> <strong><u> Total Deals : </u> </strong></td>
 					<td class="center"><?php echo $total_nums = $row->NUMS;   ?></td>
 					<td class="center"><?php echo ($total_nums >0) ? '100.00%' : '00.00%'; ?></td>
-					<td><?php echo CRM_CURRENCY.' '.number_format($row->deal_price_vals,0,".",","); ?> </td> 
+					<td><?php echo number_format($row->deal_price_vals,0,".",","); ?> </td> 
 				</tr> 
 			<?php 
 			}
@@ -193,7 +193,7 @@
 						}else{
 							echo '0.00 %';
 						} ?></td>
-						<td><?php echo CRM_CURRENCY.' '.number_format($record->deal_price_vals,0,".",","); ?> </td>  
+						<td><?php echo number_format($record->deal_price_vals,0,".",","); ?> </td>  
 					</tr>
 			<?php 
 					$sr++;

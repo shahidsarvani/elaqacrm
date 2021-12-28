@@ -40,8 +40,8 @@
 			$res_nums =  $this->general_model->check_controller_method_permission_access('Reports','index',$this->dbs_user_role_id,'1');
 			if($res_nums>0){
 			
-				$data['page_headings']="Listings Report"; 
-				$data['page_sub_headings']="Listings Source Report";
+				$data['page_headings'] = "Listings Report"; 
+				$data['page_sub_headings'] = "Listings Source Report"; 
 				
 				if($vs_user_type_id==2){ 
 					$arrs_field = array('role_id'=> '3','parent_id'=> $vs_id); 
@@ -559,6 +559,7 @@
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Reports','index',$this->dbs_user_role_id,'1');
 		if($res_nums>0){
 			$data['page_headings']="Deals Report";  
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 			$assigned_to_id_val = $types_val = $status_val = ''; 
 			
 			if($vs_user_type_id==2){ 

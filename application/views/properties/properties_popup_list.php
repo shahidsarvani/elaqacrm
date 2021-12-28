@@ -81,7 +81,7 @@ function operate_properties_list(){
 				<th width="9%" class="text-center"> Ref No.</th> 
 				<th width="12%"> Title </th>
 				<th width="9%"> No of Beds</th>
-				<th width="8%"> Price </th>
+				<th width="8%"> Price (<?php echo $conf_currency_symbol; ?>)</th>
 				<th width="10%"> Property Status </th> 
 				<th width="12%"> Property address</th>
 				<th width="8%"> Created By</th>

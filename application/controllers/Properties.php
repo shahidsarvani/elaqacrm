@@ -1060,7 +1060,7 @@ class Properties extends CI_Controller{
 	
 	
 	
-	 function rent_listings($args_vals=''){
+	function rent_listings($args_vals=''){
 		$res_nums = $this->general_model->check_controller_method_permission_access('Properties','index',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 			$data = array();	
@@ -3565,6 +3565,7 @@ class Properties extends CI_Controller{
 		$this->load->model('properties_model'); //  $sl_propertyid='0', $paras1='1'
 		$data['sl_propertyid'] = isset($_POST['sl_propertyid']) ? $_POST['sl_propertyid'] : '0';
 		$data['paras1'] = isset($_POST['paras1']) ? $_POST['paras1'] : '1';
+		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 		$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
 		$this->load->view('properties/fetch_properties_list',$data); 
 	 }
@@ -3575,6 +3576,7 @@ class Properties extends CI_Controller{
 		if($res_nums>0){ 
 			$data['paras1'] = $paras1;
 			$data['page_headings'] = "Properties Listings";	
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 			
 			$paras_arrs = array();	  
 			

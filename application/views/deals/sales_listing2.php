@@ -34,7 +34,7 @@ if($view_res_nums){
 			<td><?php echo stripslashes($record->cnt_name); ?></td> 
 			<td><?php echo stripslashes($record->sub_loc_name); ?></td>
 			<td><?= stripslashes($record->unit_no); ?></td>
-			<td><?php echo CRM_CURRENCY.' '.number_format($record->deal_price,0,".",","); ?></td>
+			<td><?php echo number_format($record->deal_price,0,".",","); ?></td>
 			<td><?php 
 			if($record->agent1_id>0){
 				$usr_arr =  $this->general_model->get_user_info_by_id($record->agent1_id);

@@ -455,7 +455,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 						<th width="10%">Sub Location</th>
 						<th width="8%">Category</th>
 						<th width="8%">Bedrooms</th>
-						<th width="8%">Budget</th>
+						<th width="8%">Budget (<?php echo $conf_currency_symbol; ?>)</th>
 						<th width="8%">Inquiry Date </th>
 						<th width="10%">Agent</th>
 						<th width="10%">Updated </th>
@@ -529,7 +529,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 											echo stripslashes($arr_bd->title);
 										}
 									 } ?> </td> 
-									<td> <?php echo (isset($record) && $record->price!='') ? CRM_CURRENCY.' '.number_format($record->price,0,".",",") :''; ?> </td>
+									<td> <?php echo (isset($record) && $record->price!='') ? number_format($record->price,0,".",",") :''; ?> </td>
 									<td><?php  
 									 if(isset($record->enquiry_date) && $record->enquiry_date!='0000-00-00'){
 										echo  date('d-M-Y',strtotime($record->enquiry_date));

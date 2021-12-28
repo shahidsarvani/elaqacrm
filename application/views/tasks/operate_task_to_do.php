@@ -213,14 +213,14 @@
 							$rows_arr = $this->general_model->get_gen_property_info_by_ref($sl_property_ref);
 							if(isset($rows_arr)){ 
 								$cstm_property_type = ($rows_arr->property_type==1) ? 'Sale' : 'Rent';
-								echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price : </strong>".number_format($rows_arr->price,2,".",",");
+								echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price (".$conf_currency_symbol."): </strong>".number_format($rows_arr->price,2,".",",");
 							}  
 						 }else if(isset($record) && strlen($record->property_ref)>0){  
 						
 							$rows_arr = $this->general_model->get_gen_property_info_by_ref($record->property_ref);
 							if(isset($rows_arr)){ 
 								$cstm_property_type = ($rows_arr->property_type==1) ? 'Sale' : 'Rent';
-								echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price : </strong>".number_format($rows_arr->price,2,".",",");
+								echo "<strong>Property Type: </strong> ".$cstm_property_type."<br> <strong>Title: </strong>".stripslashes($rows_arr->title)."<br> <strong>Price (".$conf_currency_symbol."): </strong>".number_format($rows_arr->price,2,".",",");
 							}  
 						 }else{
 							echo "<strong>No property found!</strong>"; 

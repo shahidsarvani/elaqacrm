@@ -49,9 +49,10 @@ function index($args_vals=''){ /* $temps_property_type='' */
 	 
 	$res_nums =  $this->general_model->check_controller_method_permission_access('Leads','index',$this->dbs_user_role_id,'1'); 
 	if($res_nums>0){ 
-		
+		$data = array();	
+		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 		if(isset($args_vals) && $args_vals=="export_excel"){
-			$paras_arrs = $data = array();	
+			$paras_arrs = array();	
 			$offset = 0;
 			$data['page'] = $page = 0;
 			/* permission checks */
@@ -289,7 +290,7 @@ function index($args_vals=''){ /* $temps_property_type='' */
 			}
 			
 		$records = '';  
-		$data = array();
+		//$data = array();
 		$data['page_headings']="Leads Management!";
 		$paras_arrs = array();	 
 		$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list(); 
@@ -684,7 +685,7 @@ function index2($temps_property_type=''){
 		
 		$this->load->model('contacts_model');
 		$this->load->model('properties_model');  
-		 
+		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 		$data['contact_arrs'] = $this->contacts_model->get_all_contacts(); 
 		$data['properties_arrs'] = $this->properties_model->get_all_properties_list(); 
 		$max_lead_id_val = $this->leads_model->get_max_lead_id();
@@ -1339,9 +1340,9 @@ function index2($temps_property_type=''){
 		if(isset($args1) && $args1 >0){ 
 			$this->load->model('properties_model');
 			$data['page_headings'] = 'Lead Detail';
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();  
 			$data['record'] = $temp_recs = $this->leads_model->get_lead_by_id($args1);  
-			
-			
+			 
 			$vsids = $this->session->userdata('us_id');  
 			if($vsids >0){ 
 				if(isset($temp_recs) && $temp_recs->agent_id==$vsids && $temp_recs->is_new==1){ 

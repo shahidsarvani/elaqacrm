@@ -264,18 +264,17 @@
                           </select>
                           <span id="source_of_listing1" class="text-danger"><?php echo form_error('source_of_listing'); ?></span> </div>
                       </div>
-                    </div>
-				<div class="col-lg-6">
-				
-				  <div class="form-group">
+					  <div class="form-group">
 					<label class="col-md-3 control-label" for="no_of_views">Property View </label>
 					<div class="col-md-8">
 					  <input name="no_of_views" id="no_of_views" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->no_of_views): set_value('no_of_views'); ?>">
 					  <span class="text-danger"><?php echo form_error('no_of_views'); ?></span> </div>
-				  </div>  
-						
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="property_id_1"> Property 1 <span class="reds"> </span></label>
+				  </div>
+                    </div>
+				<div class="col-lg-6">
+				  	
+					<div class="form-group">
+					 <label class="col-md-3 control-label" for="property_id_1"> Property 1 <span class="reds"> </span></label>
 					<div class="col-md-8">
 						 <span id="fetch_remote_property1">
 						   <select name="property_id_1" id="property_id_1" class="form-control select2-search" data-error="#property_id_11">
@@ -292,7 +291,7 @@
 									 
 									$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 									
-									$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+									$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 									<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
@@ -323,7 +322,7 @@
 										 
 										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 										
-										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
@@ -352,7 +351,7 @@
 										 
 										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 										
-										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
@@ -381,7 +380,7 @@
 										 
 										$pp_type_1 = ($properties_arr->property_type==1) ? 'Sale: ' : 'Rent: ';
 										
-										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') AED '.number_format($properties_arr->price,2,".",","); ?>
+										$property_title1 = $pp_type_1 . stripslashes($properties_arr->title).' ('.stripslashes($properties_arr->ref_no).') '.$conf_currency_symbol.' '.number_format($properties_arr->price,2,".",","); ?>
 										<option value="<?= $properties_arr->id; ?>" <?php echo $sel_1; ?>> <?= $property_title1; ?> </option>
 								<?php 
 									}
@@ -430,7 +429,7 @@
                           <input name="remind_date_1" id="remind_date_1" placeholder="Adjust Reminder Date" type="text" class="form-control" value="<?php echo $remind_date_1; ?>" style="text-align:center;">
                           <span class="text-danger"><?php echo form_error('remind_date_1'); ?></span> </div>
                         <div class="col-md-4">
-                          <input class="form-control" placeholder="Adjust Reminder Time" id="remind_time_1" name="remind_time_1" data-plugin-timepicker value="<?php echo (isset($record) && $record->remind_time_1!='') ? $record->remind_time_1 : set_value('remind_time_1'); ?>" style="text-align:center;">
+                          <input class="form-control pickatime" placeholder="Adjust Reminder Time" id="remind_time_1" name="remind_time_1" data-plugin-timepicker value="<?php echo (isset($record) && $record->remind_time_1!='') ? $record->remind_time_1 : set_value('remind_time_1'); ?>" style="text-align:center;">
                           <span class="text-danger"><?php echo form_error('remind_time_1'); ?></span> </div>
                       </div>
                       <br>

@@ -343,7 +343,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 					<th>Buyer</th>
 					<th>Sub Location</th>
 					<th>Unit No</th>
-					<th>Deal Price</th>
+					<th>Deal Price (<?php echo $conf_currency_symbol; ?>)</th>
 					<th>Agent </th>
 					<th class="center">Estimated Date</th>
 					<th class="center">Action</th>
@@ -375,7 +375,7 @@ if($add_res_nums>0 && $trash_res_nums>0){ ?>
 							<td><?php echo stripslashes($record->cnt_name); ?></td> 
 							<td><?php echo stripslashes($record->sub_loc_name); ?></td>
 							<td><?= stripslashes($record->unit_no); ?></td>
-							<td><?php echo CRM_CURRENCY.' '.number_format($record->deal_price,0,".",","); ?></td>
+							<td><?php echo number_format($record->deal_price,0,".",","); ?></td>
 							<td><?php 
 							if($record->agent1_id>0){
 								$usr_arr =  $this->general_model->get_user_info_by_id($record->agent1_id);

@@ -44,6 +44,7 @@ class Deals extends CI_Controller{
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Deals','index',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 			$paras_arrs = array();
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();
 			$data['owner_arrs'] =$this->general_model->get_gen_all_owners_list();
 			/* permission checks */
@@ -392,7 +393,8 @@ class Deals extends CI_Controller{
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Deals','index',$this->dbs_role_id,'1');  
 		if($res_nums>0){
 				
-			$paras_arrs = array(); 
+			$paras_arrs = array();
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			$data['contact_arrs'] = $this->general_model->get_gen_all_contacts_list();
 			$data['owner_arrs'] =$this->general_model->get_gen_all_owners_list();
 			/* permission checks */
@@ -733,7 +735,7 @@ class Deals extends CI_Controller{
 		$this->load->model('no_of_bedrooms_model');
 		$this->load->model('properties_model');
 		$this->load->model('leads_model');
-		
+		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 		$data['lead_arrs'] = $this->leads_model->get_all_leads();
 		  
 		$data['args0'] = $args0;   
@@ -977,6 +979,7 @@ class Deals extends CI_Controller{
 			$this->load->model('leads_model');
 		
 			$data['page_headings'] = 'Deal Detail';
+			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			$data['documents_arr1s'] = $this->deals_model->get_property_dropzone_sellerlandlord_documents_by_id($args1);
 			$data['documents_arr2s'] = $this->deals_model->get_property_dropzone_buyertenant_documents_by_id($args1);
 	

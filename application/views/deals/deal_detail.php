@@ -123,17 +123,17 @@
 						<hr class="cstms-dash">
 						<div class="row show-grid">
 						  <div class="col-md-12 mb-md mt-md"> <strong class="text-semibold "> Deal Price : </strong>
-						   <?php echo (isset($record) && $record->deal_price!='') ? CRM_CURRENCY.' '.number_format($record->deal_price,0,".",",") :''; ?>    
+						   <?php echo (isset($record) && $record->deal_price!='') ? $conf_currency_symbol.' '.number_format($record->deal_price,0,".",",") :''; ?>    
 						  </div>
 						</div>
 						<hr class="cstms-dash">  
 						<div class="row show-grid">
-						  <div class="col-md-12 mb-md mt-md"> <strong class="text-semibold "> Deposit : </strong> <?php echo (isset($record) && $record->deposit!='') ? CRM_CURRENCY.' '.number_format($record->deposit,0,".",",") :''; ?>   
+						  <div class="col-md-12 mb-md mt-md"> <strong class="text-semibold "> Deposit : </strong> <?php echo (isset($record) && $record->deposit!='') ? $conf_currency_symbol.' '.number_format($record->deposit,0,".",",") :''; ?>   
 						  </div>
 						</div>
 						<hr class="cstms-dash">
 						<div class="row show-grid">
-						  <div class="col-md-12 mb-md mt-md"> <strong class="text-semibold "> Commission : </strong> <?php echo (isset($record) && $record->commission!='') ? CRM_CURRENCY.' '.number_format($record->commission,0,".",",") :''; ?> </div>
+						  <div class="col-md-12 mb-md mt-md"> <strong class="text-semibold "> Commission : </strong> <?php echo (isset($record) && $record->commission!='') ? $conf_currency_symbol.' '.number_format($record->commission,0,".",",") :''; ?> </div>
 						</div>
 						<hr class="cstms-dash">
 						<div class="row show-grid">
