@@ -54,7 +54,7 @@
           <div class="panel-actions"> <a href="#" class="fa fa-caret-down"></a> </div>
           <h2 class="panel-title"><?php echo $page_headings; ?></h2>
         </header>
-		<?php $vs_user_type_id = $this->session->userdata('us_user_type_id'); ?>
+		<?php $vs_user_type_id = $this->session->userdata('us_role_id'); ?>
         <div class="panel-body"> 
         
 		<form name="datas_form" id="datas_form" action="" method="post">
@@ -62,7 +62,7 @@
 			<div class="col-md-12"> 
 				<div class="form-group mb-md"> 
 				<?php 
-				$vs_user_type_id = $this->session->userdata('us_user_type_id');
+				$vs_user_type_id = $this->session->userdata('us_role_id');
 				if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
 				<div class="col-md-3">   
 					<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control populate" onChange="operate_property_leads_reports();">

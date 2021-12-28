@@ -1,11 +1,11 @@
 <?php  
-    if(isset($row1) && count($row1->NUMS)>0){  
+    if($row1){  
 		$total_nums = $row1->NUMS;    
     }
     
     $sr=1; 
     $frmt_arrs ='';
-    if(isset($record1s) && count($record1s)>0){
+    if($record1s){
         foreach($record1s as $record1){ 
 			 
 			$propty_source_of_listing_nm =''; 

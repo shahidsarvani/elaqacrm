@@ -37,14 +37,14 @@
               <div class="panel-actions"> <a href="#" class="fa fa-caret-down"></a> </div>
               <h2 class="panel-title text-semibold"> <?php echo $page_headings; ?> </h2>
             </header>  
-			<?php $vs_user_type_id = $this->session->userdata('us_user_type_id'); ?> 
+			<?php $vs_user_type_id = $this->session->userdata('us_role_id'); ?> 
 			<div class="panel-body"> 
 			<form name="datas_form" id="datas_form" action="" method="post">
 			<div class="row">
 				<div class="col-md-12"> 
 					<div class="form-group mb-md"> 
 					<?php 
-					$vs_user_type_id = $this->session->userdata('us_user_type_id');  ?>  
+					$vs_user_type_id = $this->session->userdata('us_role_id');  ?>  
 					   
 					<div class="col-md-2">   
                     <select name="types" id="types" data-plugin-selectTwo class="form-control populate">

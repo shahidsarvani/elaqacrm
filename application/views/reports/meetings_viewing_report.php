@@ -122,7 +122,7 @@
 					<div class="panel-body">
 					  <!-- Flot: Pie -->
 					  <!--<div class="chart chart-md" id="flotPie"></div> -->
-					  <div class="chart chart-md" id="morrisBar">
+					  <div class="chart chart-md" id="morrisBar" style="width:100%; height:450px;">
 						Select From & To Date for Result! 
 					  </div>
 					  
@@ -280,8 +280,6 @@
 				var sel_assigned = document.getElementById("assigned_to_id");
 				var sel_assigned_to_id = sel_assigned.options[sel_assigned.selectedIndex].value;
 				
-				//alert(sel_assigned_to_id+'--'+from_date+'--'+to_date); 
-				  
 				if(from_date!='' && to_date!=''){
 						  
 					$.ajax({

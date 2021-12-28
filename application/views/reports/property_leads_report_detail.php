@@ -76,33 +76,30 @@
 			<hr class="cstms"> <br>
 			</form>
             <script>
-				jQuery.noConflict()(function($){	 	  
-					$(document).ready(function(){   
-						$('#from_date').datepicker({
-							format: "yyyy-mm-dd"
-							}).on('change', function(){
-								$('.datepicker').hide();
-								//operate_leads_properties();
-						}); 
-						
-						$('#to_date').datepicker({
-							format: "yyyy-mm-dd"
-							}).on('change', function(){
-								$('.datepicker').hide();
-								//operate_leads_properties();
-						});  
-					});
+				$(document).ready(function(){   
+					$('#from_date').datepicker({
+						format: "yyyy-mm-dd"
+						}).on('change', function(){
+							$('.datepicker').hide();
+							//operate_leads_properties();
+					}); 
+					
+					$('#to_date').datepicker({
+						format: "yyyy-mm-dd"
+						}).on('change', function(){
+							$('.datepicker').hide();
+							//operate_leads_properties();
+					});  
 				});
-			</script> 
-			 
-			 <style>
+			</script>  
+		 <style>
 			 #datatable-default_filter{
 				display:none !important;
 			 }
 			 .table-responsive {
 				overflow-x:visible !important;
 			 }
-			 </style>
+		 </style>
 			  <table class="table table-bordered table-striped mb-none" <?php echo (isset($records) && count($records)>0) ? 'id="datatable-default"':''; ?>>
 				<thead>
 				   <tr>
@@ -114,7 +111,7 @@
 				</thead>
 				<tbody>   
 				<?php  
-				if(isset($row) && count($row->NUMS)>0){ ?>
+				if($row){ ?>
 					<tr class="gradeX">
 						<td colspan="2"> <strong><u> Total Leads : </u> </strong></td>
 						<td class="center"><?php echo $total_nums = $row->NUMS;   ?></td>
@@ -125,7 +122,7 @@
 				
 				$sr=1; 
 				$frmt_arrs ='';
-				if(isset($records) && count($records)>0){
+				if($records){
 					foreach($records as $record){ ?>
 						 <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                         <td><?= $sr; ?></td>

@@ -1,5 +1,4 @@
-  
-    <?php    
+<?php    
     if((isset($from_date_val) && strlen($from_date_val)>0) && (isset($to_date_val) && strlen($to_date_val)>0)){ ?>
     <tr class="gradeX">
         <td> </td>

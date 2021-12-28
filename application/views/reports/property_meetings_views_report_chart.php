@@ -1,7 +1,6 @@
 <?php   
 	$frmt_arrs ='';  
-	if((isset($from_date_val) && strlen($from_date_val)>0) && (isset($to_date_val) && strlen($to_date_val)>0)){   
-
+	if((isset($from_date_val) && strlen($from_date_val)>0) && (isset($to_date_val) && strlen($to_date_val)>0)){  
 	
 		$total_nos_meetings = $this->admin_model->get_total_custom_meetings_nums($assigned_to_id_val,$from_date_val,$to_date_val); 
 		

@@ -37,17 +37,17 @@
               <div class="panel-actions"> <a href="#" class="fa fa-caret-down"></a> </div>
               <h2 class="panel-title text-semibold"> <?php echo $page_headings; ?> </h2>
             </header>  
-			<?php $vs_user_type_id = $this->session->userdata('us_user_type_id'); ?> 
+			<?php $vs_user_type_id = $this->session->userdata('us_role_id'); ?> 
 			<div class="panel-body"> 
 			<form name="datas_form" id="datas_form" action="" method="post">
 			<div class="row">
 				<div class="col-md-12"> 
 					<div class="form-group mb-md"> 
 					<?php 
-					$vs_user_type_id = $this->session->userdata('us_user_type_id');
+					$vs_user_type_id = $this->session->userdata('us_role_id');
 					if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
 					<div class="col-md-3">   
-						<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control populate">
+						<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2">
 						  <option value="">Select Agent...</option>
 						  <?php  
 							if(isset($user_arrs) && count($user_arrs)>0){
@@ -63,7 +63,7 @@
 					<?php } ?>  
 					   
 					<div class="col-md-3">  
-					<select name="category_id" id="category_id" data-plugin-selectTwo class="form-control populate">
+					<select name="category_id" id="category_id" data-plugin-selectTwo class="form-control select2">
 					  <option value="">Select Category...</option>
 					  <?php  
 						if(isset($category_arrs) && count($category_arrs)>0){
@@ -77,7 +77,7 @@
 					</select>
 					</div>
 					<div class="col-md-3">   
-					<select name="property_type" id="property_type" data-plugin-selectTwo class="form-control populate">
+					<select name="property_type" id="property_type" data-plugin-selectTwo class="form-control select2">
 					  <option value="">Select Property Type... </option>
 					  <option value="1" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='1') ? 'selected="selected"':''; ?>> Sale </option>
 					  <option value="2" <?php echo (isset($_POST['property_type']) && $_POST['property_type']=='2') ? 'selected="selected"':''; ?>> Rent </option>
@@ -113,7 +113,7 @@
 				</thead>
 				<tbody>   
 				<?php  
-				if(isset($row) && count($row->NUMS)>0){ ?>
+				if($row){ ?>
 					<tr class="gradeX">
 						<td> </td>
 						<td> </td>
@@ -126,7 +126,7 @@
 				
 				$sr=1; 
 				$frmt_arrs ='';
-				if(isset($records) && count($records)>0){
+				if($records){
 					foreach($records as $record){ ?>
 						<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
 						<td><?= $sr; ?></td>
@@ -134,8 +134,8 @@
 						<td><?php echo  $cate_name = stripslashes($record->cate_name); ?></td>
 						<td class="center"><?= stripslashes($record->NUMS); ?></td>
 						<td class="center"><?php  
-							$total_nums = $row->NUMS;  
-							$curr_nums = $record->NUMS; 
+							$total_nums = $row->NUMS;
+							$curr_nums = $record->NUMS;
 							
 							if($total_nums>0 && $curr_nums>0){
 								

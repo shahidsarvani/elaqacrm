@@ -1,6 +1,6 @@
    
     <?php  
-    if(isset($row) && count($row->NUMS)>0){ ?>
+    if($row){ ?>
         <tr class="gradeX">
             <td colspan="2"> <strong><u> Total Leads : </u> </strong></td>
             <td class="center"><?php echo $total_nums = $row->NUMS;   ?></td>
@@ -11,7 +11,7 @@
     
     $sr=1; 
     $frmt_arrs ='';
-    if(isset($records) && count($records)>0){
+    if($records){
         foreach($records as $record){ ?>
             <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
             <td><?= $sr; ?></td>

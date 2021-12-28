@@ -1,7 +1,7 @@
 <?php
 	$total_nums = 0; 
-	$vs_user_type_id = $this->session->userdata('us_user_type_id');  
-	if(isset($ress1) && $ress1->CNT_NUMS>0){ ?>
+	$vs_user_type_id = $this->session->userdata('us_role_id');  
+	if($ress1){ ?>
         <tr class="gradeX">
           <td></td>
           <td></td>
@@ -14,7 +14,7 @@
 			
 		$sr=1; 
 		$frmt_arrs ='';
-		if(isset($record1s) && count($record1s)>0){
+		if($record1s){
 			foreach($record1s as $record1){ ?>
             <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                 <td><?= $sr; ?></td>

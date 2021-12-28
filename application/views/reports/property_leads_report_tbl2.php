@@ -1,7 +1,7 @@
    
     <?php  
 	$total_nums1 = 0;
-    if(isset($row1) && count($row1->NUMS)>0){ ?>
+    if($row1){ ?>
         <tr class="gradeX">
             <td colspan="2"> <strong><u> Total Leads : </u> </strong></td>
             <td class="center"><?php echo $total_nums1 = $row1->NUMS;   ?></td>
@@ -12,7 +12,7 @@
 
 $sr=1; 
 $frmt_arrs = '';
-if(isset($record1s) && count($record1s)>0){
+if($record1s){
 	foreach($record1s as $record1){ ?>
 		<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
 		<td><?= $sr; ?></td>

@@ -1,6 +1,6 @@
 <?php 
-	$vs_user_type_id = $this->session->userdata('us_user_type_id');  
-	if(isset($ress) && $ress->CNT_NUMS>0){ ?>
+	$vs_user_type_id = $this->session->userdata('us_role_id');  
+	if($ress){ ?>
         <tr class="gradeX">
           <td></td>
           <td></td>
@@ -9,18 +9,18 @@
           <td class="center"><?php echo ($total_nums >0) ? '100.00%' : '00.00%'; ?></td>
         </tr>
 	<?php 
-        }
-			
+        } 
 		$sr=1; 
 		$frmt_arrs ='';
-		if(isset($records) && count($records)>0){
+		if($records){
 			foreach($records as $record){ ?>
-<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
-<td><?= $sr; ?></td>
-<td><?= ($record->property_type==1) ? 'Sale' : 'Rent'; ?></td>
-<td><?php echo  $cate_name = stripslashes($record->cate_name); ?></td>
-<td class="center"><?= stripslashes($record->NUMS); ?></td>
-<td class="center"><?php  
+				<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
+				<td><?= $sr; ?></td>
+				<td><?= ($record->property_type==1) ? 'Sale' : 'Rent'; ?></td>
+				<td><?php echo  $cate_name = stripslashes($record->cate_name); ?></td>
+				<td class="center"><?= stripslashes($record->NUMS); ?></td>
+				<td class="center">
+				<?php  
 					$total_nums = $ress->CNT_NUMS;  
 					$curr_nums = $record->NUMS; 
 					
@@ -36,14 +36,12 @@
 						$cate_name = $propty_typ.' - '.$cate_name;
 						
 						$frmt_arrs .= "{ label: \" $cate_name \", data:[ [1, $percet_nums] ], color: \"$clr_code\" },";
-						
-						
-						
+						 
 					}else{
 						echo '0.00 %';
 					} ?></td>
-</tr>
-<?php 
+				</tr>
+			<?php 
 				$sr++;
 			}
 			
@@ -52,8 +50,8 @@
 			}
 			
 		}else{ ?>
-<tr class="gradeX">
-  <td colspan="5" class="center"><strong> No Record Found! </strong></td>
-</tr>
-<?php 
-			} ?>
+			<tr class="gradeX">
+			  <td colspan="5" class="center"><strong> No Record Found! </strong></td>
+			</tr>
+	<?php 
+		} ?>

@@ -38,7 +38,7 @@
               <h2 class="panel-title text-semibold"> <?php echo $page_headings; ?> </h2>
             </header>  
 			<?php 
-				$vs_user_type_id = $this->session->userdata('us_user_type_id'); 
+				$vs_user_type_id = $this->session->userdata('us_role_id'); 
 				$from_date = $to_date = '';	
 				if(isset($_POST['from_date'])){
 					$from_date = $_POST['from_date'];
@@ -51,8 +51,7 @@
 				<div class="row">
 					<div class="col-md-12"> 
 						<div class="form-group mb-md">   
-						<?php 
-						$vs_user_type_id = $this->session->userdata('us_user_type_id');
+						<?php
 						if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
 						<div class="col-md-3">   
 							<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control populate">
@@ -84,24 +83,22 @@
 				</div> 
 				<hr class="cstms"> <br>
 				</form>
-                <script>
-					jQuery.noConflict()(function($){	 	  
-						$(document).ready(function(){   
-							$('#from_date').datepicker({
-								format: "yyyy-mm-dd"
-								}).on('change', function(){
-									$('.datepicker').hide();
-									operate_leads_properties();
-							}); 
-							
-							$('#to_date').datepicker({
-								format: "yyyy-mm-dd"
-								}).on('change', function(){
-									$('.datepicker').hide();
-									operate_leads_properties();
-							});  
-						});
-					});
+                <script> 
+					$(document).ready(function(){   
+						$('#from_date').datepicker({
+							format: "yyyy-mm-dd"
+							}).on('change', function(){
+								$('.datepicker').hide();
+								operate_leads_properties();
+						}); 
+						
+						$('#to_date').datepicker({
+							format: "yyyy-mm-dd"
+							}).on('change', function(){
+								$('.datepicker').hide();
+								operate_leads_properties();
+						});  
+					}); 
 				</script> 
 				 
 				 <style>

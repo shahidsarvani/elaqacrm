@@ -4,13 +4,13 @@
 <?php 
 	$this->load->view('widgets/meta_tags');  
 	
- 	$add_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','add',$this->dbs_role_id,'1');
+ 	$add_res_nums =  $this->general_model->check_controller_method_permission_access('Reports', 'add', $this->dbs_role_id,'1');
 	
-	$view_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','view',$this->dbs_role_id,'1'); 
+	$view_res_nums =  $this->general_model->check_controller_method_permission_access('Reports', 'view', $this->dbs_role_id,'1'); 
 	  
-	$update_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','update',$this->dbs_role_id,'1');   
+	$update_res_nums =  $this->general_model->check_controller_method_permission_access('Reports', 'update', $this->dbs_role_id,'1');   
 	
-	$trash_res_nums =  $this->general_model->check_controller_method_permission_access('Reports','trash',$this->dbs_role_id,'1'); ?>
+	$trash_res_nums =  $this->general_model->check_controller_method_permission_access('Reports', 'trash', $this->dbs_role_id,'1'); ?>
 </head>
 <body class="sidebar-xs has-detached-left">
 <!-- Main navbar -->
@@ -128,7 +128,7 @@
                     </header>
                     <div class="panel-body">
                       <!-- Flot: Pie -->
-                      <div class="chart chart-md" id="flotPie"></div>
+                      <div class="chart chart-md" id="flotPie" style="width:100%; height:450px;"></div>
                     </div>
                   </section>
                 </div>
@@ -160,7 +160,7 @@
 			  
 			$sr=1; 
 			$frmt_arrs = '';
-			if(isset($records) && count($records)>0){
+			if($records){
 				foreach($records as $record){ ?>
                   <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                     <td><?= $sr; ?></td>
@@ -203,7 +203,7 @@
                     <td colspan="5" class="center"><strong> No Record Found! </strong> </td>
                   </tr>
                   <?php 
-			} ?>
+			}  ?>
                 </tbody>
               </table>
             </div>
@@ -288,7 +288,7 @@
 				  <p class="panel-subtitle">Pie Chart</p>
 				</header>
 				<div class="panel-body">
-				  <div class="chart chart-md" id="flotPie2"> </div>
+				  <div class="chart chart-md" id="flotPie2" style="width:100%; height:450px;"> </div>
 				</div>
 			  </section>
 			</div>
@@ -362,7 +362,10 @@
 				<td colspan="5" class="center"><strong> No Record Found! </strong> </td>
 			  </tr>
 	  <?php 
-		 } ?>
+		 } 
+		 
+		 /*echo $frmt_arrs2;
+			exit; */ ?>
 		</tbody>
 	  </table>
             </div>
@@ -553,30 +556,30 @@ function operate_property_source_categories_reports(){
 		}); 
 	}
  
- 
+   //flotPieData
 	$(document).ready(function(){
-		 var data = [<?php echo $frmt_arrs; ?>];
-			var options = {
-					series: {
-						pie: {
-							show: true, 
-							label: {
-								 show: true,
-								 // Added custom formatter here...
-								 formatter: function(label,point){
-									 return(point.percent.toFixed(2) + '%');
-								 }
-							 } 
-						}
-					},
-					legend: {
-						show: true
-					},
-					grid: {
-						hoverable: true,
-						clickable: true
+		var data = [<?php echo $frmt_arrs; ?>];
+		var options = {
+				series: {
+					pie: {
+						show: true, 
+						label: {
+							 show: true,
+							 // Added custom formatter here...
+							 formatter: function(label,point){
+								 return(point.percent.toFixed(2) + '%');
+							 }
+						 } 
 					}
-				 };
+				},
+				legend: {
+					show: true,
+				},
+				grid: {
+					hoverable: true,
+					clickable: true,
+				}
+			 };
 		
 			$.plot($("#flotPie"), data, options);  
 		

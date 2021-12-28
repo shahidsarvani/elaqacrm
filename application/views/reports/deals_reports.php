@@ -130,7 +130,7 @@
 				  <p class="panel-subtitle">Bar Chart</p>
 				</header>
 				<div class="panel-body">  
-				  <div class="chart chart-md" id="morrisBar">
+				  <div class="chart chart-md" id="morrisBar" style="width:100%; height:600px;">
 					Select From & To Date for Result! 
 				  </div>
 				</div>

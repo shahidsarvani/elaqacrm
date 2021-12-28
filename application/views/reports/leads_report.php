@@ -65,7 +65,7 @@
 				$vs_user_type_id = $this->session->userdata('us_role_id');
 				if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
 				<div class="col-md-3">   
-					<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control populate" onChange="operate_property_leads_reports();">
+					<select name="assigned_to_id" id="assigned_to_id" data-plugin-selectTwo class="form-control select2" onChange="operate_property_leads_reports();">
                       <option value="">Select Agent...</option>
                       <?php  
 						if(isset($user_arrs) && count($user_arrs)>0){
@@ -81,7 +81,7 @@
 				<?php } ?>  
 				   
 	<div class="col-md-3">  
-     <select name="lead_type" id="lead_type" data-plugin-selectTwo class="form-control populate"  onChange="operate_property_leads_reports();">
+     <select name="lead_type" id="lead_type" data-plugin-selectTwo class="form-control select2"  onChange="operate_property_leads_reports();">
       <option value="">Select Type </option>
       <option value="Tenant" <?php if(isset($_POST['lead_type']) && $_POST['lead_type']=='Tenant'){ echo 'selected="selected"'; } ?>> Tenant </option>
       <option value="Buyer" <?php if(isset($_POST['lead_type']) && $_POST['lead_type']=='Buyer'){ echo 'selected="selected"'; } ?>> Buyer </option>
@@ -131,7 +131,7 @@
             </header>
             <div class="panel-body">
               <!-- Flot: Pie -->
-              <div class="chart chart-md" id="flotPie" style="height:450px;"></div> 
+              <div class="chart chart-md" id="flotPie" style="width:100%; height:450px;"></div> 
               
               
             </div>
@@ -139,7 +139,7 @@
         </div>
       </div> 
            
-			<hr class="cstms"> <br>
+		 <hr class="cstms"> <br>
 		 <table class="table table-bordered table-striped mb-none" <?php //echo (isset($records) && count($records)>0) ? 'id="datatable-default"':''; ?>>
             <thead>
               <tr>
@@ -222,7 +222,7 @@
 				<?php  
 				if($vs_user_type_id==1 || $vs_user_type_id==2){ ?>
 				<div class="col-md-3">   
-					<select name="assigned_to_id2" id="assigned_to_id2" data-plugin-selectTwo class="form-control populate" onChange="operate_property_leads_source_reports();">
+					<select name="assigned_to_id2" id="assigned_to_id2" data-plugin-selectTwo class="form-control select2" onChange="operate_property_leads_source_reports();">
                       <option value="">Select Agent...</option>
                       <?php  
 						if($user_arrs){
@@ -233,7 +233,7 @@
                       <?php 
 							}
 						} ?>
-                    </select>   mm                                              
+                    </select>                                               
 				</div>
 				<?php } ?>  
 				   
@@ -284,7 +284,7 @@
             </header>
             <div class="panel-body">
               <!-- Flot: Pie -->
-              <div class="chart chart-md" id="flotPie2" style="height:450px;"> </div>  
+              <div class="chart chart-md" id="flotPie2" style="width:100%; height:450px;"> </div>  
             </div>
           </section>
         </div>
@@ -432,7 +432,6 @@
 			   
 			var sel_lead_type = document.getElementById("lead_type");
 			var sel_lead_type_id = sel_lead_type.options[sel_lead_type.selectedIndex].value;
-					
 			 
 			$.ajax({
 				method: "POST",
@@ -443,8 +442,7 @@
 				},
 				success: function(data){
 					$('.loading').hide();
-					$('#fetch_tbl_data').html(data);
-					  
+					$('#fetch_tbl_data').html(data);  
 				}
 			}); 
 			
@@ -565,9 +563,7 @@
 			}); 
 		}
  
-</script>
-
-	 <script type="text/javascript"> 	  
+	  
 		$(document).ready(function(){
 			 var data = [<?php echo $frmt_arrs; ?>];
 				var options = {
@@ -679,10 +675,10 @@
 					$('.datepicker').hide();
 					operate_property_leads_source_reports();
 			});
-		});
-		 	 	  
-		$(document).ready(function(){    
-			 $("#print_button1").click(function(){
+		 
+		  
+		    
+			$("#print_button1").click(function(){
 				var mode = 'iframe'; // popup
 				var close = mode == "popup";
 				var options = { mode : mode, popClose : false};

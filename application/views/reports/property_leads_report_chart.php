@@ -1,11 +1,11 @@
 <?php  
-    if(isset($row) && count($row->NUMS)>0){  
+    if($row){  
 		$total_nums = $row->NUMS;    
     }
     
     $sr=1; 
     $frmt_arrs ='';
-    if(isset($records) && count($records)>0){
+    if($records){
         foreach($records as $record){ 
 			$propty_typ = $record->lead_type; 
 			   

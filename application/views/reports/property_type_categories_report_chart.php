@@ -1,8 +1,8 @@
 <?php  
 	$sr=1; 
 	$frmt_arrs ='';	   
-	$vs_user_type_id = $this->session->userdata('us_user_type_id');    
-	if(isset($records) && count($records)>0){
+	$vs_user_type_id = $this->session->userdata('us_role_id');    
+	if($records){
 		foreach($records as $record){ 
 			$cate_name = stripslashes($record->cate_name); 
 			$total_nums = $ress->CNT_NUMS;  
