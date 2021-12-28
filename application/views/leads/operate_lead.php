@@ -4,7 +4,12 @@
 <?php 
 	$this->load->view('widgets/meta_tags');
 	$chk_add_contact_permission =  $this->general_model->check_controller_method_permission_access('Contacts','add',$this->dbs_role_id,'1'); ?> 
-	<script src="<?= asset_url();?>vendor/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<!--<script src="<?= asset_url();?>vendor/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.time.js"></script>-->
+	   
+	<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.js"></script>
+	<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.date.js"></script>
+	<script type="text/javascript" src="<?= asset_url();?>js/plugins/pickers/pickadate/picker.time.js"></script>  
 </head>
 <body class="pace-done sidebar-xs">
 <!-- Main navbar -->
@@ -167,8 +172,8 @@
 						} ?>
                           <input name="enquiry_date" placeholder="Adjust Enquiry Date" id="enquiry_date" type="text" class="form-control" value="<?php echo $enquiry_date; ?>" data-error="#enquiry_date1" style="text-align:center;" readonly>
                           <span id="enquiry_date1" class="text-danger"><?php echo form_error('enquiry_date'); ?></span> </div>
-                        <div class="col-md-4">
-                          <input class="form-control timepicker" placeholder="Adjust Enquiry Time" id="enquiry_time" name="enquiry_time" value="<?php echo $enquiry_time; ?>" style="text-align:center;" readonly>
+                        <div class="col-md-4"> <!-- timepicker -->
+                          <input class="form-control pickatime" placeholder="Adjust Enquiry Time" id="enquiry_time" name="enquiry_time" value="<?php echo $enquiry_time; ?>" style="text-align:center;" readonly>
                           <span class="text-danger"><?php echo form_error('enquiry_time'); ?></span> </div>
                       </div>
 					  
@@ -524,211 +529,211 @@
 			</div>
 		</div>
 			
-	<script type="text/javascript">	 
-		$(document).ready(function(){ 
-		<?php
-			$usr_popup_url_1 = 'properties/properties_popup_list/1/';
-			$usr_popup_url_1 = site_url($usr_popup_url_1);
-			
-			$usr_popup_url_2 = 'properties/properties_popup_list/2/';
-			$usr_popup_url_2 = site_url($usr_popup_url_2);
-			
-			$usr_popup_url_3 = 'properties/properties_popup_list/3/';
-			$usr_popup_url_3 = site_url($usr_popup_url_3);
-			
-			$usr_popup_url_4 = 'properties/properties_popup_list/4/';
-			$usr_popup_url_4 = site_url($usr_popup_url_4); ?> 
-			 
-			$('#show_remote_property1_modal').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $usr_popup_url_1; ?>', function() {
-		 
-					if($('.select2-search').length >0){
-						$('.select2-search').select2();
-					}
-				});
-			}); 
-			
-			$('#show_remote_property2_modal').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $usr_popup_url_2; ?>', function() {
-		 
-					if($('.select2-search').length >0){
-						$('.select2-search').select2();
-					}
-				});
-			}); 
-			
-			$('#show_remote_property3_modal').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $usr_popup_url_3; ?>', function() {
-		 
-					if($('.select2-search').length >0){
-						$('.select2-search').select2();
-					}
-				});
-			});  
-			
-			$('#show_remote_property4_modal').on('show.bs.modal', function() {
-				$(this).find('.modal-body').load('<?php echo $usr_popup_url_4; ?>', function() {
-		 
-					if($('.select2-search').length >0){
-						$('.select2-search').select2();
-					}
-				});
-			});
+		<script type="text/javascript">	 
+			$(document).ready(function(){ 
+			<?php
+				$usr_popup_url_1 = 'properties/properties_popup_list/1/';
+				$usr_popup_url_1 = site_url($usr_popup_url_1);
 				
-		}); 
-					
-		function clickeds_properties(sels_vals, sel_paras) {  
-			$(document).ready(function(){
-			<?php  
-				$tmp_usr_pth1 = '/properties/fetch_properties_list/';
-				$tmp_usr_pth1 = site_url($tmp_usr_pth1); ?> 
-				$.ajax({
-					url: '<?php echo $tmp_usr_pth1; ?>',
-					cache: false,
-					type: 'POST', 
-					data: { 'submits':1, sl_propertyid: sels_vals, paras1: sel_paras },
-					success: function (result, status, xhr){
-						$("#fetch_remote_property"+sel_paras).html(result);
-						
-						if($('.select2-search').length >0){ 
+				$usr_popup_url_2 = 'properties/properties_popup_list/2/';
+				$usr_popup_url_2 = site_url($usr_popup_url_2);
+				
+				$usr_popup_url_3 = 'properties/properties_popup_list/3/';
+				$usr_popup_url_3 = site_url($usr_popup_url_3);
+				
+				$usr_popup_url_4 = 'properties/properties_popup_list/4/';
+				$usr_popup_url_4 = site_url($usr_popup_url_4); ?> 
+				 
+				$('#show_remote_property1_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $usr_popup_url_1; ?>', function() {
+			 
+						if($('.select2-search').length >0){
 							$('.select2-search').select2();
 						}
-					}
-				});    
-			}); 
-		} 
-			
-	//function operate_custom_validate(){	
-		$(document).ready(function(){
-			var validator = $('#datas_form').validate({
-				rules: {
-					lead_ref: {
-						required: true 
-					},
-					contact_id: {
-						required: true
-					},
-					enquiry_date: {
-						required: true 
-					},
-					lead_type: {
-						required: true 
-					}, 
-					lead_status: {
-						required: true 
-					},
-					priority: {
-						required: true
-					},
-					source_of_listing: {
-						required: true 
-					},
-					notes: {
-						required: true 
-					},<?php if($this->login_vs_user_role_id != 3){ ?>
-					assigned_to_id: {
-						required: true 
-					}, <?php } ?> 
-				},
-				messages: { 
-					lead_ref: {
-						required: "This is required field",
-					},
-					contact_id: {
-						required: "This is required field",
-					},
-					enquiry_date: {
-						required: "This is required field",
-					},
-					lead_type: {
-						required: "This is required field",
-					}, 
-					lead_status: {
-						required: "This is required field",
-					},
-					priority: {
-						required: "This is required field",
-					},
-					source_of_listing: {
-						required: "This is required field",
-					},
-					notes: {
-						required: "This is required field",
-					},<?php if($this->login_vs_user_role_id != 3){ ?>
-					assigned_to_id: {
-						required: "This is required field", 
-					}, <?php } ?> 
-				},
-				errorPlacement: function(error, element) {
-				  var placement = $(element).data('error');
-				  if (placement) {
-					$(placement).append(error)
-				  } else {
-					error.insertAfter(element);
-				  }
-				},  
-				submitHandler: function(){ 
-					document.forms["datas_form"].submit();
-				}  
-			});
-		});
-	//}
+					});
+				}); 
+				
+				$('#show_remote_property2_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $usr_popup_url_2; ?>', function() {
 			 
-		function operate_remind_area(valss){
-			if(valss==1){ 
-				document.getElementById('remind_area').style.display='';
-			}else{
-				document.getElementById('remind_area').style.display='none';
+						if($('.select2-search').length >0){
+							$('.select2-search').select2();
+						}
+					});
+				}); 
+				
+				$('#show_remote_property3_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $usr_popup_url_3; ?>', function() {
+			 
+						if($('.select2-search').length >0){
+							$('.select2-search').select2();
+						}
+					});
+				});  
+				
+				$('#show_remote_property4_modal').on('show.bs.modal', function() {
+					$(this).find('.modal-body').load('<?php echo $usr_popup_url_4; ?>', function() {
+			 
+						if($('.select2-search').length >0){
+							$('.select2-search').select2();
+						}
+					});
+				});
+					
+			}); 
+						
+			function clickeds_properties(sels_vals, sel_paras) {  
+				$(document).ready(function(){
+				<?php  
+					$tmp_usr_pth1 = '/properties/fetch_properties_list/';
+					$tmp_usr_pth1 = site_url($tmp_usr_pth1); ?> 
+					$.ajax({
+						url: '<?php echo $tmp_usr_pth1; ?>',
+						cache: false,
+						type: 'POST', 
+						data: { 'submits':1, sl_propertyid: sels_vals, paras1: sel_paras },
+						success: function (result, status, xhr){
+							$("#fetch_remote_property"+sel_paras).html(result);
+							
+							if($('.select2-search').length >0){ 
+								$('.select2-search').select2();
+							}
+						}
+					});    
+				}); 
 			} 
-		} 
-        		  
-		/*$(document).ready(function(){   
-			$('#remind_date_1').datepicker({
-				format: "yyyy-mm-dd"
-				}).on('change', function(){
-					$('.datepicker').hide();
-					operate_leads_properties();
-			});   
-		}); */
-			
-	<?php 
-		$get_contact_info_url = 'contacts/operate_contact_info/';
-		$get_contact_info_url = site_url($get_contact_info_url); ?>
-			
-		function operate_contact_info(sels_vals){
+				
+		//function operate_custom_validate(){	
 			$(document).ready(function(){
-				$.ajax({
-					url: '<?php echo $get_contact_info_url; ?>'+sels_vals,
-					cache: false,
-					type: 'POST',
-					data: { 'submits':1 },
-					success: function (result,status,xhr) { 
-						document.getElementById("fetch_contacts_info").innerHTML = result;  
-					}
+				var validator = $('#datas_form').validate({
+					rules: {
+						lead_ref: {
+							required: true 
+						},
+						contact_id: {
+							required: true
+						},
+						enquiry_date: {
+							required: true 
+						},
+						lead_type: {
+							required: true 
+						}, 
+						lead_status: {
+							required: true 
+						},
+						priority: {
+							required: true
+						},
+						source_of_listing: {
+							required: true 
+						},
+						notes: {
+							required: true 
+						},<?php if($this->login_vs_user_role_id != 3){ ?>
+						assigned_to_id: {
+							required: true 
+						}, <?php } ?> 
+					},
+					messages: { 
+						lead_ref: {
+							required: "This is required field",
+						},
+						contact_id: {
+							required: "This is required field",
+						},
+						enquiry_date: {
+							required: "This is required field",
+						},
+						lead_type: {
+							required: "This is required field",
+						}, 
+						lead_status: {
+							required: "This is required field",
+						},
+						priority: {
+							required: "This is required field",
+						},
+						source_of_listing: {
+							required: "This is required field",
+						},
+						notes: {
+							required: "This is required field",
+						},<?php if($this->login_vs_user_role_id != 3){ ?>
+						assigned_to_id: {
+							required: "This is required field", 
+						}, <?php } ?> 
+					},
+					errorPlacement: function(error, element) {
+					  var placement = $(element).data('error');
+					  if (placement) {
+						$(placement).append(error)
+					  } else {
+						error.insertAfter(element);
+					  }
+					},  
+					submitHandler: function(){ 
+						document.forms["datas_form"].submit();
+					}  
 				});
 			});
-		}     		
+		//}
+				 
+			function operate_remind_area(valss){
+				if(valss==1){ 
+					document.getElementById('remind_area').style.display='';
+				}else{
+					document.getElementById('remind_area').style.display='none';
+				} 
+			} 
+					  
+			/*$(document).ready(function(){   
+				$('#remind_date_1').datepicker({
+					format: "yyyy-mm-dd"
+					}).on('change', function(){
+						$('.datepicker').hide();
+						operate_leads_properties();
+				});   
+			}); */
+				
 		<?php 
-			if(strlen($remind_date_1)>0){
-				/* ok */
-			}else{ ?> 
-			$(document).ready(function(){ 
-				document.getElementById("remind_date_1").value ='';
-				document.getElementById("remind_time_1").value ='';
-			});
-		<?php 
-			}   
-			if(strlen($enquiry_date)>0){
-				/* ok */
-			}else{ ?>
-		 
-			/* $(document).ready(function(){ 
-				document.getElementById("enquiry_date").value ='';
-				document.getElementById("enquiry_time").value ='';
-			});	 */
+			$get_contact_info_url = 'contacts/operate_contact_info/';
+			$get_contact_info_url = site_url($get_contact_info_url); ?>
+				
+			function operate_contact_info(sels_vals){
+				$(document).ready(function(){
+					$.ajax({
+						url: '<?php echo $get_contact_info_url; ?>'+sels_vals,
+						cache: false,
+						type: 'POST',
+						data: { 'submits':1 },
+						success: function (result,status,xhr) { 
+							document.getElementById("fetch_contacts_info").innerHTML = result;  
+						}
+					});
+				});
+			}     		
+			<?php 
+				if(strlen($remind_date_1)>0){
+					/* ok */
+				}else{ ?> 
+				$(document).ready(function(){ 
+					document.getElementById("remind_date_1").value ='';
+					document.getElementById("remind_time_1").value ='';
+				});
+			<?php 
+				}   
+				if(strlen($enquiry_date)>0){
+					/* ok */
+				}else{ ?>
 			 
-		<?php } ?>
-	</script> 
+				/* $(document).ready(function(){ 
+					document.getElementById("enquiry_date").value ='';
+					document.getElementById("enquiry_time").value ='';
+				});	 */
+				 
+			<?php } ?>
+		</script> 
 
               </div>
             </div>

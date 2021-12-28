@@ -180,8 +180,8 @@ $(function() {
             modal: modalTemplate
         },
         initialPreview: [
-            "assets/images/placeholder.jpg",
-            "assets/images/placeholder.jpg",
+            "../assets/images/placeholder.jpg",
+            "../assets/images/placeholder.jpg",
         ],
         initialPreviewConfig: [
             {caption: "Jane.jpg", size: 930321, key: 1, showDrag: false},
@@ -210,8 +210,8 @@ $(function() {
             modal: modalTemplate
         },
         initialPreview: [
-            "assets/images/placeholder.jpg",
-            "assets/images/placeholder.jpg"
+            "../assets/images/placeholder.jpg",
+            "../assets/images/placeholder.jpg"
         ],
         initialPreviewConfig: [
             {caption: "Jane.jpg", size: 930321, key: 1, showDrag: false},
