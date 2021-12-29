@@ -191,10 +191,18 @@
 		$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');
 		
 		if(isset($_POST) && !empty($_POST)){
-		
 			// get form input
 			$name = $this->input->post("name");  
-			$parent_id = $this->input->post("parent_id");  
+			$level = 0;
+			if($_POST['parent_id'] == 0){
+				$parent_id = $this->input->post("parent_id");
+			}else{
+				$parent_id_arr = explode('__', $_POST['parent_id']);
+				if($parent_id_arr){
+					$parent_id = $parent_id_arr[0];
+					$level = $parent_id_arr[1]; 
+				} 
+			}
 			$description = $this->input->post("description");   
 			$status = isset($_POST['status']) ? 1 : 0;
 			 
@@ -204,9 +212,8 @@
 			if($this->form_validation->run() == FALSE){
 			// validation fail
 				$this->load->view('locations/add',$data);
-			}else{
-					 
-				$datas = array('parent_id' => $parent_id, 'name' => $name, 'description' => $description, 'status' => $status); 
+			}else{ 
+				$datas = array('parent_id' => $parent_id, 'level' => $level, 'name' => $name, 'description' => $description, 'status' => $status); 
 				$res = $this->locations_model->insert_location_data($datas); 
 				if(isset($res)){
 					$this->session->set_flashdata('success_msg','Record inserted successfully!');
@@ -247,8 +254,22 @@
 		
 		if(isset($_POST) && !empty($_POST)){ 
 			// get form input
-			$name = $this->input->post("name"); 
-			$parent_id = $this->input->post("parent_id");  
+			$name = $this->input->post("name");
+			$level = 0;
+			if($_POST['parent_id'] == 0){
+				$parent_id = $this->input->post("parent_id");   
+			}else{
+				$parent_id_arr = explode('__', $_POST['parent_id']);
+				if($parent_id_arr){
+					$parent_id = $parent_id_arr[0];
+					$level = $parent_id_arr[1]; 
+				} 
+			}
+			
+			/*echo $parent_id;
+			echo $level;
+			exit;*/
+			
 			$description = $this->input->post("description");
 			$status = isset($_POST['status']) ? 1 : 0;
 			 
@@ -260,7 +281,7 @@
 				$this->load->view('locations/update',$data);
 			}else if(isset($args1) && $args1!=''){
 				  
-				$datas = array('parent_id' => $parent_id, 'name' => $name, 'description' => $description, 'status' => $status); 
+				$datas = array('parent_id' => $parent_id, 'level' => $level, 'name' => $name, 'description' => $description, 'status' => $status); 
 				$res = $this->locations_model->update_location_data($args1,$datas); 
 				if(isset($res)){
 					$this->session->set_flashdata('success_msg','Record updated successfully!');
@@ -287,15 +308,17 @@
 			
 			if($loc_arrs){
 				$fst_parentid = $loc_arrs[0]->parent_id;
+				$fst_levelno = $loc_arrs[0]->level;
 				$searchable_elmnt = '#location_searcher'.$fst_parentid;
 				$sortable_elmnt = '.selectable'.$fst_parentid;
+				$parent_level_box_cls = "parent_level_box".$fst_levelno;
 				
-				$ret_txt .= '<div class="parent_location_box0" id="fetch_parent_location_box'.$paras2.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$paras1.'">Cities </label>  <span class="filter_cls"><input type="text" name="location_searcher'.$fst_parentid.'" id="location_searcher'.$fst_parentid.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$searchable_elmnt .'\', \''.$sortable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$paras2.'\', \''.$fst_parentid.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; /// 
+				$ret_txt .= '<div class="parent_location_box0 '.$parent_level_box_cls.'" id="fetch_parent_location_box'.$paras2.'" data-level-box-elmnt="'.$fst_levelno.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$paras1.'">Cities </label>  <span class="filter_cls"><input type="text" name="location_searcher'.$fst_parentid.'" id="location_searcher'.$fst_parentid.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$searchable_elmnt .'\', \''.$sortable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$paras2.'\', \''.$fst_parentid.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; /// 
 				$chk = 0;
 				foreach($loc_arrs as $loc_arr){   
 					$loc_parent_id = $loc_arr->parent_id+1;
 					
-					$ret_txt .= '<li class="selectable'.$fst_parentid.'"><label for="parent_loc_id'.$loc_arr->id.'"> <input type="radio" name="parent_loc_id'.$loc_arr->parent_id.'" id="parent_loc_id'.$loc_arr->id.'" value="'.$loc_arr->id.'" data-item-id="'.$loc_arr->id.'" data-item-label="'.$loc_arr->name.'" data-item-parent-id="'.$loc_arr->parent_id.'" data-item-parent-inc-id="'.$loc_parent_id.'" class="chk_location_cls" onClick="operate_property_locations(\''.$loc_arr->id.'\',\''.$loc_parent_id.'\');" /> '.stripslashes($loc_arr->name).' </label> </li>';  
+					$ret_txt .= '<li class="selectable'.$fst_parentid.'"><label for="parent_loc_id'.$loc_arr->id.'"> <input type="radio" name="parent_loc_id'.$loc_arr->parent_id.'" id="parent_loc_id'.$loc_arr->id.'" value="'.$loc_arr->id.'" data-item-id="'.$loc_arr->id.'" data-item-label="'.$loc_arr->name.'" data-item-parent-id="'.$loc_arr->parent_id.'" data-item-parent-inc-id="'.$loc_parent_id.'" data-item-level-no="'.$loc_arr->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$loc_arr->id.'\',\''.$loc_parent_id.'\');" /> '.stripslashes($loc_arr->name).' </label> </li>';  
 					$chk++;	
 				}  
 			 	

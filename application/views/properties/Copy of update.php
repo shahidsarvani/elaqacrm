@@ -681,7 +681,7 @@
 			}																	
 		</style>  
 		<script> 
-			function operate_property_locations(sl_item_id){
+			function operate_property_locations(sl_item_id){	
 				$(document).ready(function(){
 					//$(".chk_location_cls").click(function() {
 					var data_item_parent_id = $("#parent_loc_id"+sl_item_id).attr("data-item-parent-id");
@@ -708,35 +708,10 @@
 							$('.loading').hide();  
 							resp_data = resp_data.trim();
 							if(resp_data != ''){
-								//$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
+								$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
 								 
 								$("#fetch_dyna_locations").append(resp_data);	 
 								$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label ); 
-								
-								var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt"); 
-							 
-								if(data_level_box_elmnt == 1){  	
-									$(".parent_level_box2").remove();	
-									$(".parent_level_box3").remove();	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								}
-								
-								if(data_level_box_elmnt == 2){
-									$(".parent_level_box3").remove();	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								}
-								 
-								if(data_level_box_elmnt == 3){   	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								} 
-								
-								if(data_level_box_elmnt == 4){
-									$(".parent_level_box5").remove();	 
-								} 
-								
 							}
 						}
 					});
@@ -747,41 +722,8 @@
 			function remove_sel_location(sl_para1, sl_para2){
 				$(document).ready(function(){
 					if( $("#fetch_parent_location_box"+sl_para1).length >0 ){   
-					
-						var level_box_elmnt_no = $("#fetch_parent_location_box"+sl_para1).attr("data-level-box-elmnt");
-						
 						$("#parent_loc_id"+sl_para2).parents('.parent_location_box0').removeClass('disable_cls'); 
-						//$("#fetch_parent_location_box"+sl_para1).remove();	
-							
-						if(level_box_elmnt_no == 1){ 
-							$(".parent_level_box1").remove();	
-							$(".parent_level_box2").remove();	
-							$(".parent_level_box3").remove();	
-							$(".parent_level_box4").remove();	
-							$(".parent_level_box5").remove();	 
-						}
-						
-						if(level_box_elmnt_no == 2){  	
-							$(".parent_level_box2").remove();	
-							$(".parent_level_box3").remove();	
-							$(".parent_level_box4").remove();	
-							$(".parent_level_box5").remove();	 
-						}
-						 
-						if(level_box_elmnt_no == 3){  
-							$(".parent_level_box3").remove();	
-							$(".parent_level_box4").remove();	
-							$(".parent_level_box5").remove();	 
-						} 
-						
-						if(level_box_elmnt_no == 4){
-							$(".parent_level_box4").remove();	
-							$(".parent_level_box5").remove();	 
-						}
-						
-						if(level_box_elmnt_no == 5){  	
-							$(".parent_level_box5").remove();	 
-						}
+						$("#fetch_parent_location_box"+sl_para1).remove();	
 					}
 				});
 			}
@@ -821,7 +763,7 @@
 	  <div class="panel-body">
 		<div class="row"> 
 			<div class="col-md-12" id="fetch_dyna_locations">
-			  <div class="parent_location_box0" id="fetch_parent_location_box01"> <!-- disable_cls -->
+			  <div class="parent_location_box0 disable_cls" id="fetch_parent_location_box01"> <!-- disable_cls -->
 				<label class="control-label bolder" for="parent_location_id">Cities </label> <span class="filter_cls"><input type="text" name="location_searcher1" id="location_searcher1" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters('#location_searcher1', '.selectable1');" /></span>
 				<div class="parent_box_area0">
 				  <ul class="ul_location_cls">
@@ -845,20 +787,18 @@
 			$sl_loc_name1 = $locations_arr->name;
 			
 			$ret_chk1 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr->id, $record->id); ?> 
-			<li class="selectable1"> <label for="parent_loc_id<?= $locations_arr->id; ?>"> <input type="radio" name="parent_loc_id" id="parent_loc_id<?= $locations_arr->id; ?>" value="<?= $locations_arr->id; ?>" data-item-id="<?= $locations_arr->id; ?>" data-item-label="<?= $locations_arr->name; ?>" data-item-parent-id="<?= $locations_arr->parent_id; ?>" data-item-parent-inc-id="<?= $locations_arr->parent_id+1; ?>" data-item-level-no="<?= $locations_arr->level; ?>" class="chk_location_cls" onClick="operate_property_locations('<?= $locations_arr->id; ?>');" <?php echo ($ret_chk1 >= 1) ? 'checked="checked"' : ''; ?> /> <?= $locations_arr->name; ?> </label> </li>
+			<li class="selectable1"> <label for="parent_loc_id<?= $locations_arr->id; ?>"> <input type="radio" name="parent_loc_id" id="parent_loc_id<?= $locations_arr->id; ?>" value="<?= $locations_arr->id; ?>" data-item-id="<?= $locations_arr->id; ?>" data-item-label="<?= $locations_arr->name; ?>" data-item-parent-id="<?= $locations_arr->parent_id; ?>" data-item-parent-inc-id="<?= $locations_arr->parent_id+1; ?>" class="chk_location_cls" onClick="operate_property_locations('<?= $locations_arr->id; ?>');" <?php echo ($ret_chk1 >= 1) ? 'checked="checked"' : ''; ?> /> <?= $locations_arr->name; ?> </label> </li> 	
 		<?php
 			if($ret_chk1 >0){
 				$locations_arr2s = $this->locations_model->get_parent_child_locations($locations_arr->id);
 				if($locations_arr2s){
 					$cntr_no = $cntr_no + 1;
-					$disable_cls = ''; //($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
+					$disable_cls = ($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
 					 
 					$location_searcher_elmnt = "#location_searcher".$sl_loc_id1;
-					$selectable_elmnt = ".selectable".$sl_loc_id1; 
-					$my_level2_box_no = $locations_arr2s[0]->level; 
-					$parent_level_box2_cls = "parent_level_box".$my_level2_box_no;
-				 
-					$ret_sub_loc_txt2 = '<div class="parent_location_box0 '.$disable_cls.' '.$parent_level_box2_cls.'" id="fetch_parent_location_box'.$sl_loc_parent1_inc.'" data-level-box-elmnt="'.$my_level2_box_no.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id1.'">'.$sl_loc_name1.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id1.'" id="location_searcher'.$sl_loc_id1.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent1_inc.'\', \''.$sl_loc_id1.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">';
+					$selectable_elmnt = ".selectable".$sl_loc_id1;
+					
+					$ret_sub_loc_txt2 = '<div class="parent_location_box0 '.$disable_cls.'" id="fetch_parent_location_box'.$sl_loc_parent1_inc.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id1.'">'.$sl_loc_name1.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id1.'" id="location_searcher'.$sl_loc_id1.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent1_inc.'\', \''.$sl_loc_id1.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">';
 				
 					foreach($locations_arr2s as $locations_arr2){
 						$sl_loc_id2 = $locations_arr2->id;
@@ -869,20 +809,18 @@
 						$ret_chk2 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr2->id, $record->id);
 						$chk2 = ($ret_chk2 >= 1) ? 'checked="checked"' : '';
 						 
-						$ret_sub_loc_txt2 .= '<li class="selectable'.$sl_loc_id1.'"> <label for="parent_loc_id'.$sl_loc_id2.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent2.'" id="parent_loc_id'.$sl_loc_id2.'" value="'.$sl_loc_id2.'" '.$chk2.' data-item-id="'.$sl_loc_id2.'" data-item-label="'.$sl_loc_name2.'" data-item-parent-id="'.$sl_loc_parent2.'" data-item-parent-inc-id="'.$sl_loc_parent2_inc.'" data-item-level-no="'.$locations_arr2->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id2.'\',\''.$sl_loc_id2.'\');"> '.$sl_loc_name2.' </label> </li>';
+						$ret_sub_loc_txt2 .= '<li class="selectable'.$sl_loc_id1.'"> <label for="parent_loc_id'.$sl_loc_id2.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent2.'" id="parent_loc_id'.$sl_loc_id2.'" value="'.$sl_loc_id2.'" '.$chk2.' data-item-id="'.$sl_loc_id2.'" data-item-label="'.$sl_loc_name2.'" data-item-parent-id="'.$sl_loc_parent2.'" data-item-parent-inc-id="'.$sl_loc_parent2_inc.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id2.'\',\''.$sl_loc_id2.'\');"> '.$sl_loc_name2.' </label> </li>';
 						 
-						if($ret_chk2 >0 && $disable_cls == ''){ //disable_cls
+						if($ret_chk2 >0 && $disable_cls == 'disable_cls'){
 							$locations_arr3s = $this->locations_model->get_parent_child_locations($locations_arr2->id);
 							if($locations_arr3s){
 								$cntr_no = $cntr_no + 1;
-								$disable_cls = ''; //($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
+								$disable_cls = ($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
 								
 								$location_searcher_elmnt = "#location_searcher".$sl_loc_id2;
 								$selectable_elmnt = ".selectable".$sl_loc_id2;
-								$my_level3_box_no = $locations_arr3s[0]->level; 
-								$parent_level_box3_cls = "parent_level_box".$my_level3_box_no;
 					
-								$ret_sub_loc_txt3 = '<div class="parent_location_box0 '.$disable_cls.' '.$parent_level_box3_cls.'" id="fetch_parent_location_box'.$sl_loc_parent2_inc.'" data-level-box-elmnt="'.$my_level3_box_no.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id2.'">'.$sl_loc_name2.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id2.'" id="location_searcher'.$sl_loc_id2.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent2_inc.'\', \''.$sl_loc_id2.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">';
+								$ret_sub_loc_txt3 = '<div class="parent_location_box0 '.$disable_cls.'" id="fetch_parent_location_box'.$sl_loc_parent2_inc.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id2.'">'.$sl_loc_name2.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id2.'" id="location_searcher'.$sl_loc_id2.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent2_inc.'\', \''.$sl_loc_id2.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">';
 							
 								foreach($locations_arr3s as $locations_arr3){
 									$sl_loc_id3 = $locations_arr3->id;
@@ -893,21 +831,18 @@
 									$ret_chk3 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr3->id, $record->id); 
 									$chk3 = ($ret_chk3 >= 1) ? 'checked="checked"' : '';
 									
-									$ret_sub_loc_txt3 .= '<li class="selectable'.$sl_loc_id2.'"> <label for="parent_loc_id'.$sl_loc_id3.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent3.'" id="parent_loc_id'.$sl_loc_id3.'" value="'.$sl_loc_id3.'" '.$chk3.' data-item-id="'.$sl_loc_id3.'" data-item-label="'.$sl_loc_name3.'" data-item-parent-id="'.$sl_loc_parent3.'" data-item-parent-inc-id="'.$sl_loc_parent3_inc.'" data-item-level-no="'.$locations_arr3->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id3.'\',\''.$sl_loc_id3.'\');"> '.$sl_loc_name3.' </label> </li>';
+									$ret_sub_loc_txt3 .= '<li class="selectable'.$sl_loc_id2.'"> <label for="parent_loc_id'.$sl_loc_id3.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent3.'" id="parent_loc_id'.$sl_loc_id3.'" value="'.$sl_loc_id3.'" '.$chk3.' data-item-id="'.$sl_loc_id3.'" data-item-label="'.$sl_loc_name3.'" data-item-parent-id="'.$sl_loc_parent3.'" data-item-parent-inc-id="'.$sl_loc_parent3_inc.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id3.'\',\''.$sl_loc_id3.'\');"> '.$sl_loc_name3.' </label> </li>';
 									
-									if($ret_chk3 >0 && $disable_cls == ''){ //disable_cls
+									if($ret_chk3 >0 && $disable_cls == 'disable_cls'){
 										$locations_arr4s = $this->locations_model->get_parent_child_locations($locations_arr3->id);
 										if($locations_arr4s){
 											$cntr_no = $cntr_no + 1;
-											$disable_cls = ''; //($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
+											$disable_cls = ($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
 											
 											$location_searcher_elmnt = "#location_searcher".$sl_loc_id3;
 											$selectable_elmnt = ".selectable".$sl_loc_id3;
-											
-											$my_level4_box_no = $locations_arr4s[0]->level; 
-											$parent_level_box4_cls = "parent_level_box".$my_level4_box_no;
 								
-											$ret_sub_loc_txt4 = '<div class="parent_location_box0 '.$disable_cls.' '.$parent_level_box4_cls.'" id="fetch_parent_location_box'.$sl_loc_parent3_inc.'" data-level-box-elmnt="'.$my_level4_box_no.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id3.'">'.$sl_loc_name3.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id3.'" id="location_searcher'.$sl_loc_id3.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent3_inc.'\', \''.$sl_loc_id3.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
+											$ret_sub_loc_txt4 = '<div class="parent_location_box0 '.$disable_cls.'" id="fetch_parent_location_box'.$sl_loc_parent3_inc.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id3.'">'.$sl_loc_name3.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id3.'" id="location_searcher'.$sl_loc_id3.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent3_inc.'\', \''.$sl_loc_id3.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
 											foreach($locations_arr4s as $locations_arr4){
 												$sl_loc_id4 = $locations_arr4->id;
 												$sl_loc_name4 = $locations_arr4->name;
@@ -917,20 +852,18 @@
 												$ret_chk4 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr4->id, $record->id); 
 												$chk4 = ($ret_chk4 >= 1) ? 'checked="checked"' : '';
 												
-												$ret_sub_loc_txt4 .= '<li class="selectable'.$sl_loc_id3.'"> <label for="parent_loc_id'.$sl_loc_id4.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent4.'" id="parent_loc_id'.$sl_loc_id4.'" value="'.$sl_loc_id4.'" '.$chk4.' data-item-id="'.$sl_loc_id4.'" data-item-label="'.$sl_loc_name4.'" data-item-parent-id="'.$sl_loc_parent4.'" data-item-parent-inc-id="'.$sl_loc_parent4_inc.'" data-item-level-no="'.$locations_arr4->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id4.'\',\''.$sl_loc_id4.'\');"> '.$sl_loc_name4.' </label> </li>'; 
+												$ret_sub_loc_txt4 .= '<li class="selectable'.$sl_loc_id3.'"> <label for="parent_loc_id'.$sl_loc_id4.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent4.'" id="parent_loc_id'.$sl_loc_id4.'" value="'.$sl_loc_id4.'" '.$chk4.' data-item-id="'.$sl_loc_id4.'" data-item-label="'.$sl_loc_name4.'" data-item-parent-id="'.$sl_loc_parent4.'" data-item-parent-inc-id="'.$sl_loc_parent4_inc.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id4.'\',\''.$sl_loc_id4.'\');"> '.$sl_loc_name4.' </label> </li>'; 
 												
-											if($ret_chk4 >0 && $disable_cls == ''){ //disable_cls
+											if($ret_chk4 >0 && $disable_cls == 'disable_cls'){
 												$locations_arr5s = $this->locations_model->get_parent_child_locations($locations_arr4->id);
 												if($locations_arr5s){
 													$cntr_no = $cntr_no + 1;
-													$disable_cls = ''; //($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
+													$disable_cls = ($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
 													
 													$location_searcher_elmnt = "#location_searcher".$sl_loc_id4;
 													$selectable_elmnt = ".selectable".$sl_loc_id4;
-													$my_level5_box_no = $locations_arr5s[0]->level; 
-													$parent_level_box5_cls = "parent_level_box".$my_level5_box_no;
 											
-													$ret_sub_loc_txt5 = '<div class="parent_location_box0 '.$disable_cls.' '.$parent_level_box5_cls.'" id="fetch_parent_location_box'.$sl_loc_parent4_inc.'" data-level-box-elmnt="'.$my_level5_box_no.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id4.'">'.$sl_loc_name4.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id4.'" id="location_searcher'.$sl_loc_id4.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent4_inc.'\', \''.$sl_loc_id4.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
+													$ret_sub_loc_txt5 = '<div class="parent_location_box0 '.$disable_cls.'" id="fetch_parent_location_box'.$sl_loc_parent4_inc.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id4.'">'.$sl_loc_name4.'</label> <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id4.'" id="location_searcher'.$sl_loc_id4.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent4_inc.'\', \''.$sl_loc_id4.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
 													foreach($locations_arr5s as $locations_arr5){
 														$sl_loc_id5 = $locations_arr5->id;
 														$sl_loc_name5 = $locations_arr5->name;
@@ -940,20 +873,18 @@
 														$ret_chk5 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr5->id, $record->id); 
 														$chk5 = ($ret_chk5 >= 1) ? 'checked="checked"' : '';
 														
-														$ret_sub_loc_txt5 .= '<li class="selectable'.$sl_loc_id4.'"> <label for="parent_loc_id'.$sl_loc_id5.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent5.'" id="parent_loc_id'.$sl_loc_id5.'" value="'.$sl_loc_id5.'" '.$chk5.' data-item-id="'.$sl_loc_id5.'" data-item-label="'.$sl_loc_name5.'" data-item-parent-id="'.$sl_loc_parent5.'" data-item-parent-inc-id="'.$sl_loc_parent5_inc.'" data-item-level-no="'.$locations_arr5->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id5.'\',\''.$sl_loc_id5.'\');"> '.$sl_loc_name5.' </label> </li>';
+														$ret_sub_loc_txt5 .= '<li class="selectable'.$sl_loc_id4.'"> <label for="parent_loc_id'.$sl_loc_id5.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent5.'" id="parent_loc_id'.$sl_loc_id5.'" value="'.$sl_loc_id5.'" '.$chk5.' data-item-id="'.$sl_loc_id5.'" data-item-label="'.$sl_loc_name5.'" data-item-parent-id="'.$sl_loc_parent5.'" data-item-parent-inc-id="'.$sl_loc_parent5_inc.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id5.'\',\''.$sl_loc_id5.'\');"> '.$sl_loc_name5.' </label> </li>';
 														 
-														if($ret_chk5 >0 && $disable_cls == ''){ //disable_cls
+														if($ret_chk5 >0 && $disable_cls == 'disable_cls'){
 															$locations_arr6s = $this->locations_model->get_parent_child_locations($locations_arr5->id);
 															if($locations_arr6s){
 																$cntr_no = $cntr_no + 1;
-																$disable_cls = ''; //($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
+																$disable_cls = ($total_property_nums >= $cntr_no) ? 'disable_cls' : '';
 																
 																$location_searcher_elmnt = "#location_searcher".$sl_loc_id5;
 																$selectable_elmnt = ".selectable".$sl_loc_id5;
-																$my_level6_box_no = $locations_arr6s[0]->level; 
-																$parent_level_box6_cls = "parent_level_box".$my_level6_box_no;
 													 
-																$ret_sub_loc_txt6 = '<div class="parent_location_box0 '.$disable_cls.' '.$parent_level_box6_cls.'" id="fetch_parent_location_box'.$sl_loc_parent5_inc.'" data-level-box-elmnt="'.$my_level6_box_no.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id5.'">'.$sl_loc_name5.'</label>  <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id5.'" id="location_searcher'.$sl_loc_id5.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent5_inc.'\', \''.$sl_loc_id5.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
+																$ret_sub_loc_txt6 = '<div class="parent_location_box0 '.$disable_cls.'" id="fetch_parent_location_box'.$sl_loc_parent5_inc.'"> <label class="control-label bolder" for="parent_location_id" id="fetch_parent_location_lbl'.$sl_loc_id5.'">'.$sl_loc_name5.'</label>  <span class="filter_cls"><input type="text" name="location_searcher'.$sl_loc_id5.'" id="location_searcher'.$sl_loc_id5.'" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters(\''.$location_searcher_elmnt.'\', \''.$selectable_elmnt.'\');" /></span> <a href="javascript:javascript:void(0);" onClick="remove_sel_location(\''.$sl_loc_parent5_inc.'\', \''.$sl_loc_id5.'\');"> x </a> <div class="parent_box_area0"> <ul class="ul_location_cls">'; 
 																foreach($locations_arr6s as $locations_arr6){
 																	$sl_loc_id6 = $locations_arr6->id;
 																	$sl_loc_name6 = $locations_arr6->name;
@@ -963,13 +894,14 @@
 																	$ret_chk6 = $this->properties_model->chk_loation_by_property_location_ids($locations_arr6->id, $record->id);
 																	$chk6 = ($ret_chk6 >= 1) ? 'checked="checked"' : '';
 																	
-																	$ret_sub_loc_txt6 .= '<li class="selectable'.$sl_loc_id5.'"> <label for="parent_loc_id'.$sl_loc_id6.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent6.'" id="parent_loc_id'.$sl_loc_id6.'" value="'.$sl_loc_id6.'" '.$chk6.' data-item-id="'.$sl_loc_id6.'" data-item-label="'.$sl_loc_name6.'" data-item-parent-id="'.$sl_loc_parent6.'" data-item-parent-inc-id="'.$sl_loc_parent6_inc.'" data-item-level-no="'.$locations_arr6->level.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id6.'\',\''.$sl_loc_id6.'\');"> '.$sl_loc_name6.' </label> </li>';
-																
+																	$ret_sub_loc_txt6 .= '<li class="selectable'.$sl_loc_id5.'"> <label for="parent_loc_id'.$sl_loc_id6.'"> <input type="radio" name="parent_loc_id'.$sl_loc_parent6.'" id="parent_loc_id'.$sl_loc_id6.'" value="'.$sl_loc_id6.'" '.$chk6.' data-item-id="'.$sl_loc_id6.'" data-item-label="'.$sl_loc_name6.'" data-item-parent-id="'.$sl_loc_parent6.'" data-item-parent-inc-id="'.$sl_loc_parent6_inc.'" class="chk_location_cls" onClick="operate_property_locations(\''.$sl_loc_id6.'\',\''.$sl_loc_id6.'\');"> '.$sl_loc_name6.' </label> </li>';
 																}
 																
 																$ret_sub_loc_txt6 .= '</ul> </div> </div>'; 
 															} 
-														} 
+														}
+														
+														 
 														
 													}
 													

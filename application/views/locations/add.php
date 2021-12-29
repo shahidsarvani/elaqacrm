@@ -53,49 +53,48 @@ $this->load->view('widgets/meta_tags'); ?>
 				  <div class="form-group">
                     <label class="col-md-2 control-label" for="parent_id">Parent Location(s)<span class="reds"> </span></label>
                     <div class="col-md-6">
-                      <select name="parent_id" id="parent_id" class="form-control select2" data-error="#parent_id1">
-                        <option value="0">Select Parent Location </option>
- 
+			  <select name="parent_id" id="parent_id" class="form-control select2" data-error="#parent_id1">
+				<option value="0">Select Parent Location </option> 
 				<?php 		 
 					if(isset($locations_arrs)){
 						foreach($locations_arrs as $record1){ 
 							
 							$sel_1 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record1->id) ? 'selected="selected"' : ''; ?>
 							
-							<option value="<?php echo $record1->id; ?>" <?php echo $sel_1; ?>> <?php echo $parent_loc1 = stripslashes($record1->name); ?> </option> 			
+							<option value="<?php echo $record1->id.'__1'; ?>" <?php echo $sel_1; ?>> <?php echo $parent_loc1 = stripslashes($record1->name); ?> </option> 			
 						<?php  
 							$record2s = $this->locations_model->get_parent_child_locations($record1->id);
 							if(isset($record2s)){
 								foreach($record2s as $record2){
 									$sel_2 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record2->id) ? 'selected="selected"' : ''; ?> 
-									<option value="<?php echo $record2->id; ?>" <?php echo $sel_2; ?>> - <?php echo $parent_loc2 = stripslashes($record2->name); ?> </option>  
+									<option value="<?php echo $record2->id.'__2'; ?>" <?php echo $sel_2; ?>> - <?php echo $parent_loc2 = stripslashes($record2->name); ?> </option>  
 									<?php     
 										$record3s = $this->locations_model->get_parent_child_locations($record2->id);
 										if(isset($record3s)){
 											foreach($record3s as $record3){
 												$sel_3 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record3->id) ? 'selected="selected"' : '';  ?> 
-												<option value="<?php echo $record3->id; ?>" <?php echo $sel_3; ?>> - - <?php echo $parent_loc3 = stripslashes($record3->name); ?> </option> 
+												<option value="<?php echo $record3->id.'__3'; ?>" <?php echo $sel_3; ?>> - - <?php echo $parent_loc3 = stripslashes($record3->name); ?> </option> 
 													
 												<?php 
 													$record4s = $this->locations_model->get_parent_child_locations($record3->id);  
 													if(isset($record4s)){
 														foreach($record4s as $record4){
 															$sel_4 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record4->id) ?	'selected="selected"' : '';  ?> 
-															<option value="<?php echo $record4->id; ?>" <?php echo $sel_4; ?>> - - -  <?php echo $parent_loc4 = stripslashes($record4->name); ?> </option> 
+															<option value="<?php echo $record4->id.'__4'; ?>" <?php echo $sel_4; ?>> - - -  <?php echo $parent_loc4 = stripslashes($record4->name); ?> </option> 
 														
 														<?php    
 															$record5s = $this->locations_model->get_parent_child_locations($record4->id);   
 															if(isset($record5s)){
 																foreach($record5s as $record5){ 
 																	$sel_5 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record5->id) ?	'selected="selected"' : '';  ?> 
-																		<option value="<?php echo $record5->id; ?>" <?php echo $sel_5; ?>> - - - -  <?php echo $parent_loc5 = stripslashes($record5->name); ?> </option>   	 
+																		<option value="<?php echo $record5->id.'__5'; ?>" <?php echo $sel_5; ?>> - - - -  <?php echo $parent_loc5 = stripslashes($record5->name); ?> </option>   	 
 																		
 																<?php 
 																	$record6s = $this->locations_model->get_parent_child_locations($record5->id);   
 																	if(isset($record6s)){
 																		foreach($record6s as $record6){
 																			$sel_6 = (isset($_POST['parent_id']) && $_POST['parent_id']==$record6->id) ?	'selected="selected"' : '';  ?>
-																			<option value="<?php echo $record6->id; ?>" <?php echo $sel_6; ?>> - - - - - <?php echo $parent_loc6 = stripslashes($record6->name); ?> </option>      
+																			<option value="<?php echo $record6->id.'__6'; ?>" <?php echo $sel_6; ?>> - - - - - <?php echo $parent_loc6 = stripslashes($record6->name); ?> </option>      
 																		<?php 
 																		}
 																	} ?>  	

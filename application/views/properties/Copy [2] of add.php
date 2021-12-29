@@ -681,8 +681,7 @@
 	
 				if( ($("#fetch_parent_location_box" + data_item_parent_inc_id).length >0)){
 					$("#fetch_parent_location_box" + data_item_parent_inc_id).remove();	
-				} 
-				 
+				}
 				
 				var fth_sub_loations_url = "<?php echo site_url('/locations/fetch_sub_loations/'); ?>"+data_item_id+"/"+data_item_parent_inc_id;
 				var rnd_no = Math.floor(Math.random() * 101);
@@ -698,39 +697,10 @@
 						$('.loading').hide();  
 						resp_data = resp_data.trim();
 						if(resp_data != ''){
-											//$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
+							$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
 							 
 							$("#fetch_dyna_locations").append(resp_data);	 
 							$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label ); 
-							 
-							var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt"); 
-							
-							
-							if(data_level_box_elmnt == 1){  	
-								$(".parent_level_box2").remove();	
-								$(".parent_level_box3").remove();	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							}
-							
-							if(data_level_box_elmnt == 2){
-								$(".parent_level_box3").remove();	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							}
-							 
-							if(data_level_box_elmnt == 3){   	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							} 
-							
-							if(data_level_box_elmnt == 4){
-								$(".parent_level_box5").remove();	 
-							} 							
-							//alert( data_level_box_elmnt );
-							//data_item_parent_inc_id
-							//$("#fetch_parent_location_box" + data_item_parent_inc_id).remove();
-							
 						}
 					}
 				});
@@ -740,41 +710,9 @@
 		
 		function remove_sel_location(sl_para1, sl_para2){
 			$(document).ready(function(){
-				if( $("#fetch_parent_location_box"+sl_para1).length >0 ){
-					var level_box_elmnt_no = $("#fetch_parent_location_box"+sl_para1).attr("data-level-box-elmnt");
-					  
+				if( $("#fetch_parent_location_box"+sl_para1).length >0 ){  
 					$("#parent_loc_id"+sl_para2).parents('.parent_location_box0').removeClass('disable_cls'); 
-					//$("#fetch_parent_location_box"+sl_para1).remove();	
-					
-					if(level_box_elmnt_no == 1){ 
-						$(".parent_level_box1").remove();	
-						$(".parent_level_box2").remove();	
-						$(".parent_level_box3").remove();	
-						$(".parent_level_box4").remove();	
-						$(".parent_level_box5").remove();	 
-					}
-					
-					if(level_box_elmnt_no == 2){  	
-						$(".parent_level_box2").remove();	
-						$(".parent_level_box3").remove();	
-						$(".parent_level_box4").remove();	
-						$(".parent_level_box5").remove();	 
-					}
-					 
-					if(level_box_elmnt_no == 3){  
-						$(".parent_level_box3").remove();	
-						$(".parent_level_box4").remove();	
-						$(".parent_level_box5").remove();	 
-					} 
-					
-					if(level_box_elmnt_no == 4){  
-						$(".parent_level_box4").remove();	
-						$(".parent_level_box5").remove();	 
-					}
-					
-					if(level_box_elmnt_no == 5){  	
-						$(".parent_level_box5").remove();	 
-					}   
+					$("#fetch_parent_location_box"+sl_para1).remove();	
 				}
 			});
 		}
@@ -839,7 +777,7 @@
 							$chk = 0;
 							if($locations_arrs){
 								foreach($locations_arrs as $locations_arr){  ?>  
-									<li class="selectable1"><label for="parent_loc_id<?= $locations_arr->id; ?>"> <input type="radio" name="parent_loc_id" id="parent_loc_id<?= $locations_arr->id; ?>" value="<?= $locations_arr->id; ?>" data-item-id="<?= $locations_arr->id; ?>" data-item-label="<?= $locations_arr->name; ?>" data-item-parent-id="<?= $locations_arr->parent_id; ?>" data-item-parent-inc-id="<?= $locations_arr->parent_id+1; ?>" data-item-level-no="<?= $locations_arr->level; ?>" class="chk_location_cls" onClick="operate_property_locations('<?= $locations_arr->id; ?>');" /> <?= stripslashes($locations_arr->name); ?> </label> </li>
+									<li class="selectable1"><label for="parent_loc_id<?= $locations_arr->id; ?>"> <input type="radio" name="parent_loc_id" id="parent_loc_id<?= $locations_arr->id; ?>" value="<?= $locations_arr->id; ?>" data-item-id="<?= $locations_arr->id; ?>" data-item-label="<?= $locations_arr->name; ?>" data-item-parent-id="<?= $locations_arr->parent_id; ?>" data-item-parent-inc-id="<?= $locations_arr->parent_id+1; ?>" class="chk_location_cls" onClick="operate_property_locations('<?= $locations_arr->id; ?>');" /> <?= stripslashes($locations_arr->name); ?> </label> </li>
 									<?php  
 									$chk++; 
 								}
