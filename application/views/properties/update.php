@@ -709,34 +709,44 @@
 							resp_data = resp_data.trim();
 							if(resp_data != ''){
 								//$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
-								 
+								//alert( "#fetch_parent_location_box" + data_item_parent_inc_id );
+								
 								$("#fetch_dyna_locations").append(resp_data);	 
-								$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label ); 
+								$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label );  
 								
-								var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt"); 
-							 
-								if(data_level_box_elmnt == 1){  	
-									$(".parent_level_box2").remove();	
-									$(".parent_level_box3").remove();	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								}
-								
-								if(data_level_box_elmnt == 2){
-									$(".parent_level_box3").remove();	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								}
-								 
-								if(data_level_box_elmnt == 3){   	
-									$(".parent_level_box4").remove();	
-									$(".parent_level_box5").remove();	 
-								} 
-								
-								if(data_level_box_elmnt == 4){
-									$(".parent_level_box5").remove();	 
-								} 
-								
+								setTimeout(() => {    
+									var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt");
+									 
+									if(data_level_box_elmnt == 5){   
+										$(".parent_level_box5").remove();  
+										
+										$("#fetch_dyna_locations").append(resp_data);	 
+										$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label );
+									} 
+																		 
+									if(data_level_box_elmnt == 1){  	
+										$(".parent_level_box2").remove();	
+										$(".parent_level_box3").remove();	
+										$(".parent_level_box4").remove();	
+										$(".parent_level_box5").remove();	 
+									}
+									
+									if(data_level_box_elmnt == 2){
+										$(".parent_level_box3").remove();	
+										$(".parent_level_box4").remove();	
+										$(".parent_level_box5").remove();	 
+									}
+									 
+									if(data_level_box_elmnt == 3){   	
+										$(".parent_level_box4").remove();	
+										$(".parent_level_box5").remove();	 
+									} 
+									
+									if(data_level_box_elmnt == 4){
+										$(".parent_level_box5").remove(); 		 
+									}  
+									 
+								},350); 
 							}
 						}
 					});
@@ -751,9 +761,9 @@
 						var level_box_elmnt_no = $("#fetch_parent_location_box"+sl_para1).attr("data-level-box-elmnt");
 						
 						$("#parent_loc_id"+sl_para2).parents('.parent_location_box0').removeClass('disable_cls'); 
-						//$("#fetch_parent_location_box"+sl_para1).remove();	
-							
-						if(level_box_elmnt_no == 1){ 
+						//$("#fetch_parent_location_box"+sl_para1).remove();
+						
+						if(level_box_elmnt_no == 1){
 							$(".parent_level_box1").remove();	
 							$(".parent_level_box2").remove();	
 							$(".parent_level_box3").remove();	
@@ -779,7 +789,7 @@
 							$(".parent_level_box5").remove();	 
 						}
 						
-						if(level_box_elmnt_no == 5){  	
+						if(level_box_elmnt_no == 5){
 							$(".parent_level_box5").remove();	 
 						}
 					}
@@ -821,7 +831,7 @@
 	  <div class="panel-body">
 		<div class="row"> 
 			<div class="col-md-12" id="fetch_dyna_locations">
-			  <div class="parent_location_box0" id="fetch_parent_location_box01"> <!-- disable_cls -->
+			  <div class="parent_location_box0 parent_level_box0" id="fetch_parent_location_box01"> <!-- disable_cls -->
 				<label class="control-label bolder" for="parent_location_id">Cities </label> <span class="filter_cls"><input type="text" name="location_searcher1" id="location_searcher1" class="form-control mini-form-control" placeholder="Search..." onKeyUp="operate_search_filters('#location_searcher1', '.selectable1');" /></span>
 				<div class="parent_box_area0">
 				  <ul class="ul_location_cls">

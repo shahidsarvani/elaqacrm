@@ -698,43 +698,49 @@
 						$('.loading').hide();  
 						resp_data = resp_data.trim();
 						if(resp_data != ''){
-											//$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
+							//$("#parent_loc_id"+sl_item_id).parents('.parent_location_box0').addClass('disable_cls');
 							 
 							$("#fetch_dyna_locations").append(resp_data);	 
 							$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label ); 
-							 
-							var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt"); 
 							
+							setTimeout(() => {  
+								var data_level_box_elmnt = $("#fetch_parent_location_box" + data_item_parent_inc_id).attr("data-level-box-elmnt"); 
+								
+								if(data_level_box_elmnt == 5){   
+									$(".parent_level_box5").remove();
+									
+									$("#fetch_dyna_locations").append(resp_data);	 
+									$("#fetch_parent_location_lbl" + data_item_id).html( data_item_label ); 
+								}
+								
+								if(data_level_box_elmnt == 1){  	
+									$(".parent_level_box2").remove();	
+									$(".parent_level_box3").remove();	
+									$(".parent_level_box4").remove();	
+									$(".parent_level_box5").remove();	 
+								}
+								
+								if(data_level_box_elmnt == 2){
+									$(".parent_level_box3").remove();	
+									$(".parent_level_box4").remove();	
+									$(".parent_level_box5").remove();	 
+								}
+								 
+								if(data_level_box_elmnt == 3){   	
+									$(".parent_level_box4").remove();	
+									$(".parent_level_box5").remove();	 
+								}
+								
+								if(data_level_box_elmnt == 4){
+									$(".parent_level_box5").remove();	 
+								}
 							
-							if(data_level_box_elmnt == 1){  	
-								$(".parent_level_box2").remove();	
-								$(".parent_level_box3").remove();	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							}
-							
-							if(data_level_box_elmnt == 2){
-								$(".parent_level_box3").remove();	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							}
-							 
-							if(data_level_box_elmnt == 3){   	
-								$(".parent_level_box4").remove();	
-								$(".parent_level_box5").remove();	 
-							} 
-							
-							if(data_level_box_elmnt == 4){
-								$(".parent_level_box5").remove();	 
-							} 							
-							//alert( data_level_box_elmnt );
-							//data_item_parent_inc_id
-							//$("#fetch_parent_location_box" + data_item_parent_inc_id).remove();
+							},350);
 							
 						}
 					}
-				});
-				//});
+				}); 
+				
 			});
 		} 
 		
