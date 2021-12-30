@@ -16,7 +16,7 @@
     </ul>
   </div>
   <div class="navbar-collapse collapse" id="navbar-mobile">
-     <ul class="navbar-nav" style="margin-top:10px;">
+     <ul class="navbar-nav" style="margin-top:17px;">
       <li class="nav-item" style="list-style:none"> <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block"> <i class="icon-paragraph-justify3"></i> </a> </li>
 	  </ul>
      
@@ -67,7 +67,7 @@
 		} ?>
         
       <li class="dropdown dropdown-user"> <a class="dropdown-toggle" data-toggle="dropdown"> <img src="<?= $us_prof_img;?>" alt="<?php //echo $rw->name; ?>" class="img-circle img-sm" /> <span><?php //echo $rw->name; ?></span> <i class="caret"></i> </a>
-        <ul class="dropdown-menu dropdown-menu-right" style="position:inherit">
+        <ul class="dropdown-menu dropdown-menu-right">
           <li><a href="<?php echo site_url('settings/my_profile'); ?>"><i class="icon-user-plus"></i> My Profile</a></li>
           <li><a href="<?php echo site_url('settings/change_password'); ?>"><i class="icon-coins"></i> Change Password</a></li>  
           <?php if($vs_id==1){ ?>

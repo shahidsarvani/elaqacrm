@@ -98,7 +98,7 @@
                 <div class="heading-elements">
 					<ul class="icons-list">
 						<li><a onClick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li>
-						<li><a href="#" data-action="collapse"></a></li>
+						<!--<li><a href="#" data-action="collapse"></a></li>-->
 					</ul> 
 					<!--
 					 <span class="label bg-success heading-text">28 active</span>
