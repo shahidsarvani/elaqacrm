@@ -15,8 +15,7 @@
 		}
 		
 		function index(){	
-			if(isset($_POST) && !empty($_POST)){
-				 $this->load->model('general_model');
+			if(isset($_POST) && !empty($_POST)){ 
 				// get form input
 				$email = $this->input->post("email");
 				$password = $this->input->post("password");
@@ -67,6 +66,81 @@
 		
 		}else{
 			$this->load->view('login');
+		} 
+	}
+	
+	function signup(){	
+		if(isset($_POST) && !empty($_POST)){ 
+			// get form input
+			$name = $this->input->post("name");
+			$email = $this->input->post("email");
+			$password = $this->input->post("password"); 
+			$phone_no = $this->input->post("phone_no");
+			$mobile_no = $this->input->post("mobile_no");
+			$company_name = $this->input->post("company_name");
+			$no_of_employees = $this->input->post("no_of_employees");
+			//$package_id = $this->input->post("package_id");  
+			$payment_gateway = $this->input->post("payment_gateway");  
+			
+			//name  email  password  conf_password  phone_no  mobile_no company_name  no_of_employees  payment_gateway 
+			// form validation 
+			$this->form_validation->set_rules("name","Name",'required|trim|xss_clean'); 
+			$this->form_validation->set_rules("email", "Email", "trim|required|xss_clean|valid_email|is_unique[users_tbl.email]");
+			$this->form_validation->set_rules("password","Password",'required|trim|xss_clean');
+			$this->form_validation->set_rules("mobile_no","Mobile No",'required|trim|xss_clean');
+			$this->form_validation->set_rules("company_name","Company Name",'required|trim|xss_clean');
+			$this->form_validation->set_rules("payment_gateway","Payment Gateway",'required|trim|xss_clean');
+			
+			if($this->form_validation->run() == FALSE){
+				// validation fail 
+				$this->load->view('signup');
+			}else{
+				
+				$created_on = date('Y-m-d H:i:s');  
+				$ip_address = $_SERVER['REMOTE_ADDR']; 
+				
+				$password = $this->general_model->encrypt_data($password); 
+				$random_password = $this->general_model->random_string('7');
+				
+				$datas = array('name' => $name, 'email' => $email, 'password' => $password, 'mobile_no' => $mobile_no, 'phone_no' => $phone_no, 'status' => '1', 'parent_id' => '0', 'role_id' => '2', 'random_password' => $random_password, 'ip_address' => $ip_address, 'created_on' => $created_on); 
+				 
+				$insert_data = $this->users_model->insert_user_data($datas); 
+				if(isset($insert_data)){  
+					$last_member_id = $this->db->insert_id();  
+					$this->load->library('email'); 
+					/*$reset_link = "login/signup/{$last_member_id}/"; 
+					$reset_link = site_url($reset_link);   */
+					
+					$site_name = 'ilaqa-CRM'; 
+					/*'https://elaqacrm.digitalpoin8.com/'; //$this->config->item('custom_site_name');  */
+					
+					$mailtext = "<table width='90%' border='0' align='center' cellpadding='7' cellspacing='7' style='color:#000000; font-size:12px; font-family:tahoma;'> <tbody> <tr> <td> <h4> Welcome for Joining us at ".$site_name."</h4> </td> </tr>"; 
+					$mailtext .= "<tr> <td> Dear ".$name.", <br> <br>Thanks for joining us at ".$site_name.", by creating a new registration account on our platform. <br> <br> You can access your ilaqa CRM account to avail our CRM features.<br> <br> <br> The ".$site_name." Team </td> </tr> </tbody> </table>";  
+					
+					$configs_arr = $this->general_model->get_configuration();
+					$from_email = $configs_arr->email; 
+					
+					$config['mailtype'] = 'html';  
+					$this->email->initialize($config); 
+					$this->email->to($email); 
+					$this->email->from($from_email); 
+					$this->email->subject("Welcome for Joining us at ".$site_name );
+					$this->email->message($mailtext);  
+					
+					//$this->email->send();  
+					  
+					$this->session->set_flashdata('success_msg', 'Your account has been created successfully, please login to access your account!');
+					
+					redirect("login/index");  
+					 
+				}else{ 
+					$this->session->set_flashdata('error_msg', 'An error has been generated while creating an account, please try again!');
+					$this->load->view('signup', $datas); 
+				} 
+		}
+	
+	}else{
+			$this->load->view('signup');
 		} 
 	}
 		 

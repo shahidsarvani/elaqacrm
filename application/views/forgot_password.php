@@ -55,7 +55,7 @@
               </div>
             <button type="submit" name="submit_reset" id="submit_reset" class="btn bg-blue btn-block">Reset password <i class="icon-arrow-right14 position-right"></i></button>
             <br> 
-            <div class="text-center"> <a href="<?php echo site_url('login/index'); ?>">Sign-In?</a> </div>
+            <div class="text-center"> <a href="<?php echo site_url('login/index'); ?>">SignIn?</a> &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">SignUp</a> </div>
           </div>
           
         </form>

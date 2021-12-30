@@ -53,7 +53,7 @@
             <div class="form-group">
               <button type="submit" name="submit_sign_in" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 position-right"></i></button>
             </div>
-            <div class="text-center"> <a href="<?php echo site_url('login/forgot_password'); ?>">Forgot password?</a> </div>
+            <div class="text-center"> <a href="<?php echo site_url('login/forgot_password'); ?>">Forgot password?</a>  &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">SignUp</a> </div>
           </div>
         </form>
         <script type="text/javascript">  

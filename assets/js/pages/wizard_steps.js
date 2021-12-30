@@ -144,7 +144,8 @@ $(function() {
         },
 
         onFinished: function (event, currentIndex) {
-            alert("Submitted!");
+            //alert("Submitted  111!");
+			document.forms["datas_form"].submit();
         }
     });
 
