@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <?php $this->load->view('widgets/meta_tags'); ?>
+<script type="text/javascript" src="<?= asset_url(); ?>js/plugins/editors/summernote/summernote.min.js"></script> 
 </head>
 <body> 
 <!-- Main navbar -->
@@ -132,14 +133,14 @@
                     
                     <div class="form-group">
                       <label class="col-md-2 control-label" for="summary">Summary <span class="reds"> *</span></label>
-                      <div class="col-md-6">
+                      <div class="col-md-10">
                       <textarea name="summary" id="summary" class="form-control" rows="5" data-error="#summary1"><?php echo (isset($_POST['summary'])) ? set_value('summary') : $vs_summary; ?></textarea>
                        <span id="summary1" class="text-danger"><?php echo form_error('summary'); ?></span> 
                       </div> 
                     </div> 
                     <div class="form-group">
                       <label class="col-md-2 control-label" for="disclaimer">Disclaimer <span class="reds"> *</span></label>
-                      <div class="col-md-6">
+                      <div class="col-md-10">
                       <textarea name="disclaimer" id="disclaimer" class="form-control" rows="5" data-error="#disclaimer1"><?php echo (isset($_POST['disclaimer'])) ? set_value('disclaimer') : $vs_disclaimer; ?></textarea>
                        <span id="disclaimer1" class="text-danger"><?php echo form_error('disclaimer'); ?></span> 
                       </div> 
@@ -175,17 +176,20 @@
               </form> 
               
 			  <script type="text/javascript">  
-                $(document).ready(function(){ 
+                $(document).ready(function(){  
+					$('#summary').summernote();
+					$('#disclaimer').summernote();
+					
                     var validator = $('#datas_form').validate({
-                    rules: {  
+                    rules: {
                         company_name: {
-                            required: true 
+                            required: true,
                         }, 
                         sale_inititals: {
-                            required: true 
+                            required: true,
                         }, 
                         rent_inititals: {
-                            required: true 
+                            required: true, 
                         }, 
                         email: {
                             required: true, 
@@ -193,7 +197,7 @@
                         }, 
                         phone_no: {
                             required: true,
-                            digits: true 
+                            digits: true, 
                         },
                         website: {
                             required: true,
@@ -203,23 +207,23 @@
                             required: true, 
                         }, 
                         summary: {
-                            required: true 
+                            required: true, 
                         }, 
                         disclaimer: {
-                            required: true 
+                            required: true, 
                         },   
                         address_1: {
-                            required: true 
+                            required: true, 
                         }, 
                         address_2: {
-                            required: true 
+                            required: true, 
                         }, 
                         copyrights: {
-                            required: true 
+                            required: true, 
                         },   
                         image: {
                             required: false,
-                            accept:"gif|png|jpg|jpeg" 
+                            accept:"gif|png|jpg|jpeg", 
                         }  
                     },
                     messages: {
