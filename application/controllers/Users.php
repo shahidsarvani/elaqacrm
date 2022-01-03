@@ -115,11 +115,12 @@
 				$phone_no = $this->input->post("phone_no");  
 				$mobile_no = $this->input->post("mobile_no");  
 				$company_name = $this->input->post("company_name"); 
+				$no_of_employees = $this->input->post("no_of_employees");  
 				$rera_no = $this->input->post("rera_no"); 
 				$address = $this->input->post("address"); 
 				$status = $this->input->post("status");  
 				 
-				$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '';
+				$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '0';
 				 
 				$prf_img_error = ''; 		
 				$alw_typs = array('image/jpg','image/jpeg','image/png','image/gif');
@@ -186,7 +187,7 @@
 					$created_on = date('Y-m-d H:i:s');
 					/*$password = md5($password);*/
 					$password = $this->general_model->encrypt_data($password);
-					$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name,'address' => $address,'created_on' => $created_on,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
+					$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees,'address' => $address,'created_on' => $created_on,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
 					$res = $this->users_model->insert_user_data($datas); 
 					 
 					if(isset($res)){
@@ -236,11 +237,12 @@
 					$phone_no = $this->input->post("phone_no");  
 					$mobile_no = $this->input->post("mobile_no");  
 					$company_name = $this->input->post("company_name"); 
+					$no_of_employees = $this->input->post("no_of_employees");  
 					$rera_no = $this->input->post("rera_no"); 
 					$address = $this->input->post("address"); 
 					$status = $this->input->post("status");  
 					 
-					$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '';
+					$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '0';
 					 
 					$prf_img_error = ''; 		
 					$alw_typs = array('image/jpg','image/jpeg','image/png','image/gif');
@@ -303,10 +305,10 @@
 						$this->session->set_flashdata('prof_img_error',$prf_img_error);
 						$this->load->view('users/update',$data);
 						
-					}else if(isset($args1) && $args1!=''){
+					}else if(isset($args1) && $args1!=''){   
 						/*$password = md5($password);*/
 						$password = $this->general_model->encrypt_data($password);
-						$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name,'address' => $address,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
+						$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'address' => $address,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
 						$res = $this->users_model->update_user_data($args1,$datas); 
 						if(isset($res)){
 							$this->session->set_flashdata('success_msg','Record updated successfully!');

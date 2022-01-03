@@ -144,6 +144,14 @@
                 <input name="company_name" id="company_name" type="text" class="form-control" value="<?php echo set_value('company_name'); ?>"> <span class="text-danger"><?php echo form_error('company_name'); ?></span> 
               </div> 
             </div>
+			
+		   <div class="form-group">
+			  <label class="col-md-2 control-label" for="no_of_employees">No. of Employees</label>
+			  <div class="col-md-6">
+				<input name="no_of_employees" id="no_of_employees" type="text" class="form-control" value="<?php echo set_value('no_of_employees'); ?>"> <span class="text-danger"><?php echo form_error('no_of_employees'); ?></span> 
+			  </div> 
+		   </div>
+			
 		  <div class="form-group">
 			<label class="col-md-2 control-label" for="rera_no">RERA No </label>
 			<div class="col-md-6">

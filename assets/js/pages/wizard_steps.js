@@ -199,14 +199,19 @@ $(function() {
                 error.insertAfter(element);
             }
         },
-        rules: {
+        rules: {  
             email: {
-                email: true
+                email: true,
+				remote: {
+					url: $("#email_check_url").val(),
+					type: 'post',
+					data: { 'email': $('#email').val(), }  
+				}
             }
-        }
+        } 
     });
 
-
+console.log("====> "+ $('#email').val() );
 
     // Initialize plugins
     // ------------------------------
@@ -222,7 +227,7 @@ $(function() {
 
 
     // Styled checkboxes and radios
-    $('.styled').uniform({
+   /* $('.styled').uniform({
         radioClass: 'choice'
     });
 
@@ -230,6 +235,6 @@ $(function() {
     // Styled file input
     $('.file-styled').uniform({
         fileButtonClass: 'action btn bg-blue'
-    });
+    });*/
     
 });

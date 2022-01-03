@@ -70,6 +70,9 @@
 	}
 	
 	function signup(){	
+		$this->load->model('packages_model'); 
+		$datas["packages_arrs"] = $this->packages_model->get_all_active_packages();
+		$datas['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
 		if(isset($_POST) && !empty($_POST)){ 
 			// get form input
 			$name = $this->input->post("name");
@@ -79,7 +82,7 @@
 			$mobile_no = $this->input->post("mobile_no");
 			$company_name = $this->input->post("company_name");
 			$no_of_employees = $this->input->post("no_of_employees");
-			//$package_id = $this->input->post("package_id");  
+			$package_id = $this->input->post("package_id");
 			$payment_gateway = $this->input->post("payment_gateway");  
 			
 			//name  email  password  conf_password  phone_no  mobile_no company_name  no_of_employees  payment_gateway 
@@ -93,7 +96,7 @@
 			
 			if($this->form_validation->run() == FALSE){
 				// validation fail 
-				$this->load->view('signup');
+				$this->load->view('signup', $datas);
 			}else{
 				
 				$created_on = date('Y-m-d H:i:s');  
@@ -102,11 +105,38 @@
 				$password = $this->general_model->encrypt_data($password); 
 				$random_password = $this->general_model->random_string('7');
 				
-				$datas = array('name' => $name, 'email' => $email, 'password' => $password, 'mobile_no' => $mobile_no, 'phone_no' => $phone_no, 'status' => '1', 'parent_id' => '0', 'role_id' => '2', 'random_password' => $random_password, 'ip_address' => $ip_address, 'created_on' => $created_on); 
+				$package_price = 0;
+				$package_start_date = $package_end_date = date('Y-m-d');
+				
+				$row1 = $this->packages_model->get_package_by_id($package_id);
+				if($row1){
+					$package_name = $row1->name;
+					$package_price =  $row1->price;
+					$package_package_type = $row1->package_type;
+					$package_duration =  $row1->duration;  
+					if($package_package_type == 1){
+						$package_end_date = date('Y-m-d', strtotime($package_start_date. " +{$package_duration} days"));
+					}else if($package_package_type == 2){
+						$package_end_date = date('Y-m-d', strtotime($package_start_date. " +{$package_duration} months"));
+					}else if($package_package_type == 3){
+						$package_end_date = date('Y-m-d', strtotime($package_start_date. " +{$package_duration} years"));
+					}
+				} 
+				
+				
+				$datas = array('name' => $name, 'email' => $email, 'password' => $password, 'mobile_no' => $mobile_no, 'phone_no' => $phone_no, 'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'status' => '1', 'parent_id' => '0', 'role_id' => '2', 'random_password' => $random_password, 'ip_address' => $ip_address, 'created_on' => $created_on, 'package_id' => $package_id, 'package_start_date' => $package_start_date, 'package_end_date' => $package_end_date, 'package_status' => '0'); 
 				 
 				$insert_data = $this->users_model->insert_user_data($datas); 
 				if(isset($insert_data)){  
-					$last_member_id = $this->db->insert_id();  
+					$last_member_id = $this->db->insert_id();
+					
+					//users_packages_plans_subscription_tbl
+					/*  transaction_id transaction_datetime amount  currency  ip_address added_on  updated_on       */
+						 
+					/*$package_datas = array('user_id' => $last_member_id, 'package_id' => $package_id, 'subscripton_start_date' => $package_start_date, 'subscripton_end_date' => $package_end_date, 'status' => '0', 'name' => $name, 'email' => $email, 'payment_status' => '0', 'transaction_datetime' => $created_on, 'amount' => $package_price, 'currency' => $currency, 'ip_address' => $ip_address, 'added_on' => $created_on, 'updated_on' => $created_on ); 
+					$this->packages_model->insert_package_subscription_data($package_datas); */
+				
+					
 					$this->load->library('email'); 
 					/*$reset_link = "login/signup/{$last_member_id}/"; 
 					$reset_link = site_url($reset_link);   */
@@ -140,14 +170,32 @@
 		}
 	
 	}else{
-			$this->load->view('signup');
+			$this->load->view('signup', $datas);
 		} 
 	}
 		 
-		 
+	function check_email_existance(){
+		if(isset($_POST["email"]) && strlen($_POST["email"])>0){ 
+			$email = $this->input->post("email");
+			$result = $this->users_model->get_user_by_email($email);
+			
+			//print_r($result);
+			if($result){
+				echo "false";
+			}else{
+				echo "true 111"; 
+			} 
+			
+		}else{ 
+			echo "true 222";	
+		}
+		
+		die();
+	}  
+	
+			 
 	function forgot_password(){ 
-		if(isset($_POST) && !empty($_POST)){
-			$this->load->model('general_model');
+		if(isset($_POST) && !empty($_POST)){ 
 			$email = $this->input->post("email");
 			 
 			// form validation
@@ -233,8 +281,7 @@
 			$data_arr = array('id'=> $vs_id,'random_password'=> $rand_numbs);
 			$result = $this->users_model->get_user_custom_data($data_arr);
 			if($result){
-				if(isset($_POST) && !empty($_POST)){
-					$this->load->model('general_model');
+				if(isset($_POST) && !empty($_POST)){ 
 					
 					$new_password = $this->input->post("new_password");
 					$conf_password = $this->input->post("conf_password");

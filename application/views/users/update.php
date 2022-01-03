@@ -159,6 +159,13 @@
               </div> 
             </div>
 		  <div class="form-group">
+			  <label class="col-md-2 control-label" for="no_of_employees">No. of Employees</label>
+			  <div class="col-md-6">
+				<input name="no_of_employees" id="no_of_employees" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->no_of_employees): set_value('no_of_employees'); ?>"> <span class="text-danger"><?php echo form_error('no_of_employees'); ?></span> 
+			  </div> 
+		</div>	
+			
+		  <div class="form-group">
 			<label class="col-md-2 control-label" for="rera_no">RERA No </label>
 			<div class="col-md-6">
 			  <input name="rera_no" id="rera_no" type="text" class="form-control" value="<?php echo (isset($record)) ? stripslashes($record->rera_no): set_value('rera_no'); ?>" data-error="#rera_no1">  <span id="rera_no1" class="text-danger" generated="true"><?php echo form_error('rera_no'); ?></span> </div>
