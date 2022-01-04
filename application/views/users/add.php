@@ -109,6 +109,41 @@
               <span id="parent_id1" class="text-danger" generated="true"><?php echo form_error('parent_id'); ?></span>
               </div>
 		  </div>
+		  
+		  <div class="form-group">
+			<label class="col-md-2 control-label" for="package_id">Packages <span class="reds">  </span></label>
+			<div class="col-md-6">
+			  <select name="package_id" id="package_id" class="form-control required select2" data-error="#package_id1">
+				<option value=""> Select Package </option> 						  
+			   <?php  
+				if(isset($packages_arrs) && count($packages_arrs)>0){
+					foreach($packages_arrs as $packages_arr){
+						$sel_1 = '';
+						if(isset($_POST['package_id']) && $_POST['package_id']==$packages_arr->id){
+							$sel_1 = 'selected="selected"';
+						} ?>
+					<option value="<?= $packages_arr->id; ?>" <?php echo $sel_1; ?>>
+					<?php 
+					$package_type_txt = '';
+					if($packages_arr->package_type == 1){
+						$package_type_txt = $packages_arr->duration." Day(s)";
+					
+					}else if($packages_arr->package_type == 2){
+						$package_type_txt = $packages_arr->duration." Months(s)";
+					
+					}else if($packages_arr->package_type == 3){
+						$package_type_txt = $packages_arr->duration." Year(s)"; 
+					}  
+					
+					echo stripslashes($packages_arr->name) . ' ('. $package_type_txt.' @'.$packages_arr->price.' '.$conf_currency_symbol.')'; ?>
+					</option>
+					<?php 
+					}   
+				} ?>
+			  </select>
+			  <span id="package_id1" class="text-danger" generated="true"><?php echo form_error('package_id'); ?></span> </div>
+		  </div> 
+		  
 		  <div class="form-group">
 			<label class="col-md-2 control-label" for="email">Email <span class="reds"> *</span></label>
 			<div class="col-md-6">

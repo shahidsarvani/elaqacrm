@@ -89,7 +89,7 @@ if($trash_res_nums>0){ ?>
                 <th width="6%">#</th>
                 <th width="20%">Name</th>
                 <th width="15%" class="text-center">Duration</th>
-                <th width="15%" class="text-center">Price</th>
+                <th width="15%" class="text-center">Price (<?php echo $conf_currency_symbol; ?>)</th>
                 <th width="13%" class="text-center">Order </th>
                 <th width="13%" class="text-center">Status</th>
                 <th width="16%" class="text-center">Action </th>  

@@ -18,13 +18,9 @@
     
     <!-- Main content -->
     <div class="content-wrapper"> 
-      
-      
-      
+     
       <!-- Content area -->
       <div class="content"> 
-      
-        
       
         <!-- Password recovery -->
         <form name="datas_form" id="datas_form" action="<?php echo site_url('login/forgot_password'); ?>" method="post">
@@ -55,7 +51,7 @@
               </div>
             <button type="submit" name="submit_reset" id="submit_reset" class="btn bg-blue btn-block">Reset password <i class="icon-arrow-right14 position-right"></i></button>
             <br> 
-            <div class="text-center"> <a href="<?php echo site_url('login/index'); ?>">SignIn?</a> &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">SignUp</a> </div>
+            <div class="text-center"> <a href="<?php echo site_url('login/index'); ?>">Sign In?</a> &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">Sign Up</a> </div>
           </div>
           
         </form>

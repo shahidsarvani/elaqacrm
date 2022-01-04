@@ -51,9 +51,9 @@
               <span id="password1" class="text-danger"><?php echo form_error('password'); ?></span> 
             </div>
             <div class="form-group">
-              <button type="submit" name="submit_sign_in" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 position-right"></i></button>
+              <button type="submit" name="submit_sign_in" class="btn btn-primary btn-block">Sign In <i class="icon-circle-right2 position-right"></i></button>
             </div>
-            <div class="text-center"> <a href="<?php echo site_url('login/forgot_password'); ?>">Forgot password?</a>  &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">SignUp</a> </div>
+            <div class="text-center"> <a href="<?php echo site_url('login/forgot_password'); ?>">Forgot password?</a>  &nbsp; | &nbsp; <a href="<?php echo site_url('login/signup'); ?>">Sign Up</a> </div>
           </div>
         </form>
         <script type="text/javascript">  

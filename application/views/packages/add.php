@@ -58,9 +58,9 @@
               </div> 
             </div> 
 			<div class="form-group">
-            <label class="col-md-2 control-label" for="price"> Price <span class="reds">*</span></label>
+            <label class="col-md-2 control-label" for="price"> Price (<?php echo $conf_currency_symbol; ?>) <span class="reds">*</span></label>
               <div class="col-md-6">
-                <input name="price" id="price" type="text" class="form-control" value="<?php echo set_value('price'); ?>" data-error="#price1"> 
+                <input name="price" id="price" type="text" class="form-control" value="<?php echo set_value('price'); ?>" data-error="#price1" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" onBlur="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" /> 
                 <span id="price1" class="text-danger"><?php echo form_error('price'); ?></span>
               </div> 
             </div>

@@ -25,23 +25,23 @@ $(function() {
     // ------------------------------
 
     // Basic wizard setup
-    $(".stepy-basic").stepy();
+    //$(".stepy-basic").stepy();
 
 
     // Hide step description
-    $(".stepy-no-description").stepy({
+    /*$(".stepy-no-description").stepy({
         description: false
-    });
+    });*/
 
 
     // Clickable titles
-    $(".stepy-clickable").stepy({
+    /*$(".stepy-clickable").stepy({
         titleClick: true
-    });
+    });*/
 
 
     // Stepy callbacks
-    $(".stepy-callbacks").stepy({
+    /*$(".stepy-callbacks").stepy({
         next: function(index) {
             alert('Going to step: ' + index);
         },
@@ -52,7 +52,7 @@ $(function() {
             alert('Submit canceled.');
             return false;
         }
-    });
+    });*/
 
 
     //
@@ -119,21 +119,90 @@ $(function() {
             else {
                 error.insertAfter(element);
             }
-        },
-        rules: {
+        }, rules: {  
+			'name': {
+				required: true,  
+			},
+			'email':{
+				required: true,
+				email: true,
+				remote: {
+					url: $("#email_check_url").val(),
+					type: "post",
+					data: {
+						email: function() {
+							return $( "#email" ).val();
+						}
+					}
+				}
+			},
+			'password': {
+				required: true,
+				minlength: 5
+			}, 
+			'conf_password': {
+				required: true,
+				equalTo : '[name="password"]',
+			},
+			'phone_no': {
+				required: true,  
+			},
+			'mobile_no': {
+				required: true,  
+			},
+			'company_name': {
+				required: true,  
+			},
+			'no_of_employees': {
+				required: true, 
+			},
+			'payment_gateway': {
+				required: true,
+			},
+		}, messages: {
+			'name': {
+				required: "This is required field",
+			},
+			'email':{
+				required: "This is required field",
+				email: "Please enter a valid Email address!",
+				remote: "This Email address is already in use, please enter another Email address!",
+			},
+			'password': {
+				required: "This is required field",
+				minlength: "Enter at-least 5 characters password!",
+			}, 
+			'conf_password': {
+				required: "This is required field",
+				equalTo : "Password & Confirm Password doesn't matched!",
+			},
+			'phone_no': {
+				required: "This is required field",
+			},
+			'mobile_no': {
+				required: "This is required field",
+			},
+			'company_name': {
+				required: "This is required field",
+			},
+			'no_of_employees': {
+				required: "This is required field",
+			},
+			'payment_gateway': {
+				required: "This is required field",
+			}, 
+		}
+        /*rules: {
             email: {
                 email: true
             }
-        }
+        }*/
     }
-
-
-
     // Initialize plugins
     // ------------------------------
 
     // Apply "Back" and "Next" button styling
-    $('.stepy-step').find('.button-next').addClass('btn btn-primary');
+    $('.stepy-step').find('.button-next').addClass('btn bg-teal-400');
     $('.stepy-step').find('.button-back').addClass('btn btn-default');
 
 
@@ -142,13 +211,13 @@ $(function() {
 
 
     // Simple select without search
-    $('.select-simple').select2({
+    /*$('.select-simple').select2({
         minimumResultsForSearch: Infinity
-    });
+    });*/
 
 
     // Styled checkboxes and radios
-    $('.styled').uniform({
+    /*$('.styled').uniform({
         radioClass: 'choice'
     });
 
@@ -156,6 +225,6 @@ $(function() {
     // Styled file input
     $('.file-styled').uniform({
         fileButtonClass: 'action btn bg-blue'
-    });
+    });*/
     
 });

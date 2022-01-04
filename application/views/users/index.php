@@ -89,9 +89,10 @@ if($trash_res_nums>0){ ?>
                 <th width="6%">#</th>
                 <th width="17%">Name</th>
                 <th width="20%">Email</th>
-                <th width="15%" class="text-center">User Type</th>
+                <th width="14%" class="text-center">User Type</th> 
                 <th width="15%" class="text-center">Assigned To </th>
-                <th width="13%" class="text-center">Status</th>
+				<th width="13%" class="text-center">Package</th>
+                <th width="12%" class="text-center">Status</th>
                 <th width="13%" class="text-center">Action </th>  
               </tr>
             </thead> 
@@ -110,11 +111,10 @@ if($trash_res_nums>0){ ?>
                                 <div class="checkbox">
                                 <label for="status"> <input type="checkbox" name="multi_action_check[]" id="multi_action_check_<?php echo $record->id; ?>" value="<?php echo $record->id; ?>" class="styled"> <?php echo $sr; ?> </label>
                                 </div>  
-                            <?php } ?> 
-                        </td>
+                            <?php } ?>                        </td>
                         <td><?= stripslashes($record->name); ?></td>
-                        <td><?= stripslashes($record->email); ?></td>
-                        <td class="text-center"><?= stripslashes($record->role_name); ?></td>
+                        <td><?= stripslashes($record->email); ?></td> 
+                        <td class="text-center"><?= stripslashes($record->role_name); ?></td> 
                         <td class="text-center"><?php 
 						if($record->parent_id >0){
 							$dbs_parent_id = $record->parent_id;
@@ -123,6 +123,7 @@ if($trash_res_nums>0){ ?>
 								echo $tmp_arrs->name;
 							}
 						} ?></td>
+						<td class="text-center"><?= stripslashes($record->package_name); ?></td>
                         <td class="text-center"><?php 
 							$bg_cls ='';
 							if($record->status==1){
@@ -139,15 +140,15 @@ if($trash_res_nums>0){ ?>
 								if($trash_res_nums>0 && $record->id>1){ ?>  
                                		<li class="text-danger-600"><a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');"><i class="icon-trash"></i></a></li> 
                           <?php } ?> 
-                            </ul>  
-                          </td> 
+                            </ul>                          
+						</td> 
 					  	</tr>
 				<?php 
 					$sr++;
 					}
 				}else{ ?>	
 					<tr class="gradeX"> 
-				    <td colspan="7" class="text-center"> <strong> No Record Found! </strong></td>
+				    <td colspan="8" class="text-center"> <strong> No Record Found! </strong></td>
 					</tr>
 				<?php } ?>  
           	  </tbody>  

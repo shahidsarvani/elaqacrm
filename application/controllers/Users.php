@@ -18,10 +18,11 @@
 				}*/ 
 			}else{
 				redirect('/');
-			}
-			 
-			$this->load->model('roles_model'); 
+			} 
+			
 			$this->load->model('users_model'); 
+			$this->load->model('roles_model'); 
+			$this->load->model('packages_model'); 
 			$this->load->model('admin_model'); 
 			$perms_arrs = array('role_id'=> $vs_role_id);
 			
@@ -33,8 +34,8 @@
 		function index(){  
 			$res_nums = $this->general_model->check_controller_method_permission_access('Users','index',$this->dbs_role_id,'1'); 
 			if($res_nums>0){ 
-			
-				$data['records'] = $this->general_model->get_all_users_with_roles();
+				/* $this->general_model->get_all_users_with_roles(); */	
+				$data['records'] = $this->users_model->get_all_filter_users(array());
 				$data['page_headings']="Users List";
 				$this->load->view('users/index',$data); 
 			
@@ -86,7 +87,8 @@
 					}  
 				}  
 				 
-				 $data['records'] = $this->general_model->get_all_users_with_roles();
+				 //$data['records'] = $this->general_model->get_all_users_with_roles();
+				 $data['records'] = $this->users_model->get_all_filter_users(array());
 				 $this->load->view('users/index_aj',$data);  
 				 
 			}else{ 
@@ -102,108 +104,111 @@
 			
 			$data['page_headings'] = 'Add User';
 		   
-			$arrs_field = array('role_id' => '2');
-			$data['manager_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
-			$data['role_arrs'] = $this->roles_model->get_all_roles();
-			
-			if(isset($_POST) && !empty($_POST)){ 
-				// get form input
-				$name = $this->input->post("name");
-				$role_id = $this->input->post("role_id"); 
-				$email = $this->input->post("email");
-				$password = $this->input->post("password"); 
-				$phone_no = $this->input->post("phone_no");  
-				$mobile_no = $this->input->post("mobile_no");  
-				$company_name = $this->input->post("company_name"); 
-				$no_of_employees = $this->input->post("no_of_employees");  
-				$rera_no = $this->input->post("rera_no"); 
-				$address = $this->input->post("address"); 
-				$status = $this->input->post("status");  
-				 
-				$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '0';
-				 
-				$prf_img_error = ''; 		
-				$alw_typs = array('image/jpg','image/jpeg','image/png','image/gif');
-				$imagename = (isset($_POST['old_image']) && $_POST['old_image']!='') ? $_POST['old_image']:''; 
-				if(isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name']!=''){ 
-					if(!(in_array($_FILES['image']['type'],$alw_typs))) {
-						$tmp_img_type = "'".($_FILES['image']['type'])."'";
-						$prf_img_error .= "Profile image type: $tmp_img_type not allowed!<br>";
-					}
-					
-					if($prf_img_error==''){
-						
-						@unlink("downloads/profile_pictures/thumbs/$imagename");
-						$imagename = $this->general_model->fileExists($_FILES['image']['name'],"downloads/profile_pictures/thumbs/");
-						
-						$extension = $this->general_model->get_custom_file_extension($imagename);
-						$extension = strtolower($extension);
-						$uploadedfile = $_FILES['image']['tmp_name']; 
-						$file_to_upload = "downloads/profile_pictures/thumbs/";   
-						$this->general_model->genernate_thumbnails($imagename,$extension,$uploadedfile,$file_to_upload,200,200);
-					}
-				} 
+				$arrs_field = array('role_id' => '2');
+				$data['manager_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
+				$data['role_arrs'] = $this->roles_model->get_all_roles(); 
+				$data["packages_arrs"] = $this->packages_model->get_all_active_packages();
+				$data['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
 				
-				$is_unique_name = '|is_unique[users_tbl.name]';
-				if(isset($update_record_arr)){ 
-					if($update_record_arr->name == $name) {
-						$is_unique_name = '';
-					} 
-				}  
-				
-				$is_unique_email = '|is_unique[users_tbl.email]';
-				if(isset($update_record_arr)){ 
-					if($update_record_arr->email == $email) {
-						$is_unique_email = '';
-					} 
-				} 
-				
-				$is_unique_mobile_no = '|is_unique[users_tbl.mobile_no]';
-				if(isset($update_record_arr)){ 
-					if($update_record_arr->mobile_no == $mobile_no) {
-						$is_unique_mobile_no = '';
-					} 
-				} 
-				
-				// form validation
-				$this->form_validation->set_rules("name", "Name", "trim|required|xss_clean{$is_unique_name}");
-				$this->form_validation->set_rules("role_id", "Role Name", "trim|required|xss_clean");
-				$this->form_validation->set_rules("email", "Email-ID", "trim|required|xss_clean|valid_email{$is_unique_email}");
-				$this->form_validation->set_rules("password", "Password", "trim|required|xss_clean");
-				$this->form_validation->set_rules("phone_no", "Phone No","trim|required|xss_clean");
-				$this->form_validation->set_rules("mobile_no", "Mobile No","trim|required|xss_clean{$is_unique_mobile_no}"); 
-				$this->form_validation->set_rules("address", "Address", "trim|required|xss_clean"); 
-				$this->form_validation->set_rules("status", "Account Status", "trim|required|xss_clean");
-				 
-				if($this->form_validation->run() == FALSE){
-				// validation fail
-					$this->load->view('users/add',$data);
-				}else if(strlen($prf_img_error)>0){ 
-				 
-					$this->session->set_flashdata('prof_img_error',$prf_img_error);
-					$this->load->view('users/add',$data);
-					
-				}else{
-					$created_on = date('Y-m-d H:i:s');
-					/*$password = md5($password);*/
-					$password = $this->general_model->encrypt_data($password);
-					$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees,'address' => $address,'created_on' => $created_on,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
-					$res = $this->users_model->insert_user_data($datas); 
+				if(isset($_POST) && !empty($_POST)){ 
+					// get form input
+					$name = $this->input->post("name");
+					$role_id = $this->input->post("role_id"); 
+					$email = $this->input->post("email");
+					$password = $this->input->post("password"); 
+					$phone_no = $this->input->post("phone_no");  
+					$mobile_no = $this->input->post("mobile_no");  
+					$company_name = $this->input->post("company_name"); 
+					$no_of_employees = $this->input->post("no_of_employees");  
+					$package_id = $this->input->post("package_id");   
+					$rera_no = $this->input->post("rera_no"); 
+					$address = $this->input->post("address"); 
+					$status = $this->input->post("status");  
 					 
-					if(isset($res)){
-						$this->session->set_flashdata('success_msg','Record inserted successfully!');
-					}else{
-						$this->session->set_flashdata('error_msg','Error: while inserting record!');
+					$parent_id = (isset($_POST['parent_id'])) ? $this->input->post("parent_id") : '0';
+					 
+					$prf_img_error = ''; 		
+					$alw_typs = array('image/jpg','image/jpeg','image/png','image/gif');
+					$imagename = (isset($_POST['old_image']) && $_POST['old_image']!='') ? $_POST['old_image']:''; 
+					if(isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name']!=''){ 
+						if(!(in_array($_FILES['image']['type'],$alw_typs))) {
+							$tmp_img_type = "'".($_FILES['image']['type'])."'";
+							$prf_img_error .= "Profile image type: $tmp_img_type not allowed!<br>";
+						}
+						
+						if($prf_img_error==''){
+							
+							@unlink("downloads/profile_pictures/thumbs/$imagename");
+							$imagename = $this->general_model->fileExists($_FILES['image']['name'],"downloads/profile_pictures/thumbs/");
+							
+							$extension = $this->general_model->get_custom_file_extension($imagename);
+							$extension = strtolower($extension);
+							$uploadedfile = $_FILES['image']['tmp_name']; 
+							$file_to_upload = "downloads/profile_pictures/thumbs/";   
+							$this->general_model->genernate_thumbnails($imagename,$extension,$uploadedfile,$file_to_upload,200,200);
+						}
+					} 
+					
+					$is_unique_name = '|is_unique[users_tbl.name]';
+					if(isset($update_record_arr)){ 
+						if($update_record_arr->name == $name) {
+							$is_unique_name = '';
+						} 
 					}  
 					
-					if(isset($_POST['saves_and_new'])){
-						redirect("users/add");
-					}else{
-						redirect("users/index");	
+					$is_unique_email = '|is_unique[users_tbl.email]';
+					if(isset($update_record_arr)){ 
+						if($update_record_arr->email == $email) {
+							$is_unique_email = '';
+						} 
 					} 
-				} 	 
-				
-			}else{
+					
+					$is_unique_mobile_no = '|is_unique[users_tbl.mobile_no]';
+					if(isset($update_record_arr)){ 
+						if($update_record_arr->mobile_no == $mobile_no) {
+							$is_unique_mobile_no = '';
+						} 
+					} 
+					
+					// form validation
+					$this->form_validation->set_rules("name", "Name", "trim|required|xss_clean{$is_unique_name}");
+					$this->form_validation->set_rules("role_id", "Role Name", "trim|required|xss_clean");
+					$this->form_validation->set_rules("email", "Email-ID", "trim|required|xss_clean|valid_email{$is_unique_email}");
+					$this->form_validation->set_rules("password", "Password", "trim|required|xss_clean");
+					$this->form_validation->set_rules("phone_no", "Phone No","trim|required|xss_clean");
+					$this->form_validation->set_rules("mobile_no", "Mobile No","trim|required|xss_clean{$is_unique_mobile_no}"); 
+					$this->form_validation->set_rules("address", "Address", "trim|required|xss_clean"); 
+					$this->form_validation->set_rules("status", "Account Status", "trim|required|xss_clean");
+					 
+					if($this->form_validation->run() == FALSE){
+					// validation fail
+						$this->load->view('users/add',$data);
+					}else if(strlen($prf_img_error)>0){ 
+					 
+						$this->session->set_flashdata('prof_img_error',$prf_img_error);
+						$this->load->view('users/add',$data);
+						
+					}else{
+						$created_on = date('Y-m-d H:i:s');
+						/*$password = md5($password);*/
+						$password = $this->general_model->encrypt_data($password);
+						$datas = array('name' => $name,'role_id' => $role_id, 'package_id' => $package_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees,'address' => $address,'created_on' => $created_on,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
+						$res = $this->users_model->insert_user_data($datas); 
+						 
+						if(isset($res)){
+							$this->session->set_flashdata('success_msg','Record inserted successfully!');
+						}else{
+							$this->session->set_flashdata('error_msg','Error: while inserting record!');
+						}  
+						
+						if(isset($_POST['saves_and_new'])){
+							redirect("users/add");
+						}else{
+							redirect("users/index");	
+						} 
+					} 	 
+					
+				}else{
 				$this->load->view('users/add',$data);
 			}
 			
@@ -227,6 +232,8 @@
 				$arrs_field = array('role_id' => '2');
 				$data['manager_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field);
 				$data['role_arrs'] = $this->roles_model->get_all_roles();
+				$data["packages_arrs"] = $this->packages_model->get_all_active_packages();
+				$data['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
 				
 				if(isset($_POST) && !empty($_POST)){ 
 					// get form input
@@ -238,6 +245,7 @@
 					$mobile_no = $this->input->post("mobile_no");  
 					$company_name = $this->input->post("company_name"); 
 					$no_of_employees = $this->input->post("no_of_employees");  
+					$package_id = $this->input->post("package_id");   
 					$rera_no = $this->input->post("rera_no"); 
 					$address = $this->input->post("address"); 
 					$status = $this->input->post("status");  
@@ -308,7 +316,7 @@
 					}else if(isset($args1) && $args1!=''){   
 						/*$password = md5($password);*/
 						$password = $this->general_model->encrypt_data($password);
-						$datas = array('name' => $name,'role_id' => $role_id,'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'address' => $address,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
+						$datas = array('name' => $name,'role_id' => $role_id, 'package_id' => $package_id, 'email' => $email,'password' => $password,'mobile_no' => $mobile_no,'phone_no' => $phone_no,'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'address' => $address,'status' => $status,'image' => $imagename,'parent_id' => $parent_id,'rera_no' => $rera_no); 
 						$res = $this->users_model->update_user_data($args1,$datas); 
 						if(isset($res)){
 							$this->session->set_flashdata('success_msg','Record updated successfully!');

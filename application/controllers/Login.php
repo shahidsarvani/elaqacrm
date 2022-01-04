@@ -82,8 +82,17 @@
 			$mobile_no = $this->input->post("mobile_no");
 			$company_name = $this->input->post("company_name");
 			$no_of_employees = $this->input->post("no_of_employees");
-			$package_id = $this->input->post("package_id");
+			//$package_id = $this->input->post("package_id");
 			$payment_gateway = $this->input->post("payment_gateway");  
+			
+			$package_id = 0;
+			if(isset($_POST['submit_basic'])){
+				$package_id = 1;
+			}else if(isset($_POST['submit_regular'])){
+				$package_id = 2;
+			}else if(isset($_POST['submit_premium'])){
+				$package_id = 3;
+			}
 			
 			//name  email  password  conf_password  phone_no  mobile_no company_name  no_of_employees  payment_gateway 
 			// form validation 
@@ -183,11 +192,11 @@
 			if($result){
 				echo "false";
 			}else{
-				echo "true 111"; 
+				echo "true"; 
 			} 
 			
 		}else{ 
-			echo "true 222";	
+			echo "true";	
 		}
 		
 		die();

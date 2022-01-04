@@ -20,14 +20,14 @@ class Users_model extends CI_Model {
 		if(array_key_exists("q_val",$params)){
 			$q_val = $params['q_val']; 
 			if(strlen($q_val)>0){
-				$whrs .=" AND ( name LIKE '%$q_val%' OR email LIKE '%$q_val%' OR phone_no LIKE '%$q_val%' OR mobile_no LIKE '%$q_val%' OR address LIKE '%$q_val%' ) ";
+				$whrs .=" AND ( u.name LIKE '%$q_val%' OR u.email LIKE '%$q_val%' OR u.phone_no LIKE '%$q_val%' OR u.mobile_no LIKE '%$q_val%' OR u.address LIKE '%$q_val%' ) ";
 			}
 		}
 		
 		if(array_key_exists("sl_role_id",$params)){
 			$sl_role_id = $params['sl_role_id']; 
 			if($sl_role_id >0){
-				$whrs .=" AND role_id='".$sl_role_id."' ";
+				$whrs .=" AND u.role_id='".$sl_role_id."' ";
 			}
 		}
 		 
@@ -41,7 +41,10 @@ class Users_model extends CI_Model {
 			$limits = " LIMIT $tot_limit ";
 		}   
 		
-		$query = $this->db->query("SELECT * FROM users_tbl WHERE id >'0' $whrs ORDER BY created_on DESC $limits "); 
+		$query = $this->db->query("SELECT u.*, r.name as role_name, p.name as package_name FROM users_tbl u 
+		LEFT JOIN roles_tbl r ON u.role_id=r.id
+		LEFT JOIN packages_tbl p ON u.package_id=p.id
+		 WHERE u.id >'0' $whrs ORDER BY u.created_on DESC $limits "); 
 		return $query->result(); 
 	}  
 	

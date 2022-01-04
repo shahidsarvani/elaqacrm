@@ -3,12 +3,13 @@
      <thead>
       <tr>
         <th width="6%">#</th>
-        <th width="17%">Name</th>
-        <th width="20%">Email</th>
-        <th width="15%" class="text-center">User Type</th>
-        <th width="15%" class="text-center">Assigned To </th>
-        <th width="13%" class="text-center">Status</th>
-        <th width="13%" class="text-center">Action </th>  
+		<th width="17%">Name</th>
+		<th width="20%">Email</th>
+		<th width="14%" class="text-center">User Type </th> 
+		<th width="15%" class="text-center">Assigned To </th>
+		<th width="13%" class="text-center">Package</th>
+		<th width="12%" class="text-center">Status</th>
+		<th width="13%" class="text-center">Action </th>  
       </tr>
     </thead> 
     <tbody>
@@ -45,6 +46,7 @@
                         echo $tmp_arrs->name;
                     }
                 } ?></td>
+				<td class="text-center"><?= stripslashes($record->package_name); ?></td>
                 <td class="text-center"><?php 
                     $bg_cls ='';
                     if($record->status==1){
@@ -69,7 +71,7 @@
             }
         }else{ ?>	
             <tr class="gradeX"> 
-            <td colspan="7" class="text-center"> <strong> No Record Found! </strong></td>
+            <td colspan="8" class="text-center"> <strong> No Record Found! </strong></td>
             </tr>
         <?php } ?>  
       </tbody>  

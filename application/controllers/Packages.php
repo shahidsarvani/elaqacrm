@@ -31,6 +31,8 @@
 			$res_nums =  $this->general_model->check_controller_method_permission_access('Packages','index',$this->dbs_user_role_id,'1');
 			if($res_nums>0){
 				$data['page_headings'] = "Package List";
+				$data['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
+				
 				$data['records'] = $this->packages_model->get_all_packages(); 
 				$this->load->view('packages/index',$data);  
 			}else{ 
@@ -96,6 +98,7 @@
 			 
 			$data['page_headings'] = 'Add Package'; 
 			$data['max_sort_val'] = $this->packages_model->get_max_packages_sort_val();
+			$data['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
 			
 			if(isset($_POST) && !empty($_POST)){
 				// get form input
@@ -165,6 +168,7 @@
 				}
 				
 				$data['max_sort_val'] = $this->packages_model->get_max_packages_sort_val();
+				$data['conf_currency_symbol'] = $currency = $this->general_model->get_gen_currency_symbol();
 				
 				if(isset($_POST) && !empty($_POST)){
 					// get form input
