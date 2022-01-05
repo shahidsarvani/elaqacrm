@@ -26,7 +26,7 @@ if($trash_res_nums>0){ ?>
 <?php 
 } ?>  
 </head>
-<body>
+<body class="sidebar-xs has-detached-left">
 
 <!-- Main navbar -->
 <?php $this->load->view('widgets/header'); ?>

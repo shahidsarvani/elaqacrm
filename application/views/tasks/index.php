@@ -225,9 +225,8 @@
 					$assigned_to_nm = stripslashes($temp_usr_arr->name); 
 				}
 			}   ?>
-				<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>"> 
-				<td><?php echo $sr;
-					echo ($record->is_new==1 && $record->assigned_to==$vs_id) ? ' <span class="badge_mini badge badge-danger">new</span>':'';  ?></td> 
+			<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">  
+				<td class="text-center"> <?php echo ($record->is_new==1 && $record->assigned_to==$vs_id) ? ' <span class="badge_mini badge badge-danger">new</span>':'';  ?> <div class="checkbox"> <label for="status"> <input type="checkbox" name="multi_action_check[]" id="multi_action_check_<?php echo $record->id; ?>" value="<?php echo $record->id; ?>" class="styled"> <?php echo $sr; ?> </label> </div> </td>
 				<td><?= stripslashes($record->property_ref); ?></td>
 				<td><?= stripslashes($record->lead_ref); ?></td>  
 				<td><?= stripslashes($record->title); ?></td>
@@ -264,7 +263,8 @@
 								if($update_res_nums>0){ ?> 
 									<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
 							<?php } 
-								if($trash_res_nums>0 && $this->dbs_user_role_id==1 ){ ?>  
+								/*if($trash_res_nums>0 && $this->dbs_user_role_id==1 )*/
+								if($trash_res_nums>0){ ?>  
 								   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
 						  <?php } ?>  
 							</ul>
@@ -289,7 +289,7 @@
 				  
 				}else{ ?>	
 					<tr class="gradeX"> 
-						<td colspan="10" class="center"> <strong> No Record Found! </strong> </td>
+						<td colspan="10" style="text-align:center;" class="center"> <strong> No Record Found! </strong> </td>
 					</tr>
 				<?php } ?>  
             </tbody>

@@ -28,55 +28,53 @@
 		}   
 		
 		/* Owners module starts */
-		function index(){ 
-			
+		function index(){
 			$res_nums =  $this->general_model->check_controller_method_permission_access('Owners','index',$this->dbs_role_id,'1'); 
 			if($res_nums>0){ 
-		 
-			$sel_module_id = $sel_user_type_id =''; 
-			$paras_arrs = array();	
-			 
-			if($this->input->post('sel_per_page_val')){
-				$per_page_val = $this->input->post('sel_per_page_val'); 
-				$_SESSION['tmp_per_page_val'] = $per_page_val;  
+				$data = $paras_arrs = array();
+				$sel_module_id = $sel_user_type_id ='';  
+				 
+				if($this->input->post('sel_per_page_val')){
+					$per_page_val = $this->input->post('sel_per_page_val'); 
+					$_SESSION['tmp_per_page_val'] = $per_page_val;  
+					
+				}else if(isset($_SESSION['tmp_per_page_val'])){
+						unset($_SESSION['tmp_per_page_val']);
+					} 
 				
-			}else if(isset($_SESSION['tmp_per_page_val'])){
-					unset($_SESSION['tmp_per_page_val']);
-				} 
-			
-			if($this->input->post('q_val')){
-				$q_val = $this->input->post('q_val'); 
-				$_SESSION['tmp_q_val'] = $q_val;
-				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
+				if($this->input->post('q_val')){
+					$q_val = $this->input->post('q_val'); 
+					$_SESSION['tmp_q_val'] = $q_val;
+					$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
+					
+				}else if(isset($_SESSION['tmp_q_val'])){
+						unset($_SESSION['tmp_q_val']);
+					}  
 				
-			}else if(isset($_SESSION['tmp_q_val'])){
-					unset($_SESSION['tmp_q_val']);
-				}  
-			
-			if(isset($_SESSION['tmp_per_page_val'])){
-				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
-			}else{
-				$show_pers_pg = $this->perPage;
-			}
-			 
-			//total rows count
-			$totalRec = count($this->owners_model->get_all_filter_owners($paras_arrs));
-			
-			//pagination configuration
-			$config['target']      = '#dyns_list';
-			$config['base_url']    = site_url('/owners/index2');
-			$config['total_rows']  = $totalRec;
-			$config['per_page']    = $show_pers_pg; //$this->perPage;
-			
-			$this->ajax_pagination->initialize($config); 
-			
-			$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
-			
-			$records = $data['records'] = $this->owners_model->get_all_filter_owners($paras_arrs);
-			 
-			$data['page_headings']="Owners List";
-			$this->load->view('owners/index',$data); 
-			
+				if(isset($_SESSION['tmp_per_page_val'])){
+					$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
+				}else{
+					$show_pers_pg = $this->perPage;
+				}
+				 
+				//total rows count
+				$totalRec = count($this->owners_model->get_all_filter_owners($paras_arrs));
+				
+				//pagination configuration
+				$config['target']      = '#dyns_list';
+				$config['base_url']    = site_url('/owners/index2');
+				$config['total_rows']  = $totalRec;
+				$config['per_page']    = $show_pers_pg; //$this->perPage;
+				
+				$this->ajax_pagination->initialize($config); 
+				
+				$paras_arrs = array_merge($paras_arrs, array("limit" => $show_pers_pg));
+				
+				$records = $data['records'] = $this->owners_model->get_all_filter_owners($paras_arrs);
+				 
+				$data['page_headings']="Owners List";
+				$this->load->view('owners/index',$data); 
+				
 			}else{ 
 				$this->load->view('no_permission_access'); 
 			} 
@@ -84,9 +82,8 @@
 	
 	
 		function index2(){
-		 	$data['page_headings']="Owners List";
-	
-			$paras_arrs = array();	
+			$data = $paras_arrs = array();
+		 	$data['page_headings'] = "Owners List"; 
 			$page = $this->input->post('page');
 			if(!$page){
 				$offset = 0;
@@ -96,7 +93,6 @@
 			
 			$data['page'] = $page; 
 			
-				
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
 				$_SESSION['tmp_per_page_val'] = $per_page_val;  
@@ -117,8 +113,7 @@
 			}else if(isset($_SESSION['tmp_q_val'])){
 				$q_val = $_SESSION['tmp_q_val']; 
 				$paras_arrs = array_merge($paras_arrs, array("q_val" => $q_val));
-			}  
-			
+			}
 			
 			if(isset($_SESSION['tmp_per_page_val'])){
 				$show_pers_pg = $_SESSION['tmp_per_page_val'];	 
@@ -444,7 +439,7 @@
 				}else if(isset($rec_res2)){ 
 					echo 'mobiles';
 				}else{
-					$datas = array('name' => $name,'email' => $email,'mobile_no' => $mobile_no,'created_by' => $created_by,'created_on' => $created_on); 
+					$datas = array('name' => $name,'email' => $email,'mobile_no' => $mobile_no,'created_by' => $created_by,'assigned_to' => $created_by,'created_on' => $created_on);  
 					$res = $this->owners_model->insert_owner_data($datas); 
 					 
 					if(isset($res)){

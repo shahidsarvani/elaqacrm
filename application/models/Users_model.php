@@ -23,6 +23,15 @@ class Users_model extends CI_Model {
 				$whrs .=" AND ( u.name LIKE '%$q_val%' OR u.email LIKE '%$q_val%' OR u.phone_no LIKE '%$q_val%' OR u.mobile_no LIKE '%$q_val%' OR u.address LIKE '%$q_val%' ) ";
 			}
 		}
+		  
+		$vs_id = $this->session->userdata('us_id');
+		$vs_role_id = $this->session->userdata('us_role_id'); 
+		$vs_parent_id = $this->session->userdata('us_parent_id');  
+		if($vs_role_id==2){ 
+			$whrs .=" AND u.parent_id='".$vs_id."' "; 
+		}else if($vs_role_id==3){ 
+			$whrs .=" AND u.parent_id='".$vs_parent_id."' "; 
+		}
 		
 		if(array_key_exists("sl_role_id",$params)){
 			$sl_role_id = $params['sl_role_id']; 

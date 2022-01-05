@@ -416,9 +416,9 @@
 	  text-decoration:none;
 	}
 	
-	#datas_form-step-1 .stepy-navigator {
+	/*#datas_form-step-1 .stepy-navigator {
 		text-align: left !important;
-	}
+	}*/
  </style>
 </head>
 <body class="login-container">
@@ -435,8 +435,8 @@
       <div class="content">
 	  	 
         <!-- Registration form --> 
-          <div class="row">
-            <div class="col-lg-offset-1 col-lg-10 col-lg-offset-1"> 
+          <div class="row"> <!-- col-lg-offset-1 col-lg-10 col-lg-offset-1 -->
+            <div class="col-lg-12 col-md-12"> 
 			<?php if(isset($_SESSION['success_msg'])){ ?>    
 					<div class="alert alert-success no-border">
 						<button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button> <?php echo $this->session->flashdata('success_msg'); ?>
@@ -448,6 +448,52 @@
 				  </div>    
 			<?php } ?>  
 			
+			<style>
+				#datas_form-step-0 .stepy-navigator .button-next {
+					visibility:hidden;
+				} 
+			</style>
+			<script>
+				$(document).ready(function(){ 
+					$("button#submit_trail").click(function(){
+						$("#sel_package_id").val('1');  
+						$("#package_no_1").css("border", "2px solid #339999");
+						$("#package_no_2").css("border", "none");
+						$("#package_no_3").css("border", "none");
+						$("#package_no_4").css("border", "none");
+						$("#datas_form-step-0 .stepy-navigator .button-next").click();
+					});
+					
+					$("button#submit_basic").click(function(){
+						$("#sel_package_id").val('2'); 
+						$("#package_no_1").css("border", "none");
+						$("#package_no_2").css("border", "2px solid #339999"); 	
+						$("#package_no_3").css("border", "none");
+						$("#package_no_4").css("border", "none");
+						$("#datas_form-step-0 .stepy-navigator .button-next").click();
+					});
+					
+					$("button#submit_regular").click(function(){
+						$("#sel_package_id").val('3'); 
+						$("#package_no_1").css("border", "1px solid #339999");
+						$("#package_no_1").css("border", "none");
+						$("#package_no_2").css("border", "none");
+						$("#package_no_3").css("border", "2px solid #339999"); 	 
+						$("#package_no_4").css("border", "none");
+						$("#datas_form-step-0 .stepy-navigator .button-next").click();
+					});
+					
+					$("button#submit_premium").click(function(){
+						$("#sel_package_id").val('4'); 
+						$("#package_no_1").css("border", "none");
+						$("#package_no_2").css("border", "none");
+						$("#package_no_3").css("border", "none");
+						$("#package_no_4").css("border", "2px solid #339999"); 	
+						$("#datas_form-step-0 .stepy-navigator .button-next").click(); 
+					}); 
+				});
+			</script>
+			
               <div class="panel registration-form">
                 <div class="panel-body">
                   <div class="text-center">
@@ -457,70 +503,8 @@
 			  <input type="hidden" name="email_check_url" id="email_check_url" value="<?php echo site_url('/login/check_email_existance/'); ?>" />
 				  
 			   <form name="datas_form" id="datas_form" class="stepy-validation" method="post" action=""> 
-				<fieldset title="1">  
-				 <legend class="text-semibold">Personal info</legend> 
-					<div class="row">
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="name">Name: <span class="text-danger">*</span></label>
-						  <input type="text" name="name" id="name" value="<?php echo set_value('name'); ?>" class="form-control" placeholder="Name" data-error="#name1"> <span id="name1" class="text-danger"><?php echo form_error('name'); ?></span> 
-						</div>
-					  </div>
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="email">Email: <span class="text-danger">*</span></label>
-						  <input type="email" name="email" id="email" value="<?php echo set_value('email'); ?>" class="form-control" placeholder="Email Address" data-error="#email1"> <span id="name1" class="text-danger"><?php echo form_error('email'); ?></span> 
-						</div>
-					  </div>
-					</div>
-					<div class="row">
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="password">Password: <span class="text-danger">*</span></label>
-						  <input type="password" name="password" id="password" value="<?php echo set_value('password'); ?>" class="form-control" placeholder="Password" data-error="#password1"> <span id="password1" class="text-danger"><?php echo form_error('password'); ?></span> 
-						</div>
-					  </div>
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="conf_password">Confirm Password: <span class="text-danger">*</span></label>
-						  <input type="password" name="conf_password" id="conf_password" value="<?php echo set_value('conf_password'); ?>" class="form-control" placeholder="Confirm Password" data-rule-equalTo="#password" data-error="#password2"> <span id="password2" class="text-danger"><?php echo form_error('conf_password'); ?></span>
-						</div>
-					  </div>
-					</div>
-					
-					<div class="row">
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="phone_no">Phone Number:</label>
-						  <input type="text" name="phone_no" id="phone_no" value="<?php echo set_value('phone_no'); ?>" class="form-control" placeholder="Phone #" />
-						</div>
-					  </div>
-					  
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="mobile_no">Mobile Number: <span class="text-danger">*</span></label>
-						  <input type="text" name="mobile_no" id="mobile_no" class="form-control" value="<?php echo set_value('mobile_no'); ?>" placeholder="Mobile #" data-error="#mobile_no1"> <span id="mobile_no1" class="text-danger"><?php echo form_error('mobile_no'); ?></span>
-						</div>
-					  </div> 
-					</div>
-						
-					<div class="row">
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label for="company_name">Company Name: <span class="text-danger">*</span></label>
-						  <input type="text" name="company_name" id="company_name" placeholder="Company Name" class="form-control" value="<?php echo set_value('company_name'); ?>" data-error="#company_name1"> <span id="company_name1" class="text-danger"><?php echo form_error('company_name'); ?></span>
-						</div>
-					  </div> 
-					  <div class="col-md-6">
-						<div class="form-group">
-						  <label>No. of Employees: <span class="text-danger">*</span></label>
-							<input type="text" name="no_of_employees" id="no_of_employees" placeholder="No. of Employees" class="form-control" value="<?php echo set_value('no_of_employees'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" />
-						</div>
-					  </div>
-					</div>
-				 </fieldset>
-					   
-				<fieldset title="2">  
+			   	<input type="hidden" name="sel_package_id" id="sel_package_id" value="1" />
+			    <fieldset title="1">  
 					<legend class="text-semibold">Process Payment</legend>
 					
 					  <!-- <div class="row"> 
@@ -559,7 +543,7 @@
 						</div>           
 					  </div> </div> --> 
 					  
-					  <div class="row">
+					  <div class="row" style="display:none">
 					  <div class="col-md-12">
 						<div class="form-group"> 
 						  <label>Payment Gateway: <span class="text-danger">*</span></label>
@@ -587,7 +571,6 @@
 					  <div id="generic_price_table" class="row">
 					  <!-- <div class="col-md-12"> 
 					   </div>-->
-					   
 					<?php  
 						$p = 1;
 						if(isset($packages_arrs) && count($packages_arrs)>0){
@@ -606,7 +589,8 @@
 								
 								}else if($packages_arr->package_type == 3){
 									$package_type_txt = "YEAR"; 
-								} 
+									
+								}  
 								
 								$price_whole_num = $packages_arr->price;
 								$price_dec_num = '00';
@@ -617,8 +601,8 @@
 									$price_dec_num = $price_arr[1];
 								} ?>
 							 	
-							 <div class="col-md-4"> 		 
-								<div class="generic_content <?php echo ($p == 2) ? 'active' : ''; ?> clearfix">  
+							 <div class="col-md-3"> 		 
+								<div id="package_no_<?php echo $p; ?>" class="generic_content <?php echo ($p == 3) ? 'active' : ''; ?> clearfix">  
 									<div class="generic_head_price clearfix">  
 										<div class="generic_head_content clearfix">  
 											<div class="head_bg"></div>
@@ -627,34 +611,45 @@
 											</div>  
 										</div>  
 										<div class="generic_price_tag clearfix">  
-											<span class="price">
-												<span class="sign"><?php echo $conf_currency_symbol; ?></span>
-												<span class="currency"><?php echo $price_whole_num; ?></span>
-												<span class="cent">.<?php echo $price_dec_num; ?></span>
-												<span class="month">/<?php echo $package_type_txt; ?></span>
+											<span class="price"> 
+											<?php if($p == 1){ ?> 
+												  <span class="currency">Free</span>
+												  <span class="month">/14 Days</span>
+											<?php }else{ ?> 
+													<span class="sign"><?php echo $conf_currency_symbol; ?></span>
+													<span class="currency"><?php echo $price_whole_num; ?></span>
+													<span class="cent">.<?php echo $price_dec_num; ?></span>
+													<span class="month">/<?php echo $packages_arr->duration.' '.$package_type_txt; ?></span>
+											<?php } ?> 
 											</span>
 										</div>  
-									</div>                            
-									
+									</div>    
+					
 									<div class="generic_feature_list">
-									 <?php echo stripslashes($packages_arr->description); ?> 
-									  <!--<ul>
-										  <li><span>2GB</span> Bandwidth</li>
-											<li><span>150GB</span> Storage</li>
-											<li><span>12</span> Accounts</li>
-											<li><span>7</span> Host Domain</li>
-											<li><span>24/7</span> Support</li>
-										</ul>-->
-									</div>
-									  
+									 <?php //echo stripslashes($packages_arr->description); ?> 
+								<ul>
+									<?php if($packages_arr->total_properties_nums >0){ ?> 
+										<li><span><?php echo stripslashes($packages_arr->total_properties_nums); ?> </span> Manage up to Properties</li>
+								<?php } if($packages_arr->total_contacts_nums >0){ ?> 
+										<li><span><?php echo stripslashes($packages_arr->total_contacts_nums); ?> </span> Manage up to Contacts</li>
+								<?php } if($packages_arr->total_owners_nums >0){ ?> 
+										<li><span><?php echo stripslashes($packages_arr->total_owners_nums); ?> </span> Manage up to Owners</li>
+								<?php } if($packages_arr->total_tasks_nums >0){ ?> 
+										<li><span><?php echo stripslashes($packages_arr->total_tasks_nums); ?> </span> Manage up to Tasks</li>
+								<?php } ?> 
+									</ul>
+								</div>
+									 
 									<div class="generic_price_btn clearfix"> 
 									  <?php if($p == 1){ ?>
-									  	 <button type="submit" name="submit_basic" class="btn border-teal-400 text-teal-800 btn-flat btn-rounded stepy-finish"> &nbsp; &nbsp; Sign up &nbsp; &nbsp; </button> 
+									  	 <button type="button" name="submit_trail" id="submit_trail" class="btn border-teal-400 text-teal-800 btn-flat btn-rounded"> &nbsp; &nbsp; Subscribe &nbsp; &nbsp; </button> 
 										 <!--btn btn-danger btn-rounded-->
 									  <?php }else if($p == 2){ ?>
-									  	 <button type="submit" name="submit_regular" class="btn bg-teal-400 btn-rounded stepy-finish"> &nbsp; &nbsp; Sign up &nbsp; &nbsp; </button>
+									  	 <button type="button" name="submit_basic" id="submit_basic" class="btn border-teal-400 text-teal-800 btn-flat btn-rounded"> &nbsp; &nbsp; Subscribe &nbsp; &nbsp; </button>
 									  <?php }else if($p == 3){ ?>
-									  	 <button type="submit" name="submit_premium" class="btn border-teal-400 text-teal-800 btn-flat btn-rounded stepy-finish"> &nbsp; &nbsp; Sign up &nbsp; &nbsp; </button>
+									  	 <button type="button" name="submit_regular" id="submit_regular" class="btn bg-teal-400 btn-rounded"> &nbsp; &nbsp; Subscribe &nbsp; &nbsp; </button>
+									  <?php }else if($p == 4){ ?>
+									  	 <button type="button" name="submit_premium" id="submit_premium" class="btn border-teal-400 text-teal-800 btn-flat btn-rounded"> &nbsp; &nbsp; Subscribe &nbsp; &nbsp; </button>
 									  <?php } ?>
 									 
 									</div>  
@@ -669,8 +664,73 @@
 					 </div>  
 					
 				</fieldset>
+				
+				<fieldset title="2">  
+				 <legend class="text-semibold">Personal info</legend> 
+					<div class="row">
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="name">Name: <span class="text-danger">*</span></label>
+						  <input type="text" name="name" id="name" value="<?php echo set_value('name'); ?>" class="form-control" placeholder="Name" data-error="#name1"> <span id="name1" class="text-danger"><?php echo form_error('name'); ?></span> 
+						</div>
+					  </div>
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="email">Email: <span class="text-danger">*</span></label>
+						  <input type="email" name="email" id="email" value="<?php echo set_value('email'); ?>" class="form-control" placeholder="Email Address" data-error="#email1"> <span id="name1" class="text-danger"><?php echo form_error('email'); ?></span> 
+						</div>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="password">Password: <span class="text-danger">*</span></label>
+						  <input type="password" name="password" id="password" value="<?php echo set_value('password'); ?>" class="form-control" placeholder="Password" data-error="#password1"> <span id="password1" class="text-danger"><?php echo form_error('password'); ?></span> 
+						</div>
+					  </div>
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="conf_password">Confirm Password: <span class="text-danger">*</span></label>
+						  <input type="password" name="conf_password" id="conf_password" value="<?php echo set_value('conf_password'); ?>" class="form-control" placeholder="Confirm Password" data-rule-equalTo="#password" data-error="#password2"> <span id="password2" class="text-danger"><?php echo form_error('conf_password'); ?></span>
+						</div>
+					  </div>
+					</div>
 					
-				 <button style="display:none" type="submit" class="btn btn-primary stepy-finish">Submit <i class="icon-check position-right"></i></button>
+					<div class="row">
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="phone_no">Phone Number:</label>
+						  <input type="text" name="phone_no" id="phone_no" value="<?php echo set_value('phone_no'); ?>" class="form-control" placeholder="Phone #" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" />
+						</div>
+					  </div>
+					  
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="mobile_no">Mobile Number: <span class="text-danger">*</span></label>
+						  <input type="text" name="mobile_no" id="mobile_no" class="form-control" value="<?php echo set_value('mobile_no'); ?>" placeholder="Mobile #" data-error="#mobile_no1" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" /> <span id="mobile_no1" class="text-danger"><?php echo form_error('mobile_no'); ?></span>
+						</div>
+					  </div> 
+					</div>
+						
+					<div class="row">
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label for="company_name">Company Name: <span class="text-danger">*</span></label>
+						  <input type="text" name="company_name" id="company_name" placeholder="Company Name" class="form-control" value="<?php echo set_value('company_name'); ?>" data-error="#company_name1"> <span id="company_name1" class="text-danger"><?php echo form_error('company_name'); ?></span>
+						</div>
+					  </div> 
+					  <div class="col-md-6">
+						<div class="form-group">
+						  <label>No. of Employees: <span class="text-danger">*</span></label>
+							<input type="text" name="no_of_employees" id="no_of_employees" placeholder="No. of Employees" class="form-control" value="<?php echo set_value('no_of_employees'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" />
+						</div>
+					  </div>
+					</div>
+				 </fieldset>
+					   
+				
+					
+				 <button type="submit" class="btn btn-primary stepy-finish"> Sign Up <i class="icon-check position-right"></i></button>
 			  </form>
 						
 				  <div class="text-left"> 

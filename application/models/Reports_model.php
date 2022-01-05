@@ -14,14 +14,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,","); 	 
 		}   
 		
 		if($vs_user_type_id==3){
@@ -68,14 +69,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}	
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}   
 		
 		if($vs_user_type_id==3){
@@ -123,14 +125,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}   
 		
 		if($vs_user_type_id==3){
@@ -177,14 +180,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,","); 	 
 		}   
 		
 		if($vs_user_type_id==3){
@@ -231,14 +235,15 @@ class Reports_model extends CI_Model {
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}	
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}    
 		 
 		$this->db->select_sum('nos_of_meetings');
@@ -277,14 +282,15 @@ class Reports_model extends CI_Model {
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,","); 	 
 		} 
 		
 		$this->db->select_sum('nos_of_views');
@@ -337,14 +343,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}   
 		
 		if($vs_user_type_id==3){
@@ -385,14 +392,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id');  
 		if($vs_user_type_id==2){  
 			$vs_id = $this->session->userdata('us_id');
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}   
 		
 		if($vs_user_type_id==3){
@@ -437,13 +445,14 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}	
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}
 		 
 		$wheres_1 = '';
@@ -487,14 +496,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){   
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				}  
+			}
+			$temp_agents_ids = trim($temp_agents_ids,",");	 
 		}
 		
 		$wheres = $wheres_1 = ''; 
@@ -567,15 +577,16 @@ class Reports_model extends CI_Model {
 		$vs_id = $this->session->userdata('us_id');	 
 		$vs_user_type_id= $this->session->userdata('us_ole_id'); 
 		$temp_agents_ids = '';
-		if($vs_user_type_id==2){   
+		if($vs_user_type_id==2){ 
+			$temp_agents_ids .= $vs_id.",";  
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				}  
+			}	
+			$temp_agents_ids = trim($temp_agents_ids,","); 
 		}
 		 
 		$wheres_1 = '';   
@@ -618,14 +629,15 @@ class Reports_model extends CI_Model {
 		$vs_user_type_id= $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){   
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_manager_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		}
 		
 		$wheres = $wheres_1 = ''; 

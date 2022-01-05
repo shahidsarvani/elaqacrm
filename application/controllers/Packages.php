@@ -106,7 +106,11 @@
 				$price = $this->input->post("price");
 				$sort_order = $this->input->post("sort_order");
 				$package_type = $this->input->post("package_type"); 
-				$duration = $this->input->post("duration"); 
+				$duration = $this->input->post("duration");  
+				$total_properties_nums = $this->input->post("total_properties_nums");
+				$total_contacts_nums = $this->input->post("total_contacts_nums");
+				$total_owners_nums = $this->input->post("total_owners_nums"); 
+				$total_tasks_nums = $this->input->post("total_tasks_nums");  
 				$description = $this->input->post("description"); 
 				$status = isset($_POST['status']) ? 1 : 0; 
 				  
@@ -123,7 +127,7 @@
 					$this->load->view('packages/add',$data);
 				}else if(isset($args1) && $args1!=''){
 					  
-					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'description' => $description,'status' => $status); 
+					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
 					$res = $this->packages_model->update_package_data($args1,$datas); 
 					if(isset($res)){  
 						$this->session->set_flashdata('success_msg','Record updated successfully!');
@@ -133,7 +137,7 @@
 					redirect("packages/index");
 					
 				}else{ 
-					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order,'description' => $description,'status' => $status); 
+					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
 					$res = $this->packages_model->insert_package_data($datas); 
 					if(isset($res)){
 						$this->session->set_flashdata('success_msg','Record inserted successfully!');
@@ -177,6 +181,10 @@
 					$sort_order = $this->input->post("sort_order");
 					$package_type = $this->input->post("package_type"); 
 					$duration = $this->input->post("duration"); 
+					$total_properties_nums = $this->input->post("total_properties_nums");
+					$total_contacts_nums = $this->input->post("total_contacts_nums");
+					$total_owners_nums = $this->input->post("total_owners_nums"); 
+					$total_tasks_nums = $this->input->post("total_tasks_nums");  
 					$description = $this->input->post("description"); 
 					$status = isset($_POST['status']) ? 1 : 0; 
 					 
@@ -193,7 +201,7 @@
 						$this->load->view('packages/update',$data);
 					}else if(isset($args1) && $args1!=''){
 						  
-						$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'description' => $description,'status' => $status); 
+						$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
 						$res = $this->packages_model->update_package_data($args1,$datas); 
 						if(isset($res)){  
 							$this->session->set_flashdata('success_msg','Record updated successfully!');

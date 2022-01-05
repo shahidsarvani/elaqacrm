@@ -43,9 +43,8 @@
 						
 						$update_array = array('last_login_on' => $last_login_on,'ip_address' => $ip_address); 
 						$rec = $this->users_model->update_user_data($result->id,$update_array);
-						
-						// set session	
-						$cstm_sess_data = array('us_login' => TRUE,'us_id' => $result->id,'us_role_id' => $result->role_id,'us_name' => ucfirst($result->name),'us_email' => $result->email);
+						// set session
+						$cstm_sess_data = array('us_login' => TRUE,'us_id' => $result->id,'us_parent_id' => $result->parent_id, 'us_role_id' => $result->role_id,'us_name' => ucfirst($result->name),'us_email' => $result->email);
 						 
 						$this->session->set_userdata($cstm_sess_data);
 						
@@ -82,17 +81,8 @@
 			$mobile_no = $this->input->post("mobile_no");
 			$company_name = $this->input->post("company_name");
 			$no_of_employees = $this->input->post("no_of_employees");
-			//$package_id = $this->input->post("package_id");
-			$payment_gateway = $this->input->post("payment_gateway");  
-			
-			$package_id = 0;
-			if(isset($_POST['submit_basic'])){
-				$package_id = 1;
-			}else if(isset($_POST['submit_regular'])){
-				$package_id = 2;
-			}else if(isset($_POST['submit_premium'])){
-				$package_id = 3;
-			}
+			$package_id = $this->input->post("sel_package_id");
+			$payment_gateway = ''; // $this->input->post("payment_gateway");   
 			
 			//name  email  password  conf_password  phone_no  mobile_no company_name  no_of_employees  payment_gateway 
 			// form validation 
@@ -101,7 +91,7 @@
 			$this->form_validation->set_rules("password","Password",'required|trim|xss_clean');
 			$this->form_validation->set_rules("mobile_no","Mobile No",'required|trim|xss_clean');
 			$this->form_validation->set_rules("company_name","Company Name",'required|trim|xss_clean');
-			$this->form_validation->set_rules("payment_gateway","Payment Gateway",'required|trim|xss_clean');
+			//$this->form_validation->set_rules("payment_gateway","Payment Gateway",'required|trim|xss_clean');
 			
 			if($this->form_validation->run() == FALSE){
 				// validation fail 
@@ -123,6 +113,7 @@
 					$package_price =  $row1->price;
 					$package_package_type = $row1->package_type;
 					$package_duration =  $row1->duration;  
+					
 					if($package_package_type == 1){
 						$package_end_date = date('Y-m-d', strtotime($package_start_date. " +{$package_duration} days"));
 					}else if($package_package_type == 2){
@@ -130,10 +121,10 @@
 					}else if($package_package_type == 3){
 						$package_end_date = date('Y-m-d', strtotime($package_start_date. " +{$package_duration} years"));
 					}
-				} 
-				
-				
-				$datas = array('name' => $name, 'email' => $email, 'password' => $password, 'mobile_no' => $mobile_no, 'phone_no' => $phone_no, 'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'status' => '1', 'parent_id' => '0', 'role_id' => '2', 'random_password' => $random_password, 'ip_address' => $ip_address, 'created_on' => $created_on, 'package_id' => $package_id, 'package_start_date' => $package_start_date, 'package_end_date' => $package_end_date, 'package_status' => '0'); 
+				}
+ 				//package_id	package_start_date	package_end_date	package_status
+				 
+				$datas = array('name' => $name, 'email' => $email, 'password' => $password, 'mobile_no' => $mobile_no, 'phone_no' => $phone_no, 'company_name' => $company_name, 'no_of_employees' => $no_of_employees, 'status' => '1', 'parent_id' => '0', 'role_id' => '2', 'random_password' => $random_password, 'ip_address' => $ip_address, 'created_on' => $created_on, 'package_id' => $package_id, 'package_start_date' => $package_start_date, 'package_end_date' => $package_end_date, 'package_status' => '1'); 
 				 
 				$insert_data = $this->users_model->insert_user_data($datas); 
 				if(isset($insert_data)){  

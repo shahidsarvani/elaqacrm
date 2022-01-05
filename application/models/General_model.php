@@ -656,6 +656,11 @@ class General_model extends CI_Model {
 		} 
 		
 		/* property features function ends */ 
+		
+		function get_user_type_by_id($args1){ 
+			$query = $this->db->get_where('roles_tbl',array('id'=> $args1));
+			return $query->row();
+		}
 		 
 		 function get_all_users_with_roles(){ 
 			$this->db->select("u.*, r.name AS role_name");

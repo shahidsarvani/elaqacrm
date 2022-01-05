@@ -60,7 +60,7 @@
 			<div class="form-group">
             <label class="col-md-2 control-label" for="price"> Price (<?php echo $conf_currency_symbol; ?>) <span class="reds">*</span></label>
               <div class="col-md-6">
-                <input name="price" id="price" type="text" class="form-control" value="<?php echo set_value('price'); ?>" data-error="#price1" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" onBlur="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" /> 
+                <input name="price" id="price" type="text" class="form-control" value="<?php echo set_value('price'); ?>" data-error="#price1" onKeyUp="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" onBlur="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" /> 
                 <span id="price1" class="text-danger"><?php echo form_error('price'); ?></span>
               </div> 
             </div>
@@ -94,9 +94,9 @@
               <div class="col-md-6">
 			  	<select name="package_type" id="package_type" class="form-control select2" data-error="#package_type1" onChange="operate_package_type(this.value);">
 					<option value=""> Select Package Type </option>
-					<option value="1" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==1) ? 'selected="selected"' : ''; ?>> Daily </option>
-					<option value="2" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==2) ? 'selected="selected"' : ''; ?>> Monthly </option>
-					<option value="3" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==3) ? 'selected="selected"' : ''; ?>> Yearly </option>
+					<option value="1" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==1) ? 'selected="selected"' : ''; ?>> Day(s) </option>
+					<option value="2" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==2) ? 'selected="selected"' : ''; ?>> Month(s) </option>
+					<option value="3" <?php echo (isset($_POST['package_type']) && $_POST['package_type']==3) ? 'selected="selected"' : ''; ?>> Year(s) </option>
 				</select> 
                 <span id="price1" class="text-danger"><?php echo form_error('price'); ?></span>
               </div> 
@@ -107,6 +107,38 @@
               <div class="col-md-6">
                 <input name="duration" id="duration" type="text" class="form-control" value="<?php echo set_value('duration'); ?>" data-error="#duration1"> 
                 <span id="duration1" class="text-danger"><?php echo form_error('duration'); ?></span>
+              </div> 
+            </div> 
+			
+			<div class="form-group">
+              <label class="col-md-2 control-label" for="total_properties_nums">Total Properties Nos. <span class="reds">*</span></label>
+              <div class="col-md-6"> 
+                  <input name="total_properties_nums" id="total_properties_nums" type="text" class="form-control" value="<?php echo set_value('total_properties_nums'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" data-error="#total_properties_nums1"> 
+                <span id="total_properties_nums1" class="text-danger"><?php echo form_error('total_properties_nums'); ?></span> 
+              </div> 
+            </div>
+			
+			<div class="form-group">
+              <label class="col-md-2 control-label" for="total_contacts_nums">Total Contact Nos. <span class="reds">*</span></label>
+              <div class="col-md-6"> 
+                  <input name="total_contacts_nums" id="total_contacts_nums" type="text" class="form-control" value="<?php echo set_value('total_contacts_nums'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" data-error="#total_contacts_nums1"> 
+                <span id="total_contacts_nums1" class="text-danger"><?php echo form_error('total_contacts_nums'); ?></span> 
+              </div> 
+            </div>
+			
+			<div class="form-group">
+              <label class="col-md-2 control-label" for="total_owners_nums">Total Owners Nos. <span class="reds">*</span></label>
+              <div class="col-md-6"> 
+                  <input name="total_owners_nums" id="total_owners_nums" type="text" class="form-control" value="<?php echo set_value('total_owners_nums'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" data-error="#total_owners_nums1"> 
+                <span id="total_owners_nums1" class="text-danger"><?php echo form_error('total_owners_nums'); ?></span> 
+              </div> 
+            </div>
+			
+			<div class="form-group">
+              <label class="col-md-2 control-label" for="total_tasks_nums">Total Tasks Nos. <span class="reds">*</span></label>
+              <div class="col-md-6"> 
+                  <input name="total_tasks_nums" id="total_tasks_nums" type="text" class="form-control" value="<?php echo set_value('total_tasks_nums'); ?>" onKeyUp="this.value=this.value.replace(/\D/g,'')" onChange="this.value=this.value.replace(/\D/g,'')" data-error="#total_tasks_nums1"> 
+                <span id="total_tasks_nums1" class="text-danger"><?php echo form_error('total_tasks_nums'); ?></span> 
               </div> 
             </div>
 			
@@ -157,6 +189,18 @@
 						duration: {
 							required: true 
 						},
+						total_properties_nums: {
+							required: true 
+						}, 
+						total_contacts_nums: {
+							required: true 
+						},
+						total_owners_nums: {
+							required: true 
+						},
+						total_tasks_nums: {
+							required: true 
+						},
 						description: {
 							required: true 
 						}  
@@ -175,6 +219,18 @@
 							required: "This is required field" 
 						},
 						duration: {
+							required: "This is required field" 
+						},
+						total_properties_nums: {
+							required: "This is required field" 
+						}, 
+						total_contacts_nums: {
+							required: "This is required field" 
+						},
+						total_owners_nums: {
+							required: "This is required field" 
+						},
+						total_tasks_nums: {
 							required: "This is required field" 
 						},
 						description: {

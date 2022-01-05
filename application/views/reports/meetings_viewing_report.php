@@ -87,7 +87,7 @@
 					</div>
 					<div class="col-md-3 pull-right">
 						<!--<button type="submit" name="search" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</button> -->  
-						  <a class="btn border-slate text-slate-800 btn-flat" href="<?= site_url('reports/meetings_viewing_report '); ?>" title="Clear Filters"> <i class="glyphicon glyphicon-refresh position-left"></i> Clear </a> 
+						  <a class="btn border-slate text-slate-800 btn-flat" href="<?= site_url('reports/meetings_viewing_report'); ?>" title="Clear Filters"> <i class="glyphicon glyphicon-refresh position-left"></i> Clear </a> 
 						  <a id="print_button2" href="javascript:void(0);" class="btn border-slate text-slate-800 btn-flat"><i class="glyphicon glyphicon-print position-left"></i> &nbsp; Print </a> 
 						 
 						<!--<a href="<?php echo site_url('reports/property_meetings_views_report_detail'); ?>" target="_blank" class="mb-xs mr-xs btn btn-sm btn-primary"><i class="fa fa-arrows-alt"></i> &nbsp; Print Preview</a> -->  

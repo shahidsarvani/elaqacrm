@@ -40,9 +40,7 @@
 		if($res_nums>0){
 			$paras_arrs = array(); 
 			/* permission checks */
-			$vs_user_type_id = $this->session->userdata('us_role_id');
-			$vs_id = $this->session->userdata('us_id'); 
-	 
+			 
 			if($this->input->post('sel_per_page_val')){
 				$per_page_val = $this->input->post('sel_per_page_val');
 				$_SESSION['tmp_per_page_val'] = $per_page_val;
@@ -102,9 +100,7 @@
 			
 			$data['page'] = $page; 
 			/* permission checks */
-			$vs_user_type_id = $this->session->userdata('us_role_id');
-			$vs_id = $this->session->userdata('us_id'); 
-			 
+			
 			if(isset($_POST['sel_per_page_val'])){
 				$per_page_val = $this->input->post('sel_per_page_val'); 
 				$_SESSION['tmp_per_page_val'] = $per_page_val;  
@@ -185,88 +181,87 @@
 	 }
 	 
 	 
-	 function operate_task_to_do($args1=''){ 
-		if($this->dbs_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
-			redirect('agent/operate_meetings_views');
+ function operate_task_to_do($args1=''){ 
+	if($this->dbs_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
+		redirect('agent/operate_meetings_views');
+	}
+	$this->load->library('email'); 
+	$created_on = $updated_on = date('Y-m-d H:i:s'); 
+	$tmp_assignid = $this->session->userdata('us_id'); 
+	$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+	if(isset($args1) && $args1!=''){ 
+		$data['args1'] = $args1;
+		$record_arr = $this->tasks_model->get_tasks_to_do_by_id($args1);
+		$data['record'] = $record_arr;
+		$data['page_headings'] = 'Update Task to Do';
+		
+		if((isset($args1) && $args1!='') && (isset($record_arr) && $record_arr->assigned_to==$tmp_assignid)){
+			$datas1 = array('updated_on' => $updated_on,'is_new' => '0'); 
+			$this->tasks_model->update_tasks_to_do_data($args1,$datas1); 	   
 		}
-		$this->load->model('admin_model');
-		$created_on = $updated_on = date('Y-m-d H:i:s'); 
-		$tmp_assignid = $this->session->userdata('us_id'); 
-		$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
-		if(isset($args1) && $args1!=''){ 
-			$data['args1'] = $args1;
-			$record_arr = $this->tasks_model->get_tasks_to_do_by_id($args1);
-			$data['record'] = $record_arr;
-			$data['page_headings'] = 'Update Task to Do';
-			
-			if((isset($args1) && $args1!='') && (isset($record_arr) && $record_arr->assigned_to==$tmp_assignid)){
-				$datas1 = array('updated_on' => $updated_on,'is_new' => '0'); 
-				$this->tasks_model->update_tasks_to_do_data($args1,$datas1); 	   
-			}
+	}else{
+		$data['page_headings'] = 'Add Task to Do';
+	}   
+	
+	$data['record_arrs'] = $this->general_model->get_gen_all_users_assigned();
+	  
+	if(isset($_POST) && !empty($_POST)){
+	
+		$title = $this->input->post("title");   
+		$property_ref = $this->input->post("property_ref");  
+		$lead_ref = $this->input->post("lead_ref");  
+		if($this->login_vs_user_role_id >=3){
+			$assigned_to = $this->session->userdata('us_id');
 		}else{
-			$data['page_headings'] = 'Add Task to Do';
-		}   
+			$assigned_to = $this->input->post("assigned_to");
+		}
 		
-		$data['record_arrs'] = $this->general_model->get_gen_all_users_assigned();
-		  
-		if(isset($_POST) && !empty($_POST)){
+		$due_date = $this->input->post("due_date");  
+		$due_timing = $this->input->post("due_timing");   
+		$status = $this->input->post("status"); 
+		$created_by = $this->session->userdata('us_id'); 
 		
-			$title = $this->input->post("title");   
-			$property_ref = $this->input->post("property_ref");  
-			$lead_ref = $this->input->post("lead_ref");  
-			if($this->login_vs_user_type_id >=3){
-				$assigned_to = $this->session->userdata('us_id');
+		// form validation 
+		$this->form_validation->set_rules("title", "Task Detail", "trim|required|xss_clean"); 
+		/*$this->form_validation->set_rules("property_ref", "Property Ref", "trim|required|xss_clean"); */  
+		
+		if($this->dbs_role_id ==1 || $this->dbs_role_id ==2){
+			$this->form_validation->set_rules("assigned_to", "Assigned To", "trim|required|xss_clean");
+		}
+		
+		$this->form_validation->set_rules("due_date", "Due Date", "trim|required|xss_clean"); 
+		
+		if($this->form_validation->run() == FALSE){
+		// validation fail
+			$this->load->view('tasks/operate_task_to_do',$data);
+		}else if(isset($args1) && $args1!=''){
+			 
+			$datas = array('title' => $title,'lead_ref' => $lead_ref,'property_ref' => $property_ref,'assigned_to' => $assigned_to,'due_date' => $due_date,'due_timing' => $due_timing,'status' => $status,'updated_on' => $updated_on); 
+			$res = $this->tasks_model->update_tasks_to_do_data($args1,$datas); 
+			if(isset($res)){
+				$this->session->set_flashdata('success_msg','Record updated successfully!');
 			}else{
-				$assigned_to = $this->input->post("assigned_to");
+				$this->session->set_flashdata('error_msg','Error: while updating record!');
 			}
 			
-			$due_date = $this->input->post("due_date");  
-			$due_timing = $this->input->post("due_timing");   
-			$status = $this->input->post("status"); 
-			$created_by = $this->session->userdata('us_id'); 
-			
-			// form validation 
-			$this->form_validation->set_rules("title", "Task Detail", "trim|required|xss_clean"); 
-			/*$this->form_validation->set_rules("property_ref", "Property Ref", "trim|required|xss_clean"); */  
-			
-			if($this->dbs_role_id ==1 || $this->dbs_role_id ==2){
-				$this->form_validation->set_rules("assigned_to", "Assigned To", "trim|required|xss_clean");
-			}
-			
-			$this->form_validation->set_rules("due_date", "Due Date", "trim|required|xss_clean"); 
-			
-			if($this->form_validation->run() == FALSE){
-			// validation fail
-				$this->load->view('tasks/operate_task_to_do',$data);
-			}else if(isset($args1) && $args1!=''){
-				 
-				$datas = array('title' => $title,'lead_ref' => $lead_ref,'property_ref' => $property_ref,'assigned_to' => $assigned_to,'due_date' => $due_date,'due_timing' => $due_timing,'status' => $status,'updated_on' => $updated_on); 
-				$res = $this->tasks_model->update_tasks_to_do_data($args1,$datas); 
-				if(isset($res)){
-					$this->session->set_flashdata('success_msg','Record updated successfully!');
-				}else{
-					$this->session->set_flashdata('error_msg','Error: while updating record!');
-				}
-				
-					redirect("tasks/index");
-			}else{ 
-				$datas = array('title' => $title,'lead_ref' => $lead_ref,'property_ref' => $property_ref,'assigned_to' => $assigned_to,'due_date' => $due_date,'due_timing' => $due_timing,'status' => $status,'created_by' => $created_by,'created_on' => $created_on); 
-				$res = $this->tasks_model->insert_tasks_to_do_data($datas); 
-				if(isset($res)){
-					$last_task_id = $this->db->insert_id(); 
-					
-					
-				$temp_usrs_arr = $this->general_model->get_user_info_by_id($assigned_to);
-				if(isset($temp_usrs_arr) && count($temp_usrs_arr)>0){
+				redirect("tasks/index");
+		}else{ 
+			$datas = array('title' => $title,'lead_ref' => $lead_ref,'property_ref' => $property_ref,'assigned_to' => $assigned_to,'due_date' => $due_date,'due_timing' => $due_timing,'status' => $status,'created_by' => $created_by,'created_on' => $created_on); 
+			$res = $this->tasks_model->insert_tasks_to_do_data($datas); 
+			if(isset($res)){
+				$last_task_id = $this->db->insert_id(); 
+					 
+				$temp_usrs_arr = $this->general_model->get_user_info_by_id($assigned_to); 
+				if($temp_usrs_arr){
 					$mail_to = $temp_usrs_arr->email;
 					$mail_to_name = $temp_usrs_arr->name;
-					$tmp_user_type_id = $temp_usrs_arr->user_type_id;
+					$tmp_user_type_id = $temp_usrs_arr->role_id;
 					$details_url = 'tasks/index';
 					$details_url = site_url($details_url); 
 					
 					$usrrole_name = '';
-					$usrtyp_arr = $this->admin_model->get_user_type_by_id($tmp_user_type_id);
-					if(isset($usrtyp_arr) && count($usrtyp_arr)>0){
+					$usrtyp_arr = $this->general_model->get_user_type_by_id($tmp_user_type_id);
+					if($usrtyp_arr){
 						$usrrole_name = $usrtyp_arr->name; 
 					}	
 					 
@@ -282,23 +277,22 @@
 					  
 					$this->email->subject("A new task has been assigned – Buysellown CRM");
 					$this->email->message("A new task has been assigned to you by {$mail_to_name} – {$usrrole_name} <a href=\"{$details_url}\" target=\"_blank\">{$lead_ref}</a>");  
-					$this->email->send();
-				}
-					
-					
-					$this->session->set_flashdata('success_msg','Record inserted successfully!');
-				}else{
-					$this->session->set_flashdata('error_msg','Error: while inserting record!');
+					//$this->email->send();
 				} 
-				
-				redirect("tasks/index");
-			} 	 
+					
+				$this->session->set_flashdata('success_msg','Record inserted successfully!');
+			}else{
+				$this->session->set_flashdata('error_msg','Error: while inserting record!');
+			} 
 			
-		}else{
-			$this->load->view('tasks/operate_task_to_do',$data);
-		}
+			redirect("tasks/index");
+		} 	 
+		
+	}else{
+		$this->load->view('tasks/operate_task_to_do',$data);
 	}
-	 
+}
+ 
 	 
  	
 	

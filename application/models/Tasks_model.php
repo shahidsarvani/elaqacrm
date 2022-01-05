@@ -15,32 +15,31 @@ class Tasks_model extends CI_Model {
 	}
 	
 	function get_all_tasks_to_do_old($assigned_to_id_val,$status_val,$from_date_val,$to_date_val){
+		$vs_id = $this->session->userdata('us_id');
 		$vs_user_type_id= $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
 		if($vs_user_type_id==2){  
-			$vs_id = $this->session->userdata('us_id');
-			$agnt_arrs = $this->get_all_managers_agents_list($vs_id); 
-			
+		
+			$temp_agents_ids .= $vs_id.",";
+			$agnt_arrs = $this->get_all_managers_agents_list($vs_id);  
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
-				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+				} 
+			}	
+			$temp_agents_ids = trim($temp_agents_ids,",");  
 		} 
 		 
 		$this->db->select("*");
 		$this->db->from('tasks_to_do_tbl');
 		  
 		if($vs_user_type_id==3){
-			$vs_id = $this->session->userdata('us_id');
 			$this->db->where("assigned_to=$vs_id"); 
 		}else if($vs_user_type_id==2){
 		 	if($assigned_to_id_val>0){ 
 				$this->db->where("assigned_to=$assigned_to_id_val ");
-			}else if($temp_agents_ids!=''){
-				$vs_id = $this->session->userdata('us_id');
-				$this->db->where("assigned_to=$vs_id OR assigned_to IN ($temp_agents_ids) ");
+			}else if($temp_agents_ids!=''){ 
+				$this->db->where("assigned_to IN ($temp_agents_ids) ");
 			}
 		}else if($vs_user_type_id==1){
 		 	if($assigned_to_id_val>0){
@@ -64,19 +63,21 @@ class Tasks_model extends CI_Model {
 	
 	
 	function get_all_tasks_to_do($params = array()){
-		
-		$vs_user_type_id = $this->login_vs_role_id = $vs_user_type_id= $this->session->userdata('us_role_id'); 
+	
+		$vs_id = $this->session->userdata('us_id');
+		$vs_user_type_id = $this->login_vs_role_id = $this->session->userdata('us_role_id'); 
 		$temp_agents_ids = '';
-		if($vs_user_type_id==2){  
-			$vs_id = $this->session->userdata('us_id');
+		if($vs_user_type_id==2){   
+			$temp_agents_ids .= $vs_id.",";
 			$agnt_arrs = $this->get_all_managers_agents_list($vs_id); 
 			
 			if(isset($agnt_arrs) && count($agnt_arrs)>0){   
 				foreach($agnt_arrs as $agnt_arr){
 					$temp_agents_ids .= $agnt_arr->id.",";
 				}
-				$temp_agents_ids = trim($temp_agents_ids,","); 
-			}	 
+			}
+			
+			$temp_agents_ids = trim($temp_agents_ids,","); 	 
 		} 
 		
 		$whrs =''; 
@@ -86,7 +87,7 @@ class Tasks_model extends CI_Model {
 			/*if($assigned_to_val>0){
 				$whrs .=" AND assigned_to=$assigned_to_val";
 			}*/
-		} 
+		}
 		
 		if($vs_user_type_id==3){
 			$vs_id = $this->session->userdata('us_id'); 
@@ -94,9 +95,8 @@ class Tasks_model extends CI_Model {
 		}else if($vs_user_type_id==2){
 		 	if($assigned_to_id_val>0){  
 				$whrs .=" AND assigned_to=$assigned_to_id_val ";
-			}else if($temp_agents_ids!=''){
-				$vs_id = $this->session->userdata('us_id');
-				$whrs .=" AND ( assigned_to=$vs_id OR assigned_to IN ($temp_agents_ids) )";
+			}else if($temp_agents_ids != ''){
+				$whrs .=" AND assigned_to IN ($temp_agents_ids) ";
 			}
 		}else if($vs_user_type_id==1){
 		 	if($assigned_to_id_val>0){ 
@@ -155,8 +155,8 @@ class Tasks_model extends CI_Model {
 	}  
 	
 	function get_tasks_to_do_by_id($args1){
-		$this->dbs_role_id = $this->session->userdata('us_role_id'); 
-		if($this->dbs_role_id==3){
+		$vs_user_type_id = $this->session->userdata('us_role_id'); 
+		if($vs_user_type_id==3){
 			$vs_id = $this->session->userdata('us_id');
 			$query = $this->db->get_where('tasks_to_do_tbl',array('id'=> $args1,'assigned_to'=> $vs_id));
 		}else{
@@ -172,9 +172,10 @@ class Tasks_model extends CI_Model {
 	
 	function update_tasks_to_do_data($args1,$data){
 		if($args1 >0){
-			$this->db->where('id',$args1);
-			
-			if($this->login_vs_role_id==3){
+			$vs_user_type_id = $this->session->userdata('us_role_id'); 
+				
+			$this->db->where('id',$args1); 
+			if($vs_user_type_id==3){
 				$vs_id = $this->session->userdata('us_id');
 				$this->db->where('assigned_to',$vs_id); 
 			} 

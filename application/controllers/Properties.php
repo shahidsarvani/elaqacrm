@@ -3146,17 +3146,17 @@ class Properties extends CI_Controller{
 	}
 	
 	 
-	 function add($args0='0'){  
-		
+	 function add($args0='0'){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
 			$this->load->model('locations_model'); 
+			$this->load->model('owners_model');    
 			$config_arrs = $this->general_model->get_configuration();
 			$conf_sale_inititals = stripslashes($config_arrs->sale_inititals);
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
-			$data['conf_sale_inititals']  = $conf_sale_inititals; 
-			$data['conf_rent_inititals']  = $conf_rent_inititals;
-			$data['args0']  = $args0;
+			$data['conf_sale_inititals'] = $conf_sale_inititals; 
+			$data['conf_rent_inititals'] = $conf_rent_inititals;
+			$data['args0'] = $args0;
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			$data['locations_arrs'] = $this->locations_model->get_parent_child_locations('0');  
 			/*$max_property_id_val = $this->admin_model->get_max_property_id();*/ 
@@ -3179,7 +3179,8 @@ class Properties extends CI_Controller{
 			}
 			
 			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field); 
-			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();  
+			/*$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();*/   
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array());  
 			$data['source_of_listing_arrs'] = $this->source_of_listings_model->get_all_properties_source_of_listings();
 			
 			if(isset($_POST) && !empty($_POST)){ 
@@ -3365,6 +3366,7 @@ class Properties extends CI_Controller{
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','update',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
 			$this->load->model('locations_model'); 
+			$this->load->model('owners_model');
 			$config_arrs = $this->general_model->get_configuration();
 			$conf_sale_inititals = stripslashes($config_arrs->sale_inititals);
 			$conf_rent_inititals = stripslashes($config_arrs->rent_inititals);
@@ -3395,7 +3397,8 @@ class Properties extends CI_Controller{
 			}
 			
 			$data['user_arrs'] = $this->general_model->get_gen_all_users_by_field($arrs_field); 
-			$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();
+			/*$data['owner_arrs'] = $this->general_model->get_gen_all_owners_list();*/  
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array()); 
 			$data['source_of_listing_arrs'] = $this->source_of_listings_model->get_all_properties_source_of_listings();
 			
 			if($args1>0){ 
