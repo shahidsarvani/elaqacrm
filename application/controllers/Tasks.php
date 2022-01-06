@@ -185,6 +185,12 @@
 	if($this->dbs_role_id==3 && $this->agent_chk_ystrdy_meeting==0){
 		redirect('agent/operate_meetings_views');
 	}
+	$ret_val = $this->general_model->check_user_total_tasks_to_do_nums();
+	if($ret_val=='0' && $args1==''){
+		$this->session->set_flashdata('error_msg','Your Task to do limited is finished, please upgrade your package!');
+		redirect('tasks/index/');
+	}
+	
 	$this->load->library('email'); 
 	$created_on = $updated_on = date('Y-m-d H:i:s'); 
 	$tmp_assignid = $this->session->userdata('us_id'); 

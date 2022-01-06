@@ -190,6 +190,12 @@
 		if($res_nums>0){ 
 		$data['page_headings'] = 'Add Contact'; 
 		
+		$ret_val = $this->general_model->check_user_total_contacts_nums();
+		if($ret_val=='0'){
+			$this->session->set_flashdata('error_msg','Your add to Contacts limited is finished, please upgrade your package!');
+			redirect('contacts/index/');
+		}
+		
 		if(isset($_POST) && !empty($_POST)){ 
 			// get form input
 			$name = $this->input->post("name"); 

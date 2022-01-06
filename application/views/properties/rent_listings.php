@@ -311,8 +311,8 @@ if($trash_res_nums>0){ ?>
         <div class="col-xs-12"> 
            <select name="owner_id" id="owner_id" multiple="multiple" onChange="operate_properties();"> 
             <?php 
-				$owner_arrs = $this->general_model->get_gen_all_owners_list(); 
-                if(isset($owner_arrs) && count($owner_arrs)>0){
+				//$owner_arrs = $this->general_model->get_gen_all_owners_list(); 
+                if($owner_arrs){
                     foreach($owner_arrs as $owner_arr){
                     $sel_1 = '';
                     if(isset($_POST['owner_id']) && $_POST['owner_id']==$owner_arr->id){

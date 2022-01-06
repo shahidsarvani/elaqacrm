@@ -186,6 +186,11 @@
 		$res_nums = $this->general_model->check_controller_method_permission_access('Owners','add',$this->dbs_role_id,'1'); 
 		if($res_nums>0){ 
 		$data['page_headings'] = 'Add Owner'; 
+		$ret_val = $this->general_model->check_user_total_owners_nums();
+		if($ret_val=='0'){
+			$this->session->set_flashdata('error_msg','Your add to Owners limited is finished, please upgrade your package!');
+			redirect('owners/index/');
+		}
 		
 		if(isset($_POST) && !empty($_POST)){ 
 			// get form input

@@ -21,6 +21,7 @@ class Properties extends CI_Controller{
 			redirect('/');
 		}  
 		
+		$this->load->model('owners_model'); 
 		$this->load->model('locations_model'); 
 		$this->load->model('properties_model'); 
 		$this->load->model('portals_model'); 
@@ -497,6 +498,7 @@ class Properties extends CI_Controller{
 			$paras_arrs = array();	
 			$data['page_headings'] = "Sales Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array()); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -1068,6 +1070,7 @@ class Properties extends CI_Controller{
 			$data['page_headings'] = "Rental Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol(); 
 			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0'));
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array()); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -1644,6 +1647,7 @@ class Properties extends CI_Controller{
 			$data['page_headings'] = "Archived Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0')); 
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array());  
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -2225,6 +2229,7 @@ class Properties extends CI_Controller{
 			$data['page_headings'] = "Deleted Listings"; 
 			$data['conf_currency_symbol'] = $this->general_model->get_gen_currency_symbol();
 			$data['location_arrs'] = $this->locations_model->get_all_filter_locations(array("parentid_val" => '0'));
+			$data['owner_arrs'] = $this->owners_model->get_all_filter_owners(array()); 
 			/* permission checks */
 			$vs_user_type_id = $this->session->userdata('us_role_id');
 			$vs_id = $this->session->userdata('us_id');
@@ -3149,6 +3154,28 @@ class Properties extends CI_Controller{
 	 function add($args0='0'){
 		$res_nums =  $this->general_model->check_controller_method_permission_access('Properties','add',$this->dbs_user_role_id,'1');
 		if($res_nums>0){ 
+		
+			$ret_val = $this->general_model->check_user_total_properties_nums();
+			if($ret_val=='0'){
+				$this->session->set_flashdata('error_msg','Your add to Properties limited is finished, please upgrade your package!');
+				
+				if(isset($args0) && $args0==1){
+					redirect("properties/archived_listings");	
+				}else if(isset($args0) && $args0==2){
+					redirect("properties/dealt_properties_list");
+				}else if(isset($args0) && $args0==3){
+					redirect("properties/sales_listings");
+				}else if(isset($args0) && $args0==4){   
+					redirect("properties/rent_listings");
+				}else if(isset($args0) && $args0 ==5){ 
+					redirect("properties/leads_properties_list");
+				}else if(isset($args0) && $args0==6){   
+					redirect("properties/portal_properties_list");	
+				}else{ 
+					redirect("properties/sales_listings");
+				}  
+			}
+		
 			$this->load->model('locations_model'); 
 			$this->load->model('owners_model');    
 			$config_arrs = $this->general_model->get_configuration();

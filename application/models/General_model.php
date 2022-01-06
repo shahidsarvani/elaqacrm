@@ -755,6 +755,415 @@ class General_model extends CI_Model {
 		function get_gen_all_manager_agents_list($mngrs_ids){ 
 		   $query = $this->db->get_where('users_tbl', array('parent_id'=> $mngrs_ids));
 		   return $query->result();
+		}
+		
+		
+		
+		/*public function check_user_total_properties_nums(){    
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND assigned_to_id IN ($temp_agents_ids) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND assigned_to_id IN ($temp_agents_ids) ";
+			}   
+				
+			$query = $this->db->query("SELECT count(id) AS NUMS FROM properties_tbl WHERE is_deleted='0' $whrs"); 
+			$row_nums = $query->row()->NUMS;
+			return $row_nums; 
 		}  
+		
+		public function check_user_total_owners_nums(){  
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query("SELECT count(id) AS NUMS FROM owners_tbl where id>'0' $whrs"); 
+			$row_nums = $query->row()->NUMS;
+			return $row_nums; 
+		} 
+		
+		public function check_user_total_contacts_nums(){
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( created_by IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( created_by IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query(" SELECT count(id) AS NUMS FROM contacts_tbl where id>'0' $whrs"); 
+			$row_nums = $query->row()->NUMS;
+			return $row_nums; 
+		} 
+		
+		public function check_user_total_tasks_to_do_nums(){   
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query(" SELECT count(id) AS NUMS FROM tasks_to_do_tbl where id>'0' $whrs "); 
+			$row_nums = $query->row()->NUMS;
+			return $row_nums; 
+		} */
+		
+		public function get_gen_user_package_info($usrid='0'){ 
+			$query = $this->db->query("SELECT t1.*, t2.total_properties_nums, t2.total_contacts_nums, t2.total_owners_nums, t2.total_tasks_nums FROM users_tbl t1 LEFT JOIN packages_tbl t2 ON t1.package_id=t2.id WHERE t1.id='".$usrid."' "); 
+			return $query->row();
+		}	 
+		
+		
+		public function check_user_total_properties_nums(){    
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND assigned_to_id IN ($temp_agents_ids) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND assigned_to_id IN ($temp_agents_ids) ";
+			}   
+				
+			$query = $this->db->query("SELECT count(id) AS NUMS FROM properties_tbl WHERE is_deleted='0' $whrs"); 
+			$usr_properties_nums = $query->row()->NUMS;
+			
+			$db_total_properties_nums = 0;
+			
+			if($vs_role_id==1){  
+				 return '1';
+				
+			}else if($vs_role_id==2){  
+			
+				$rew0 = $this->get_gen_user_package_info($vs_id); 
+				if($rew0){
+					$db_total_properties_nums = $rew0->total_properties_nums;
+				} 
+				 
+				if($db_total_properties_nums >= $usr_properties_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+				
+			}else if($vs_role_id == 3){
+				$rew0 = $this->get_gen_user_package_info($vs_parent_id); 
+				if($rew0){
+					$db_total_properties_nums = $rew0->total_properties_nums;
+				} 
+				 
+				if($db_total_properties_nums >= $usr_properties_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+			} 		
+		} 
+		  
+		public function check_user_total_owners_nums(){  
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query("SELECT count(id) AS NUMS FROM owners_tbl where id>'0' $whrs"); 
+			$usr_total_owners_nums  = $query->row()->NUMS;
+			  
+			$db_total_owners_nums = 0;
+			
+			if($vs_role_id==1){  
+				 return '1';
+				
+			}else if($vs_role_id==2){  
+			
+				$rew0 = $this->get_gen_user_package_info($vs_id); 
+				if($rew0){
+					$db_total_owners_nums = $rew0->total_owners_nums;
+				} 
+				 
+				if($db_total_owners_nums >= $usr_total_owners_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+				
+			}else if($vs_role_id == 3){
+				$rew0 = $this->get_gen_user_package_info($vs_parent_id); 
+				if($rew0){
+					$db_total_owners_nums = $rew0->total_owners_nums;
+				} 
+				 
+				if($db_total_owners_nums >= $usr_total_owners_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+			}  
+		} 
+		
+		public function check_user_total_contacts_nums(){
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( created_by IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( created_by IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query(" SELECT count(id) AS NUMS FROM contacts_tbl where id>'0' $whrs"); 
+			$usr_total_contacts_nums = $query->row()->NUMS;
+			 
+			$db_total_contacts_nums = 0;
+			
+			if($vs_role_id==1){  
+				 return '1';
+				
+			}else if($vs_role_id==2){  
+			
+				$rew0 = $this->get_gen_user_package_info($vs_id); 
+				if($rew0){
+					$db_total_contacts_nums = $rew0->total_contacts_nums;
+				} 
+				 
+				if($db_total_contacts_nums >= $usr_total_contacts_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+				
+			}else if($vs_role_id == 3){
+				$rew0 = $this->get_gen_user_package_info($vs_parent_id); 
+				if($rew0){
+					$db_total_contacts_nums = $rew0->total_contacts_nums;
+				} 
+				 
+				if($db_total_contacts_nums >= $usr_total_contacts_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+			}  
+			 
+		} 
+		
+		public function check_user_total_tasks_to_do_nums(){   
+			$vs_id = $this->session->userdata('us_id');  
+			$vs_parent_id = $this->session->userdata('us_parent_id');  
+			$vs_role_id = $this->session->userdata('us_role_id');    
+			$temp_agents_ids = $whrs = '';
+			
+			if($vs_role_id==2){
+				$temp_agents_ids .= $vs_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				} 
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+				
+			}else if($vs_role_id == 3){
+				$temp_agents_ids .= $vs_parent_id.",";
+				$agnt_arrs = $this->get_all_manager_agents_list($vs_parent_id);  
+				if(isset($agnt_arrs) && count($agnt_arrs)>0){   
+					foreach($agnt_arrs as $agnt_arr){
+						$temp_agents_ids .= $agnt_arr->id.",";
+					} 
+				}
+				$temp_agents_ids = trim($temp_agents_ids,","); 
+				
+				$whrs = " AND ( assigned_to IN ($temp_agents_ids) OR created_by='".$vs_id."' ) ";
+			}
+				
+			$query = $this->db->query(" SELECT count(id) AS NUMS FROM tasks_to_do_tbl where id>'0' $whrs "); 
+			$usr_total_tasks_nums = $query->row()->NUMS;
+			 
+			$db_total_tasks_nums = 0;
+			
+			if($vs_role_id==1){  
+				 return '1';
+				
+			}else if($vs_role_id==2){  
+			
+				$rew0 = $this->get_gen_user_package_info($vs_id); 
+				if($rew0){
+					$db_total_tasks_nums = $rew0->total_tasks_nums;
+				} 
+				 
+				if($db_total_tasks_nums >= $usr_total_tasks_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+				
+			}else if($vs_role_id == 3){
+				$rew0 = $this->get_gen_user_package_info($vs_parent_id); 
+				if($rew0){
+					$db_total_tasks_nums = $rew0->total_tasks_nums;
+				} 
+				 
+				if($db_total_tasks_nums >= $usr_total_tasks_nums){
+					return '1';
+				}else{ 
+					return '0';
+				}
+			}  
+		} 
 						
 	}  ?>
