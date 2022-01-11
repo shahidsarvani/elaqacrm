@@ -156,9 +156,9 @@ $(function() {
 			'no_of_employees': {
 				required: true, 
 			},
-			/*'payment_gateway': {
+			'payment_gateway': {
 				required: true,
-			},*/
+			},
 		}, messages: {
 			'name': {
 				required: "This is required field",
@@ -188,9 +188,9 @@ $(function() {
 			'no_of_employees': {
 				required: "This is required field",
 			},
-			/*'payment_gateway': {
+			'payment_gateway': {
 				required: "This is required field",
-			}, */
+			},
 		}
         /*rules: {
             email: {

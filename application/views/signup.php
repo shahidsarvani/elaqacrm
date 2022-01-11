@@ -505,7 +505,7 @@
 			   <form name="datas_form" id="datas_form" class="stepy-validation" method="post" action=""> 
 			   	<input type="hidden" name="sel_package_id" id="sel_package_id" value="1" />
 			    <fieldset title="1">  
-					<legend class="text-semibold">Process Payment</legend>
+					<legend class="text-semibold">Package Selection</legend>
 					
 					  <!-- <div class="row"> 
 					  <div class="col-md-8 col-md-pull-0">
@@ -541,32 +541,7 @@
 						  </select>
 						  <span id="package_id1" class="text-danger"><?php echo form_error('package_id'); ?></span> 
 						</div>           
-					  </div> </div> --> 
-					  
-					  <div class="row" style="display:none">
-					  <div class="col-md-12">
-						<div class="form-group"> 
-						  <label>Payment Gateway: <span class="text-danger">*</span></label>
-						  <div class="radio">
-							<label> <input type="radio" name="payment_gateway" class="styled" value="Payoneer" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='Payoneer'){ echo 'checked="checked"'; } ?> /> Payoneer </label>
-						  </div>
-						  <div class="radio">
-							<label> <input type="radio" name="payment_gateway" class="styled" value="JazzCash" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='JazzCash'){ echo 'checked="checked"'; } ?> /> JazzCash </label>
-						  </div>
-						  <div class="radio">
-							<label> <input type="radio" name="payment_gateway" class="styled" value="EasyPaisa" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='EasyPaisa'){ echo 'checked="checked"'; } ?> /> EasyPaisa </label>
-						  </div>
-						  <div class="radio">
-							<label> <input type="radio" name="payment_gateway" class="styled" value="FonePay" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='FonePay'){ echo 'checked="checked"'; } ?> /> FonePay </label>
-						  </div>
-						  <div class="radio">
-							<label> <input type="radio" name="payment_gateway" class="styled" value="Keenu Wallet" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='Keenu Wallet'){ echo 'checked="checked"'; } ?> /> Keenu Wallet </label>
-						  </div>
-						  
-						  <span class="text-danger"><?php echo form_error('payment_gateway'); ?></span>
-						</div>           
-					  </div> 
-					  </div>  
+					  </div> </div> -->    
 					  
 					  <div id="generic_price_table" class="row">
 					  <!-- <div class="col-md-12"> 
@@ -626,9 +601,9 @@
 									</div>    
 					
 									<div class="generic_feature_list">
-									 <?php //echo stripslashes($packages_arr->description); ?> 
-								<ul>
-									<?php if($packages_arr->total_properties_nums >0){ ?> 
+									 <?php echo stripslashes($packages_arr->description); ?> 
+								<!--<ul>
+									<?php /*if($packages_arr->total_properties_nums >0){ ?> 
 										<li><span><?php echo stripslashes($packages_arr->total_properties_nums); ?> </span> Manage up to Properties</li>
 								<?php } if($packages_arr->total_contacts_nums >0){ ?> 
 										<li><span><?php echo stripslashes($packages_arr->total_contacts_nums); ?> </span> Manage up to Contacts</li>
@@ -636,8 +611,8 @@
 										<li><span><?php echo stripslashes($packages_arr->total_owners_nums); ?> </span> Manage up to Owners</li>
 								<?php } if($packages_arr->total_tasks_nums >0){ ?> 
 										<li><span><?php echo stripslashes($packages_arr->total_tasks_nums); ?> </span> Manage up to Tasks</li>
-								<?php } ?> 
-									</ul>
+								<?php }*/ ?> 
+									</ul>-->
 								</div>
 									 
 									<div class="generic_price_btn clearfix"> 
@@ -726,6 +701,34 @@
 						</div>
 					  </div>
 					</div>
+				 </fieldset>
+				 
+				<fieldset title="3">  
+				 <legend class="text-semibold">Payment Option</legend>  
+					<div class="row">
+					  <div class="col-lg-offset-1 col-lg-10 col-lg-offset-1">
+						<div class="form-group"> 
+						  <label>Payment Gateway: <span class="text-danger">*</span></label>
+						  <div class="radio">
+							<label> <input type="radio" name="payment_gateway" class="styled" value="Payoneer" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='Payoneer'){ echo 'checked="checked"'; } ?> /> Payoneer </label>
+						  </div>
+						  <div class="radio">
+							<label> <input type="radio" name="payment_gateway" class="styled" value="JazzCash" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='JazzCash'){ echo 'checked="checked"'; } ?> /> JazzCash </label>
+						  </div>
+						  <div class="radio">
+							<label> <input type="radio" name="payment_gateway" class="styled" value="EasyPaisa" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='EasyPaisa'){ echo 'checked="checked"'; } ?> /> EasyPaisa </label>
+						  </div>
+						  <div class="radio">
+							<label> <input type="radio" name="payment_gateway" class="styled" value="FonePay" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='FonePay'){ echo 'checked="checked"'; } ?> /> FonePay </label>
+						  </div>
+						  <div class="radio">
+							<label> <input type="radio" name="payment_gateway" class="styled" value="Keenu Wallet" <?php if(isset($_POST['payment_gateway']) && $_POST['payment_gateway']=='Keenu Wallet'){ echo 'checked="checked"'; } ?> /> Keenu Wallet </label>
+						  </div>
+						  
+						  <span class="text-danger"><?php echo form_error('payment_gateway'); ?></span>
+						</div>           
+					  </div> 
+					</div>  
 				 </fieldset>
 					   
 				
