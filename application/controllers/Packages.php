@@ -113,7 +113,19 @@
 				$total_tasks_nums = $this->input->post("total_tasks_nums");  
 				$description = $this->input->post("description"); 
 				$status = isset($_POST['status']) ? 1 : 0; 
-				  
+				
+				$sale_properties = isset($_POST['sale_properties']) ? $this->input->post("sale_properties") : ''; 
+				$rental_properties = isset($_POST['rental_properties']) ? $this->input->post("rental_properties") : ''; 
+				$archived_properties = isset($_POST['archived_properties']) ? $this->input->post("archived_properties") : ''; 
+				$deleted_properties = isset($_POST['deleted_properties']) ? $this->input->post("deleted_properties") : ''; 
+				$manage_leads = isset($_POST['manage_leads']) ? $this->input->post("manage_leads") : ''; 
+				$manage_contacts = isset($_POST['manage_contacts']) ? $this->input->post("manage_contacts") : ''; 
+				$manage_owners = isset($_POST['manage_owners']) ? $this->input->post("manage_owners") : ''; 
+				$manage_tasks = isset($_POST['manage_tasks']) ? $this->input->post("manage_tasks") : ''; 
+				$manage_users = isset($_POST['manage_users']) ? $this->input->post("manage_users") : ''; 
+				$manage_reports = isset($_POST['manage_reports']) ? $this->input->post("manage_reports") : '';
+				//view_add_update_delete 			 
+				 
 				// form validation
 				$this->form_validation->set_rules("name", "Name", "trim|required|xss_clean");
 				$this->form_validation->set_rules("price", "Price", "trim|required|xss_clean"); 
@@ -127,7 +139,7 @@
 					$this->load->view('packages/add',$data);
 				}else if(isset($args1) && $args1!=''){
 					  
-					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
+					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status, 'sale_properties' => $sale_properties,'rental_properties' => $rental_properties, 'archived_properties' => $archived_properties, 'deleted_properties' => $deleted_properties, 'manage_leads' => $manage_leads,'manage_contacts' => $manage_contacts, 'manage_owners' => $manage_owners, 'manage_tasks' => $manage_tasks, 'manage_users' => $manage_users,'manage_reports' => $manage_reports); 
 					$res = $this->packages_model->update_package_data($args1,$datas); 
 					if(isset($res)){  
 						$this->session->set_flashdata('success_msg','Record updated successfully!');
@@ -137,21 +149,20 @@
 					redirect("packages/index");
 					
 				}else{ 
-					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
+					$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status, 'sale_properties' => $sale_properties,'rental_properties' => $rental_properties, 'archived_properties' => $archived_properties, 'deleted_properties' => $deleted_properties, 'manage_leads' => $manage_leads,'manage_contacts' => $manage_contacts, 'manage_owners' => $manage_owners, 'manage_tasks' => $manage_tasks, 'manage_users' => $manage_users,'manage_reports' => $manage_reports); 
 					$res = $this->packages_model->insert_package_data($datas); 
 					if(isset($res)){
 						$this->session->set_flashdata('success_msg','Record inserted successfully!');
 					}else{
 						$this->session->set_flashdata('error_msg','Error: while inserting record!');
 					} 
-					 
-					
+					  
 					if(isset($_POST['saves_and_new'])){
 						redirect("packages/add");
 					}else{
 						redirect("packages/index");	
-					} 
-				} 	 
+					}
+				}
 				
 			}else{
 				$this->load->view('packages/add',$data);
@@ -186,8 +197,19 @@
 					$total_owners_nums = $this->input->post("total_owners_nums"); 
 					$total_tasks_nums = $this->input->post("total_tasks_nums");  
 					$description = $this->input->post("description"); 
-					$status = isset($_POST['status']) ? 1 : 0; 
-					 
+					$status = isset($_POST['status']) ? 1 : 0;
+					
+					$sale_properties = isset($_POST['sale_properties']) ? $this->input->post("sale_properties") : ''; 
+					$rental_properties = isset($_POST['rental_properties']) ? $this->input->post("rental_properties") : ''; 
+					$archived_properties = isset($_POST['archived_properties']) ? $this->input->post("archived_properties") : ''; 
+					$deleted_properties = isset($_POST['deleted_properties']) ? $this->input->post("deleted_properties") : ''; 
+					$manage_leads = isset($_POST['manage_leads']) ? $this->input->post("manage_leads") : ''; 
+					$manage_contacts = isset($_POST['manage_contacts']) ? $this->input->post("manage_contacts") : ''; 
+					$manage_owners = isset($_POST['manage_owners']) ? $this->input->post("manage_owners") : ''; 
+					$manage_tasks = isset($_POST['manage_tasks']) ? $this->input->post("manage_tasks") : ''; 
+					$manage_users = isset($_POST['manage_users']) ? $this->input->post("manage_users") : ''; 
+					$manage_reports = isset($_POST['manage_reports']) ? $this->input->post("manage_reports") : '';
+					
 					// form validation
 					$this->form_validation->set_rules("name", "Name", "trim|required|xss_clean");
 					$this->form_validation->set_rules("price", "Price", "trim|required|xss_clean"); 
@@ -197,11 +219,11 @@
 					$this->form_validation->set_rules("description", "description", "trim|xss_clean");  
 					
 					if($this->form_validation->run() == FALSE){
-					// validation fail
+						// validation fail
 						$this->load->view('packages/update',$data);
 					}else if(isset($args1) && $args1!=''){
 						  
-						$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status); 
+						$datas = array('name' => $name,'price' => $price,'sort_order' => $sort_order, 'package_type' => $package_type, 'duration' => $duration, 'total_properties_nums' => $total_properties_nums,'total_contacts_nums' => $total_contacts_nums, 'total_owners_nums' => $total_owners_nums, 'total_tasks_nums' => $total_tasks_nums, 'description' => $description,'status' => $status, 'sale_properties' => $sale_properties,'rental_properties' => $rental_properties, 'archived_properties' => $archived_properties, 'deleted_properties' => $deleted_properties, 'manage_leads' => $manage_leads,'manage_contacts' => $manage_contacts, 'manage_owners' => $manage_owners, 'manage_tasks' => $manage_tasks, 'manage_users' => $manage_users,'manage_reports' => $manage_reports); 
 						$res = $this->packages_model->update_package_data($args1,$datas); 
 						if(isset($res)){  
 							$this->session->set_flashdata('success_msg','Record updated successfully!');
@@ -216,6 +238,22 @@
 				}
 				
 			}else{ 
+				$this->load->view('no_permission_access'); 
+			} 
+		}
+		
+		
+		function access_rights_popup_list($paras2=''){   
+			$res_nums = $this->general_model->check_controller_method_permission_access('Packages','index',$this->dbs_user_role_id,'1'); 
+			if($res_nums>=0){ 
+				$data['paras2'] = $paras2;	
+				$data['page_headings'] = "Access Rights Listing";	 
+				//$data['private_amt_recs'] = $this->packages_model->get_all_property_features_by_type('1');
+				//$data['commercial_amt_recs'] = $this->packages_model->get_all_property_features_by_type('2');
+				  
+				$this->load->view('packages/access_rights_popup_list',$data); 
+				  
+			}else{
 				$this->load->view('no_permission_access'); 
 			} 
 		}

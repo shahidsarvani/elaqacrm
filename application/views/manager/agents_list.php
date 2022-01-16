@@ -100,18 +100,17 @@
 		<input type="hidden" name="add_new_link" id="add_new_link" value="<?php echo site_url('manager/add'); ?>">
 		<input type="hidden" name="cstm_frm_name" id="cstm_frm_name" value="datas_list_forms">
 		
-		<form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('manager/trash_multiple'); ?>" method="post">
-        <div class="row" style="margin-bottom:8px;">
+		<form name="datas_list_forms" id="datas_list_forms" action="<?php echo site_url('manager/trash_multiple'); ?>" method="post"> 
+		<div class="row" style="margin-bottom:8px;">
             <div class="col-md-12"> 
-             
             	<div class="form-group mb-md">   
                   <div class="col-md-1">    
                   <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_agents_list();">
-                  <option value="25"> Pages</option>
-                  <option value="25"> 25 </option>
-                  <option value="50"> 50 </option>
-                  <option value="100"> 100 </option> 
-                </select> 
+					  <option value="25"> Pages</option>
+					  <option value="25"> 25 </option>
+					  <option value="50"> 50 </option>
+					  <option value="100"> 100 </option> 
+				  </select> 
                   </div> 
                   
                   <div class="col-md-3">  
@@ -121,13 +120,24 @@
                   </div>    
                     
                   <div class="col-md-3 pull-right"> 
-                     
+                    <div class="dt-buttons"> 
+                     <?php 
+					 	/* if($trash_res_nums>0){ ?>
+                     	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="javascript:void(0);" onClick="return operate_multi_deletions('datas_list_forms');"> <span><i class="glyphicon glyphicon-remove-circle position-left"></i>Delete</span></a>  
+                     <?php } */ 
+					 	if($add_res_nums>0){ ?> 
+                         	<a class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1" href="<?= site_url('manager/add_agent/'); ?>"><span><i class="glyphicon glyphicon-plus position-left"></i>New</span></a>
+                     <?php } 
+						
+						if($add_res_nums==0 && $trash_res_nums==0){  ?>
+							<a style="visibility:hidden;" class="dt-button btn border-slate text-slate-800 btn-flat mrglft5" tabindex="0" aria-controls="DataTables_Table_1"><span><i class="glyphicon glyphicon-plus position-left"></i></span></a>
+					<?php } ?> 
+                        </div>
                     </div> 
                 </div> 
                 
             </div>
         </div>
-		 
 		 <style>
 			 #datatable-default_filter{
 				display:none !important;
@@ -138,29 +148,63 @@
               <thead>
                 <tr>
                   <th width="6%">#</th>
-                  <th width="17%">Name</th>
-                  <th width="25%">Email</th>
-                  <th width="17%">Phone No </th>
-                  <th width="17%">Mobile No </th>  
+                  <th width="14%">Name</th>
+                  <th width="18%">Email</th>
+                  <th width="12%">Phone No </th>
+                  <th width="12%">Mobile No </th>  
+				  <th width="10%">Status</th>
+				  <th width="15%">Added On </th>
+				  <th width="15%">Last Login </th>
+				  <th width="14%">Action </th>  
                 </tr>
               </thead>
               <tbody id="dyns_list">
                 <?php  
                     $sr=1; 
                     if(isset($records) && count($records)>0){
-                        foreach($records as $record){  ?>
+                        foreach($records as $record){
+							$operate_url = 'manager/update_agent/'.$record->id;
+							$operate_url = site_url($operate_url); //manager/agents_list/
+							
+							$trash_url = 'manager/trash_aj/'.$record->id;
+							$trash_url = site_url($trash_url);  ?>
                         <tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>">
                           <td> <?php echo $sr; ?> </td> 	
                           <td><?= stripslashes($record->name); ?></td>
                           <td><?= stripslashes($record->email); ?></td>
                           <td><?= stripslashes($record->phone_no); ?></td>
                           <td><?= stripslashes($record->mobile_no); ?></td>  
+						  <td class="text-center">
+						  <?php   
+							if(isset($record) && $record->status==1){ 
+								echo '<span class="label label-success"> Active </span>';
+							}else if(isset($record) && $record->status==0){
+								echo '<span class="label label-danger"> Inactive </span>';
+							} ?>
+						  </td>
+						  <td class="text-center"><?= date('d-M-Y H:i:s',strtotime($record->created_on)); ?></td>
+						  <td class="text-center"><?= date('d-M-Y H:i:s',strtotime($record->last_login_on)); ?></td>
+						  <td class="text-center"> 
+						  	<ul class="icons-list">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="icon-menu7"></i> </a> 
+									<ul class="dropdown-menu dropdown-menu-right">  	 
+								  <?php if($update_res_nums>0){ ?> 
+											<li><a href="<?php echo $operate_url; ?>" class="dropdown-item"><i class="icon-pencil7"></i> Update</a> </li>
+									<?php } 
+										/*if($trash_res_nums>0 && $this->dbs_user_role_id==1 )*/
+										if($trash_res_nums>0){ ?>  
+										   <li> <a href="javascript:void(0);" onClick="return operate_deletions('<?php echo $trash_url; ?>','<?php echo $record->id; ?>','dyns_list');" class="dropdown-item"><i class="icon-cross2 text-danger"></i> Delete</a> </li>
+								  <?php } ?>  
+									</ul>
+								</li>
+							</ul>                          </td>
                         </tr>
                         <?php 
                         $sr++;
                         } ?> 
                        <tr>
-                       <td colspan="5">
+                       <td colspan="9">
                        <div style="float:left;">  <select name="per_page" id="per_page" class="form-control input-sm select2" onChange="operate_agents_list();">
                           <option value="25"> Pages</option>
                           <option value="25"> 25 </option>
@@ -172,7 +216,7 @@
                   <?php 
                     }else{ ?>
                 <tr>
-                  <td colspan="5" align="center"><strong> No Record Found! </strong></td>
+                  <td colspan="9" align="center"><strong> No Record Found! </strong></td>
                 </tr>
                 <?php } ?>
               </tbody>

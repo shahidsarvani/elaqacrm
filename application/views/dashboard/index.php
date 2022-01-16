@@ -87,36 +87,9 @@
 		  </div>  
 		</div>
 		<!-- /quick stats boxes -->  
-        
-        <!-- Dashboard content -->
-        <div class="row">
-          <div class="col-lg-12">  
-            <!-- Marketing campaigns -->
-            <div class="panel panel-flat">
-              <div class="panel-heading">
-                <h6 class="panel-title">Recent Properties</h6>
-                <div class="heading-elements">
-					<ul class="icons-list">
-						<li><a onClick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li>
-						<!--<li><a href="#" data-action="collapse"></a></li>-->
-					</ul> 
-					<!--
-					 <span class="label bg-success heading-text">28 active</span>
-					  <ul class="icons-list">
-						<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-menu7"></i> <span class="caret"></span></a>
-						  <ul class="dropdown-menu dropdown-menu-right">
-							<li><a href="#"><i class="icon-sync"></i> Update data</a></li>
-							<li><a href="#"><i class="icon-list-unordered"></i> Detailed log</a></li>
-							<li><a href="#"><i class="icon-pie5"></i> Statistics</a></li>
-							<li class="divider"></li>
-							<li><a href="#"><i class="icon-cross3"></i> Clear list</a></li>
-						  </ul>
-						</li>
-					  </ul> -->
-                </div>
-              </div>
-			  
-			  <script type="text/javascript"> 
+		
+		
+		<script type="text/javascript"> 
 				function view_property(paras1){  
 					if(paras1>0){			
 						$(document).ready(function(){    
@@ -136,22 +109,142 @@
 				}  
 			 </script> 
       
-			  <div id="modal_remote_property_detail" class="modal fade" data-backdrop="false"> 
-					<div class="modal-dialog modal-full">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h5 class="modal-title">Property Detail</h5>
-							</div>
-		
-							<div class="modal-body"></div>
-		
-							<div class="modal-footer">
-								<button id="close_users_modals" type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
-							</div>
-						</div>
-					</div>
+	<div id="modal_remote_property_detail" class="modal fade" data-backdrop="false"> 
+		<div class="modal-dialog modal-full">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h5 class="modal-title">Property Detail</h5>
 				</div>
+				<div class="modal-body"> </div>
+				<div class="modal-footer">
+					<button id="close_users_modals" type="button" class="btn btn-link" data-dismiss="modal">Close</button> 
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Dashboard content -->
+	<?php 
+		$vs_id = $this->session->userdata('us_id');
+		$vs_role_id = $this->session->userdata('us_role_id');
+		if($vs_role_id == 1){ ?>
+			<div class="row">
+			  <div class="col-lg-12">   
+				<div class="panel panel-flat">
+				  <div class="panel-heading">
+					<h6 class="panel-title">Companies Manager</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+							<li><a onClick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li> 
+						</ul> 
+					</div>
+				  </div> 		   
+				  <div class="table-responsive">
+					 <table class="table text-nowrap">
+						<thead>  
+							<tr>
+								<th width="5%">#</th> 
+								<th width="12%">Name </th> 
+								<th width="15%">Email </th>
+								<th width="12%">Contact # </th>
+								<th width="11%">Company </th>
+								<th width="12%">Total Agents </th> 
+								<th width="10%">Package</th>
+								<th width="10%">End Date</th>
+								<th width="12%">Last Login </th> 
+								<th width="10%" class="center">Status</th> 	
+							  </tr>
+						</thead>
+						<tbody>
+						<?php  
+							/*$permission_results_arr = $this->Permission_Results; 
+							$chk_rets = $this->general_model->in_array_field('1', 'module_id','1', 'is_view_permission', $permission_results_arr);  
+							if($chk_rets){ */
+							$sr=1; 
+							if(isset($results)){
+								foreach($results as $result){ 
+									/*$details_url = 'properties/property_detail/'.$record->id;
+									$details_url = site_url($details_url); 
+									
+									$archv_url = 'properties/property_to_archive/'.$record->id;
+									$archv_url = site_url($archv_url); 
+									
+									$dealts_url = 'properties/property_to_dealt/'.$record->id;
+									$dealts_url = site_url($dealts_url); 
+									
+									$operate_url = 'properties/operate_property/0/'.$record->id;
+									$operate_url = site_url($operate_url);
+									
+									$trash_url = 'properties/delete_property/0/'.$record->id;
+									$trash_url = site_url($trash_url);*/ ?> 
+									
+									<tr class="<?php echo ($sr%2==0)?'gradeX':'gradeC'; ?>"> 
+									<td> <?php echo $sr; ?>  </td>
+									<!--onClick="return view_property('<?php //echo $result->id; ?>');" data-toggle="modal" data-target="#modal_remote_property_detail"-->
+									<td> <a href="javascript:void(0);" > <?= stripslashes($result->name); ?> </a> </td> 
+									<td><?php echo stripslashes($result->email); ?> </td>
+									<td><?php echo stripslashes($result->phone_no).'/ '.stripslashes($result->mobile_no); ?></td>
+									<td><?php echo stripslashes($result->company_name); ?> </td>
+									<td><?php  	
+									//	if($vs_role_id == 2){
+											$agnt_arrs = $this->general_model->get_gen_all_manager_agents_list($result->id);
+											if(isset($agnt_arrs)){
+												echo count($agnt_arrs);
+											}
+											//if(isset($agnt_arrs) && count($agnt_arrs)>0)
+										//}  ?> </td>
+									<td><?php echo stripslashes($result->package_name); ?> </td>
+									<td><?php echo stripslashes($result->package_end_date); ?> </td>
+									<td><?php echo date('d-M-Y H:i:s',strtotime($result->last_login_on)); ?> </td>
+									<td class="center"><?php 
+										$bg_cls ='';
+										if($result->status==1){
+											$bg_cls = 'badge-success';
+										}else{
+											$bg_cls = 'badge-danger';
+										} ?>
+									  <span class="badge <?php echo $bg_cls; ?>"> <?php echo ($result->status==1) ? 'Active' : 'Inactive';  ?></span></td>
+									<!--<td><?php 
+									/**/?></td>  -->
+									  </tr>
+							<?php 
+								$sr++;
+								}
+							}else{ ?>	
+							<tr class="gradeX"> 
+								<td colspan="10" style="text-align:center;" class="center"> <strong> No Record Found! </strong> </td>
+							</tr>
+							<?php 
+							} 
+						/*}else{ ?>	
+							<tr class="gradeX"><td colspan="10" class="center"> <strong> No Permission to access this area! </strong> </td>
+							</tr>
+					<?php } */?>   
+							<!--<tr class="gradeX"> 
+								<td colspan="10" style="text-align:center;" class="center"><?php //echo $this->ajax_pagination->create_links(); ?>  </td> 
+							</tr>-->  
+						</tbody>
+					 </table>
+					</div> 
+				</div>
+				<!-- /marketing campaigns -->
+				
+			  </div> 
+			</div>
+	<?php } ?>
+	
+        <div class="row">
+          <div class="col-lg-12">   
+            <div class="panel panel-flat">
+              <div class="panel-heading">
+                <h6 class="panel-title">Recent Properties</h6>
+                <div class="heading-elements">
+					<ul class="icons-list">
+						<li><a onClick="window.location='<?= site_url('dashboard/index/'); ?>';" data-action="reload"></a></li> 
+					</ul> 
+                </div>
+              </div>
+			   			   
               <div class="table-responsive">
                  <table class="table text-nowrap">
 						<thead>  
@@ -253,12 +346,12 @@
 							<?php 
 							} 
 						/*}else{ ?>	
-							<tr class="gradeX"><td colspan="10" class="center"> <strong> No Permission to access this area! </strong> </td>
+							<tr class="gradeX"><td colspan="8" class="center"> <strong> No Permission to access this area! </strong> </td>
 							</tr>
 					<?php } */?>   
-							<tr class="gradeX"> 
+							<!--<tr class="gradeX"> 
 								<td colspan="8" class="center"><?php //echo $this->ajax_pagination->create_links(); ?>  </td> 
-							</tr>  
+							</tr> --> 
 						</tbody>
 					  </table>
               </div> 

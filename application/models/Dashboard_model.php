@@ -62,6 +62,52 @@ class Dashboard_model extends CI_Model {
 		return $query->result(); 	
 	}
 	
+	
+	
+	
+	function get_all_users_list($params = array()){ 
+		$temp_agents_ids = $whrs = ''; 
+		
+		if(array_key_exists("role_id",$params)){
+			$role_id_val = $params['role_id']; 
+			if($role_id_val >0){
+				$whrs .= " AND role_id=$role_id_val ";
+			}
+		} 
+		 
+		/*if($vs_user_type_id==3){ 
+			$whrs .= " AND p.assigned_to_id=$vs_id ";
+		}else if($vs_user_type_id==2){   
+			if(array_key_exists("assigned_to_id_val",$params)){
+				$assigned_to_id_val = $params['assigned_to_id_val'];  
+				if(strlen($assigned_to_id_val)>0){ 
+					$whrs .= " AND p.assigned_to_id IN ($assigned_to_id_val) ";
+				} 
+			}else{  
+				if($temp_agents_ids != ''){ 
+					$whrs .= " AND ( p.assigned_to_id='$vs_id' OR p.assigned_to_id IN ($temp_agents_ids) ) "; 
+				}else{ 
+					$whrs .= " AND p.assigned_to_id='$vs_id'  ";
+				}	 
+			}
+		} */ 
+		
+		$limits='';
+		if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+			$tot_limit =   $params['limit'];
+			$str_limit =   $params['start'];
+			$limits = " LIMIT $str_limit,$tot_limit ";
+        }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){
+             $tot_limit =   $params['limit'];
+			 $limits = " LIMIT $tot_limit ";
+		} 
+		
+		$query = $this->db->query("SELECT u.*, p.name as package_name FROM users_tbl u 
+		LEFT JOIN packages_tbl p ON p.id = u.package_id 
+		WHERE u.id >'0' $whrs ORDER BY u.last_login_on DESC $limits "); 
+		return $query->result(); 	
+	}
+	
  	function get_total_sale_properties_nums(){
 		$temp_agents_ids = ''; 
 		$vs_id = $this->session->userdata('us_id');  
@@ -188,8 +234,7 @@ class Dashboard_model extends CI_Model {
 		$this->db->where("is_archived='1'"); 
 		$num_rows = $this->db->count_all_results('properties_tbl');
 		return $num_rows;
-	}
-	
+	} 
 	
 	/* dashboard functions ends */  
 	

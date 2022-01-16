@@ -50,7 +50,9 @@ class Dashboard extends CI_Controller{
 		$config['total_rows']  = $totalRec;
 		$config['per_page']    = $this->perPage;
 		
-		$this->ajax_pagination->initialize($config);
+		$this->ajax_pagination->initialize($config); 		
+		  
+		$datas['results'] = $this->dashboard_model->get_all_users_list(array('role_id' => '2')); 
 		
 		$datas['records'] = $this->dashboard_model->get_all_recent_properties_list(array('limit'=>$this->perPage)); 
 		
